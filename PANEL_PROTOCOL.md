@@ -174,9 +174,9 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 7. (closed: Bluetooth, §11)
 8. **Linux/macOS port notes** (§8) need a real test.
 9. **Blackmagic vendor GATT service:** what it's for, and whether writes to it act like HID reports.
-10. **BT timing:** 15 ms requested interval but notifications ~30 ms apart.
+10. (closed: 15 ms interval, one report per 2–5 events, ~20/s, §11.1)
 11. **Blue light on the back:** the manual says it flashes while pairing (after pressing the rear Bluetooth button) [D p.6]; the ~5 s light at unplug is assumed to be BT reconnecting (§11.4).
-12. **Resolve over Bluetooth:** does it behave as on USB (§12: keep-alive, LEDs)? Not captured.
+12. (closed: identical, §12.6)
 13. **Fresh power-up:** does the panel stream before any init (§3)?
 14. (closed: everything turns off at the timeout and nothing comes back by itself after re-enable, §3)
 15. (closed: §12.3)
@@ -207,6 +207,8 @@ Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT lay
 | `tests/keepalive_get.py --mode get/none` | does a GET of 0x0A keep the panel alive (K2) | `keepalive_get_get_20261116_222320`, `keepalive_get_none_20261116_222533` |
 | `tests/battery_log.py` | 0x07 and battery over 36 min, following USB↔BT switches | `battery_log_20261116_223322` |
 | `tests/quick_checks.py [--part turns/idle/led]` | knob speed, ring scale L/R, idle jitter, lights at timeout | `quick_checks_20261117_221355` (turns + 87 s idle; stopped during idle), `quick_checks_led_20261117_221857` |
+| `tests/usb_capture.py --bt` | USBPcap capture of the Bluetooth adapter (always `*_PRIVATE_*`) | `bt_resolve_PRIVATE_20261117_231230.pcapng` (not published) |
+| `tests/bt_att_timeline.py` | ATT timeline of the panel's BT connection: report-mapped writes, reads, notifications, timing; no addresses or keys | `bttimeline_bt_resolve_20261117_231230.txt` |
 
 ## 11. Bluetooth
 
@@ -222,7 +224,7 @@ Paired from Windows Settings; Windows asked only for an accept, no PIN [V tester
   - Battery service (0x180F, level in %).
   - Scan Parameters (0x1813).
 - **Blackmagic vendor service** `1DCE0A9A-D84D-4A9F-878C-B48F0FBE12D3`: 11 characteristics that mirror the HID reports one-to-one (same properties and initial values) [V]. [?] Purpose; probably for hosts that can't open HID over GATT, e.g. iPad. Untested.
-- **Connection parameters:** the panel requests a 15 ms interval, slave latency 5 and a 2 s supervision timeout. Windows rejected that L2CAP request, then set the same values itself [V]. Notifications arrive in bursts about 30 ms apart [V]. [?] Why 30 ms rather than 15.
+- **Connection parameters:** the panel requests a 15 ms interval, slave latency 5 and a 2 s supervision timeout. Windows rejected that L2CAP request, then set the same values itself [V]. While a ball is rolled, the gaps between notifications are **whole multiples of the 15 ms interval** (30, 45, 60, 75 ms, ±1 ms; median 45 ms). So the link runs at 15 ms, but the panel sends a movement report only every 2nd–5th connection event, about **20 reports/s whether rolling slowly or fast**. Faster rolling gives larger reports (median |dx|+|dy| per report 192 raw slow, 1056 fast) [V] `logs/bttimeline_bt_resolve_20261117_231230.txt`. [A] The firmware paces the reports and accumulates movement between them; nothing is lost.
 
 ### 11.2 Windows / hidapi [V] `logs/dump_caps_bt_20261116_190825.txt`
 - One HID collection. The path contains `{00001812-…}`; hidapi gives **bus_type 2** and **interface_number -1**. Match on bus_type (`PANEL_TRANSPORT=bt` in `panel.py`).
@@ -241,6 +243,7 @@ Paired from Windows Settings; Windows asked only for an accept, no PIN [V tester
   - input 0x02 returns the current button snapshot, as on USB [V smoke_features].
 - **Battery 0x08** notifications arrive even while the panel is not enabled [V].
 - **Report rate** while gently rolling a ball: about 18/s on BT against about 39/s on USB in the same session [V transport_switch_now]. Movement is not lost; it comes in fewer, larger reports [A].
+- **How reports travel over ATT** [V] `logs/bttimeline_bt_resolve_20261117_231230.txt`: feature SET = ATT Write Request (acknowledged); output reports `02` and `04` = Write Command (no response); feature and input GET = ATT Read. Value handles are fixed while bonded (table in `logs/btgatt_pairing_20261116_190313.txt`).
 
 ### 11.4 USB ↔ Bluetooth hand-over [V] `logs/transport_switch_now_20261116_221546.jsonl`, `logs/transport_switch_none_20261116_221846.jsonl`
 - **Plugging in USB drops BT at once** (within about 0.2 s), and the panel streams over USB.
@@ -254,7 +257,7 @@ Paired from Windows Settings; Windows asked only for an accept, no PIN [V tester
 
 ## 12. How DaVinci Resolve drives the panel
 
-Resolve is the reference host. Copying its behaviour is the safest way to drive the panel. Sources: two USB sessions on Windows, with Resolve's own panel support: `logs/usb_resolve_20261116_182613.pcapng`, decoded in `logs/usbdecode_usb_resolve_20261116_182613.txt` (times below are seconds into that capture unless marked) and `logs/usb_resolve3_20261117_230040.pcapng` (Resolve start, the remaining LED keys, a replug; decoded in `logs/usbdecode_usb_resolve3_20261117_230040.txt`). Resolve over Bluetooth has not been captured (§9).
+Resolve is the reference host. Copying its behaviour is the safest way to drive the panel. Sources: two USB sessions on Windows, with Resolve's own panel support: `logs/usb_resolve_20261116_182613.pcapng`, decoded in `logs/usbdecode_usb_resolve_20261116_182613.txt` (times below are seconds into that capture unless marked) and `logs/usb_resolve3_20261117_230040.pcapng` (Resolve start, the remaining LED keys, a replug; decoded in `logs/usbdecode_usb_resolve3_20261117_230040.txt`). Resolve over Bluetooth has not been captured (§9), and `logs/bttimeline_bt_resolve_20261117_231230.txt` (Resolve over Bluetooth, §12.6; the raw capture holds link keys and is not published).
 
 ### 12.1 Startup [V]
 The panel enumerated at 18.5 s. That included reading the 297-byte descriptor and a `SET_IDLE 0` from Windows, and the panel sent one battery report (`08 01 63`). Resolve's first write came at 33.1 s, 14.6 s later. **Two events start the sequence** [V] resolve3:
@@ -305,3 +308,13 @@ At 290.80 s: feature `03 00 00` (backlight off), then output 0x04 all zero and o
 3. On a battery input report: optionally read feature 0x08 to confirm.
 4. Drive the status LEDs yourself from your app's state: toggle-type for modes, momentary for Shift.
 5. On exit: backlight 0, LEDs off, output 0x02 zero; let the timer expire.
+
+### 12.6 Over Bluetooth [V] `logs/bttimeline_bt_resolve_20261117_231230.txt`
+Resolve drives the panel over Bluetooth exactly as over USB:
+- **startup:** the same sequence in the same order (`03 00 00`, LEDs off, `02` zeros, GET 0x01, `0a 01`, GET 0x08), then the brightness 5.7 s later;
+- **keep-alive:** `0a 01` every 30.00 s, each followed by the brightness;
+- **battery:** feature 0x08 read after each battery notification;
+- **LEDs:** OFFSET toggles, SHIFT_UP is lit only while held; LED latency 0–40 ms after the press;
+- **quit:** `03 00 00`, LEDs off, `02` zeros.
+
+So a host needs no transport-specific logic beyond opening the device (§11.2).

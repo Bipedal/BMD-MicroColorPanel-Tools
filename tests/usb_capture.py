@@ -2,6 +2,12 @@
 
 Usage: python tests/usb_capture.py --list                  # USB addresses; marks the panel
        python tests/usb_capture.py --name resolve --addr N [--secs 1200]
+       python tests/usb_capture.py --bt --name resolve_bt --addr N    # the BT adapter
+
+--bt captures the USB Bluetooth adapter instead (for Resolve over BT). Such a capture
+holds the link keys and every other BT device's traffic, so its name always gets
+_PRIVATE_ and it is never published; decode it with tests/bt_att_timeline.py.
+Before a --bt capture: no audio on the adapter, and keep other BT devices idle.
 
 Only device address --addr is captured (plus devices that connect during the run).
 Find the address with --list: the panel is a "[N] USB Composite Device" whose child is
@@ -53,22 +59,30 @@ def main():
     ap.add_argument("--addr", type=int, help="panel USB device address (see --list)")
     ap.add_argument("--secs", type=int, default=1200)
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--bt", action="store_true", help="capture the Bluetooth adapter (private)")
     a = ap.parse_args()
     devs = list_devices()
     panel = [d for d, _, p in devs if p]
     if a.list:
         for d, n, p in devs:
-            print("  [%3d] %s%s" % (d, n, "   <- Micro Color Panel" if p else ""))
+            print("  [%3d] %s%s" % (d, n, "   <- Micro Color Panel" if p else
+                                  "   <- Bluetooth adapter (--bt)" if "Bluetooth" in n else ""))
         return 0
     if not a.name or a.addr is None:
         ap.error("--name and --addr are required (find the address with --list)")
-    if a.addr not in panel:
+    adapters = [d for d, n, _ in devs if "Bluetooth" in n]
+    if a.bt:
+        if a.addr not in adapters:
+            print("!! address %d is not a Bluetooth adapter (adapters: %s); refusing" % (
+                a.addr, adapters or "none"))
+            return 2
+    elif a.addr not in panel:
         print("!! address %d is not the panel (panel on USB: %s); refusing" % (
             a.addr, panel or "not found"))
         return 2
     if os.path.exists(STOPFILE):
         os.remove(STOPFILE)
-    out = log_path("usb_%s" % a.name, "pcapng")
+    out = log_path(("bt_%s_PRIVATE" if a.bt else "usb_%s") % a.name, "pcapng")
     cmd = [TSHARK, "-i", IFACE,
            "-o", PREF + "capturefromalldevices:false",
            "-o", PREF + "capturefromnewdevices:true",

@@ -1,0 +1,48 @@
+== bt_resolve_PRIVATE_20261117_231230.pcapng, adapter 14
+LE handles with panel-shaped notifications: {'0x0e01': 239}; using 0x0e01
+ATT ops on the panel connection: {'Write Req': 12, 'Write Rsp': 12, 'Write Cmd': 8, 'Read Req': 5, 'Read Rsp': 5, 'Notify': 241}
+   SET feature 0x0a     5 x, median interval 30.00 s
+   SET feature 0x03     7 x, median interval 27.10 s
+   SET output 0x04      6 x, median interval 2.97 s
+   GET feature 0x08     4 x, median interval 5.54 s
+notification timing while moving: 218 gaps < 200 ms; 0 within 3 ms (same connection event); median of the rest 45.8 ms
+   gaps >= 3 ms in 7.5 ms bins: 30.0-37.5 ms: 35, 37.5-45.0 ms: 31, 45.0-52.5 ms: 57, 52.5-60.0 ms: 53, 60.0-67.5 ms: 19, 67.5-75.0 ms: 23
+
+== timeline (s)
+      13.72  SET feature 0x03: 03 00 00
+      13.75  SET output 0x04: 04 00 00 00 00 00 00   LEDs: none  (no rsp)
+      13.75  SET output 0x02: 02 00 00 00 00 00 00 00 00  (no rsp)
+      13.75  GET feature 0x01 -> 01 15 5b 3b fd 02 02 00
+      13.85  SET feature 0x0a: 0a 01
+      13.96  GET feature 0x08 -> 08 00 64
+      19.49  GET feature 0x08 -> 08 00 64
+      19.57  SET feature 0x03: 03 08 08
+      20.82     input 0x08: 00 62
+      20.83  GET feature 0x08 -> 08 00 62
+      42.65     [press OFFSET]
+      42.66  SET output 0x04: 04 04 00 00 00 00 00   LEDs: OFFSET  (no rsp)
+      42.77     [release OFFSET]
+      42.87     [press OFFSET]
+      42.91  SET output 0x04: 04 00 00 00 00 00 00   LEDs: none  (no rsp)
+      42.99     [release OFFSET]
+      43.75  SET feature 0x0a: 0a 01
+      43.82  SET feature 0x03: 03 08 08
+      44.54     [press SHIFT_UP]
+      44.54  SET output 0x04: 04 10 00 00 00 00 00   LEDs: SHIFT_UP  (no rsp)
+      47.51     [release SHIFT_UP]
+      47.51  SET output 0x04: 04 00 00 00 00 00 00   LEDs: none  (no rsp)
+      48.87     input 0x05 movement x39 (until 50.81)
+      50.81     input 0x08: 00 61
+      50.81  GET feature 0x08 -> 08 00 61
+      50.85     input 0x05 movement x1 (until 50.85)
+      50.90     input 0x05 movement x179 (until 59.93)
+      62.27  ==== LOOP x5 marker ====
+      73.75  SET feature 0x0a: 0a 01
+      73.77  SET feature 0x03: 03 08 08
+     103.75  SET feature 0x0a: 0a 01
+     103.84  SET feature 0x03: 03 08 08
+     133.75  SET feature 0x0a: 0a 01
+     133.85  SET feature 0x03: 03 08 08
+     139.53  SET feature 0x03: 03 00 00
+     139.56  SET output 0x04: 04 00 00 00 00 00 00   LEDs: none  (no rsp)
+     139.57  SET output 0x02: 02 00 00 00 00 00 00 00 00  (no rsp)
