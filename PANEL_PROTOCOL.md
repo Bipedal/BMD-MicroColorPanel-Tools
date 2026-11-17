@@ -62,7 +62,7 @@ Report IDs received as interrupt input: 0x02, 0x05, 0x06 and 0x08 (battery, rare
 - **Recommended:** resend `0a 01` every 20 s (3× margin). This kept the stream alive for 94 s in the smoke test [V] `logs/smoke_live_20261116_180732.jsonl`.
 - **The panel is silent when nothing moves.** Gaps of 4–6 s during pauses are normal and are **not** a failure signal [V] keepalive log. Do not re-init on silence.
 - **Init does not cause a state report.** Sending `0a 01` or `03 64 64` produced no 0x02 report, both with nothing held and with a button held [V] `logs/state_probe_20261116_175652.jsonl`, `logs/state_probe_20261116_175916.jsonl`.
-- **Resolve does the same.** It sends `0a 01` every **30.00 s** and resends the brightness (`03 xx xx`) each time. Its startup order: `03 00 00` → output 0x04 and 0x02 all zero → read 0x01 (version) → `0a 01` → read 0x08 (battery) → `03` with the user's brightness. At quit: `03 00 00`, 0x04 and 0x02 zero, and no disable report; the panel simply times out [V capture].
+- **Resolve does the same:** `0a 01` every **30.00 s** [V capture]. Its full behaviour is in §12.
 - **The enable state can be read back:** feature 0x0A reads `01` while enabled and `00` after the timeout [V].
 - **Several programs can read at once:** our script read reports while Resolve had the panel open (77 reports, nothing sent) [V] `logs/concurrency_20261116_183041.jsonl`. Both programs receive every input report. Writes from two programs would conflict (brightness, LEDs).
 - **Reading feature 0x0A also resets the timer.** One `0a 01`, then only a GET of 0x0A every 5 s: the stream ran the full 100 s with no gap over 3 s. The control run without GETs died at 60.0 s [V] `logs/keepalive_get_get_20261116_222320.jsonl`, `logs/keepalive_get_none_20261116_222533.jsonl`. So a status poll (e.g. `panel.enabled()`) keeps the panel alive as a side effect. Writing `0a 01` stays the recommended keep-alive; it's what Resolve does.
@@ -174,9 +174,11 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 9. **Blackmagic vendor GATT service:** what it's for, and whether writes to it act like HID reports.
 10. **BT timing:** 15 ms requested interval but notifications ~30 ms apart.
 11. **Blue light on the back:** the manual says it flashes while pairing (after pressing the rear Bluetooth button) [D p.6]; the ~5 s light at unplug is assumed to be BT reconnecting (§11.4).
-12. **Resolve over Bluetooth:** does it behave as on USB (keep-alive, LEDs)? Not captured.
+12. **Resolve over Bluetooth:** does it behave as on USB (§12: keep-alive, LEDs)? Not captured.
 13. **Fresh power-up:** does the panel stream before any init (§3)?
 14. **Status LEDs at timeout:** off or on (§3)?
+15. **Resolve LED behaviour** for USER, DISABLE, PLAY_STILL, WIPE_STILL, H_LITE, VIEWER and CURSOR (§12.3).
+16. **What triggers Resolve's startup sequence** (§12.1): Resolve starting, or detecting the device.
 
 Closed 2026-11-16 by the Resolve capture: the 33-byte feature length (= 0x09), what 0x03 and 0x08 are, running alongside Resolve, and that 0x04 drives the key LEDs. Closed by the LED probe: the full 0x04 bit map, one colour per key, and 0x03 byte 2 = backlight.
 Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT layout, report framing (identical), USB↔BT hand-over, and keep-alive by reading 0x0A.
@@ -244,3 +246,50 @@ Paired from Windows Settings; Windows asked only for an accept, no PIN [V tester
 - **A driver must follow the switch:** reopen on the other transport and resend `0a 01`, which is harmless.
 - An earlier run (B4, `logs/transport_switch_20261116_191703.jsonl`) seemed to fall back to BT with the cable still in. **Not reproduced.** [A] Caused by that script checking the device list every 0.5 s in its read loop. Each check reads the USB string descriptors; at a 0.3 s interval some were stalled [V] `logs/usb_b4b1_20261116_221543.pcapng`, at 1 s none were [V] `logs/usb_b4b2_20261116_221843.pcapng`. **Check the device list at most once a second, off the read thread.**
 - **The blue light on the back** comes on for about 5 s around the moment USB is unplugged, i.e. while the panel moves back to BT [V by eye, battery_log; also seen at unplug in B4 and b4b2]. Not seen while plugged in or on BT (b4b1, K2a, K2b). [A] It signals Bluetooth (re)connecting.
+
+## 12. How DaVinci Resolve drives the panel
+
+Resolve is the reference host. Copying its behaviour is the safest way to drive the panel. Source: one USB session on Windows, with Resolve's own panel support. Evidence: `logs/usb_resolve_20261116_182613.pcapng`, decoded in `logs/usbdecode_usb_resolve_20261116_182613.txt`; the times below are seconds into that capture. Resolve over Bluetooth has not been captured (§9).
+
+### 12.1 Startup [V]
+The panel enumerated at 18.5 s. That included reading the 297-byte descriptor and a `SET_IDLE 0` from Windows, and the panel sent one battery report (`08 01 63`). Resolve's first write came at 33.1 s, 14.6 s later. [?] What triggered it is not recorded (Resolve starting up, or its device scan). The sequence then took under 10 ms:
+
+| Time | Resolve sends / reads | Meaning |
+|---|---|---|
+| 33.09 | feature `03 00 00` | backlight off |
+| 33.09 | output `04 00 00 00 00 00 00` | all status LEDs off |
+| 33.10 | output `02` + 8 × `00` | output 0x02 cleared (purpose unknown, §9) |
+| 33.10 | GET feature 0x01 (len 8) → `01 15 5b 3b fd 02 02 00` | firmware version 2.2.0 |
+| 33.10 | feature `0a 01` | enable |
+| 33.18 | GET feature 0x08 (len 3) → `08 01 63` | battery: charging, 99 % |
+| 39.65 | feature `03 04 04` | the user's saved brightness (4 %) |
+
+It never read 0x07 or 0x09, and never wrote 0x07.
+
+### 12.2 Steady state [V]
+- **Keep-alive:** `0a 01` every **30.00 s**, each followed at once by the current brightness `03 b b` (9 pairs, 33.1 s → 273.1 s).
+- **Battery:** feature 0x08 is read right after each battery input report (158.44 s and 221.80 s, same timestamp as the report) and twice at startup. No polling between events.
+- **Brightness setting:** every change in Resolve's settings goes out at once as `03 b b`, the two bytes always equal. Seen: 0, 4, 8, 12, 38, 100 (`00 04 08 0c 26 64`). Resolve's maximum is 100.
+- **Device scan:** string-descriptor reads at 268.1 s and 268.2 s. [A] This is a device-list scan by Resolve or Windows.
+
+### 12.3 Status LEDs [V]
+Resolve sends output 0x04 (7 bytes on the wire) only when an LED should change, 0–110 ms after the key event that caused it. The panel never lights a key LED by itself.
+
+| Key | Bit | Resolve behaviour seen |
+|---|---|---|
+| OFFSET | 2 | toggles on each press (on, off, on, off over 4 presses) |
+| BYPASS | 0 | toggles on each press |
+| SHIFT_UP | 4 | lit only while held; on at press, off at release |
+| SHIFT_DOWN | 5 | lit only while held |
+
+[?] USER, DISABLE, PLAY_STILL, WIPE_STILL, H_LITE, VIEWER and CURSOR were not exercised under Resolve. What each key *does* inside Resolve is described in the product manual [D] and is not repeated here.
+
+### 12.4 Quit [V]
+At 290.80 s: feature `03 00 00` (backlight off), then output 0x04 all zero and output 0x02 all zero. **No disable report is sent**: the panel stays enabled until its 60 s timer runs out (§3). A host that wants the panel dark at once should copy this; `panel.py`'s `close()` does.
+
+### 12.5 Summary for host authors
+1. On connect: backlight off, LEDs off, output 0x02 zero, read version, `0a 01`, read battery, set brightness.
+2. Every 30 s (20 s is safer): `0a 01`, then the current brightness.
+3. On a battery input report: optionally read feature 0x08 to confirm.
+4. Drive the status LEDs yourself from your app's state: toggle-type for modes, momentary for Shift.
+5. On exit: backlight 0, LEDs off, output 0x02 zero; let the timer expire.

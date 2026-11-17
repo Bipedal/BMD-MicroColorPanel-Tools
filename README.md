@@ -1,6 +1,9 @@
 # BMD Micro Color Panel Tools
 
-Protocol info and tools for using the Blackmagic Design Micro Color Panel outside Resolve.
+Protocol info and tools for using the Blackmagic Design Micro Color Panel outside Resolve. This project was researched and written with **Claude**, Anthropic's AI model. Claude
+wrote the test scripts, the driver and the spec, and analysed the captures. A human ran
+every test on a real panel, did the pressing, rolling and looking, and reviewed each result
+before it went into the spec.
 
 An open, test-backed description of how the Blackmagic Design **DaVinci Resolve Micro
 Color Panel** talks to a computer over **USB and Bluetooth**, plus a small reference driver
@@ -82,6 +85,9 @@ HID access works (hidapi, Windows HID API, Linux hidraw, macOS IOHID).
    re-read the held buttons with GET input report `0x02` (exact length 9).
 7. **Mind the pitfalls**: exact sizes for every GET_REPORT (spec §2 table); never write
    feature 0x07; check the device list at most once a second (spec §11.4).
+
+For a working host to imitate, see spec §12: exactly what DaVinci Resolve sends at
+startup, every 30 s, on key presses and at quit.
 
 `panel.py` implements steps 1–5 and the button re-sync. It does not yet reopen
 automatically after a USB↔Bluetooth switch.
