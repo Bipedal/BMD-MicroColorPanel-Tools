@@ -173,7 +173,7 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 6. (closed: no speed dependence on knobs or rings; all rings 4800 raw/rev, §5/§6)
 7. (closed: Bluetooth, §11)
 8. **Linux/macOS port notes** (§8) need a real test.
-9. **Blackmagic vendor GATT service:** what it's for, and whether writes to it act like HID reports.
+9. (closed: a full mirror of the HID protocol; shares the enable flag, §11.1)
 10. (closed: 15 ms interval, one report per 2–5 events, ~20/s, §11.1)
 11. **Blue light on the back:** the manual says it flashes while pairing (after pressing the rear Bluetooth button) [D p.6]; the ~5 s light at unplug is assumed to be BT reconnecting (§11.4).
 12. (closed: identical, §12.6)
@@ -209,6 +209,7 @@ Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT lay
 | `tests/quick_checks.py [--part turns/idle/led]` | knob speed, ring scale L/R, idle jitter, lights at timeout | `quick_checks_20261117_221355` (turns + 87 s idle; stopped during idle), `quick_checks_led_20261117_221857` |
 | `tests/usb_capture.py --bt` | USBPcap capture of the Bluetooth adapter (always `*_PRIVATE_*`) | `bt_resolve_PRIVATE_20261117_231230.pcapng` (not published) |
 | `tests/bt_att_timeline.py` | ATT timeline of the panel's BT connection: report-mapped writes, reads, notifications, timing; no addresses or keys | `bttimeline_bt_resolve_20261117_231230.txt` |
+| `tests/vendor_gatt.py` | vendor GATT service via WinRT: reads, notifications, whitelisted writes (0x0A, 0x03, 0x04 mirrors) | `vendor_gatt_20261117_232909` |
 
 ## 11. Bluetooth
 
@@ -223,7 +224,30 @@ Paired from Windows Settings; Windows asked only for an accept, no PIN [V tester
   - Device Information: manufacturer and model as on USB; serial = the unit serial (as 0x09); PnP ID `02 db1e 0fda 0001` (USB vendor-ID source, VID 0x1EDB, PID 0xDA0F, version 0x0100).
   - Battery service (0x180F, level in %).
   - Scan Parameters (0x1813).
-- **Blackmagic vendor service** `1DCE0A9A-D84D-4A9F-878C-B48F0FBE12D3`: 11 characteristics that mirror the HID reports one-to-one (same properties and initial values) [V]. [?] Purpose; probably for hosts that can't open HID over GATT, e.g. iPad. Untested.
+- **Blackmagic vendor service** `1DCE0A9A-D84D-4A9F-878C-B48F0FBE12D3`: 11 characteristics that mirror the HID reports one-to-one, with the same properties and initial values; values carry **no report-ID byte** [V]. The serial (0x09) has no mirror.
+
+  | Characteristic UUID | Mirrors | Props |
+  |---|---|---|
+  | `5B71420F-565B-4992-883D-B154F39C5CFC` | feature 0x01 (version) | read, write |
+  | `CD343346-81A6-492D-91DD-FF0EAE5A8365` | input 0x02 (buttons) | read, notify |
+  | `8E073915-1CFB-413A-B82D-60ABA1F39348` | output 0x02 | read, write, write-no-rsp |
+  | `41AE032B-ED25-44CB-93EC-88CC0588F0A9` | feature 0x03 (backlight) | read, write |
+  | `4054B034-03B4-412A-B57B-9BD062A31A41` | output 0x04 (LEDs) | read, write, write-no-rsp |
+  | `5A1FF3F8-C087-4762-98C0-D3318CA7D8F2` | input 0x05 (balls, rings) | read, notify |
+  | `A997AAE7-5355-4E86-80A6-BD6A5E9674CE` | input 0x06 (knobs) | read, notify |
+  | `1AFFFB5D-EC03-4FDE-B589-11146B49A031` | feature 0x07 (never write) | read, write |
+  | `6D121CC9-4E98-41C6-9B18-B8DFCC75090C` | feature 0x08 (battery) | read, write |
+  | `8E428E8D-C9D3-434A-873E-3DA62C16F4BF` | input 0x08 (battery) | read, notify |
+  | `0CF74FCE-FDCD-4337-892E-154C55AF197A` | feature 0x0A (enable) | read, write |
+
+  **It works like the HID reports** [V] `logs/vendor_gatt_20261117_232909.jsonl`:
+  - **Enable:** writing `01` to the 0x0A mirror enables the panel; the backlight came on [V by eye]. **The enable flag is shared with HID:** HID GET 0x0A then read `0a 01`, and the HID stream started too.
+  - **Input:** before the enable, nothing arrived on either path while the tester rolled and pressed. After it, inputs arrived on **both** paths at once: 288 notifications on the 0x05 mirror and 8 on the 0x02 mirror, against 297 HID reports.
+  - **Writes:** `0a 0a`, then `64 64`, to the 0x03 mirror dimmed and then brightened the backlight; `05 00 00 00 00 00` to the 0x04 mirror lit OFFSET + BYPASS, and zeros turned them off [V by eye]. All writes were acknowledged.
+  - **Read-back:** the 0x03 mirror read `00 00` after `64 64` had been written, so it does not report the current brightness [V].
+  - Not tested: writing the output 0x02, version and battery mirrors. Never write the 0x07 mirror.
+  - [A] Its purpose is to serve hosts that can't use HID over GATT (iPad, Web Bluetooth in browsers). Any BLE GATT client can drive the panel through it with the same protocol.
+  - **Windows:** `bleak` could not open the already-connected panel, because it looks for advertisements; the WinRT API `BluetoothLEDevice.FromBluetoothAddressAsync` worked [V].
 - **Connection parameters:** the panel requests a 15 ms interval, slave latency 5 and a 2 s supervision timeout. Windows rejected that L2CAP request, then set the same values itself [V]. While a ball is rolled, the gaps between notifications are **whole multiples of the 15 ms interval** (30, 45, 60, 75 ms, ±1 ms; median 45 ms). So the link runs at 15 ms, but the panel sends a movement report only every 2nd–5th connection event, about **20 reports/s whether rolling slowly or fast**. Faster rolling gives larger reports (median |dx|+|dy| per report 192 raw slow, 1056 fast) [V] `logs/bttimeline_bt_resolve_20261117_231230.txt`. [A] The firmware paces the reports and accumulates movement between them; nothing is lost.
 
 ### 11.2 Windows / hidapi [V] `logs/dump_caps_bt_20261116_190825.txt`

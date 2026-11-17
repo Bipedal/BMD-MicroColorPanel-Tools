@@ -66,6 +66,8 @@ HID access works (hidapi, Windows HID API, Linux hidraw, macOS IOHID).
 1. **Find the device** (spec §1, §11.2). USB: VID `0x1EDB`, PID `0xDA0F`, HID
    interface 2 (`MI_02` on Windows). Bluetooth: the same VID/PID over BLE HID (hidapi
    bus type 2). The top-level usage page is vendor `0xFF00` on both.
+   Over Bluetooth there is a second way in: the Blackmagic vendor GATT service mirrors
+   every report and needs only a BLE GATT client, no HID (spec §11.1).
 2. **Enable it** (spec §3). Send feature report `0a 01`, then `03 64 64` (backlight at
    100 %). Nothing streams until `0a 01` has been sent.
 3. **Keep it alive** (spec §3). Resend `0a 01` every 20–30 s. After 60 s without it (or
