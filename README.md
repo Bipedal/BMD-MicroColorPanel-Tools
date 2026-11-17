@@ -99,7 +99,7 @@ follows the panel to the other transport, restores the lights and re-reads the h
 ## Status
 
 Tested on one panel (firmware 2.2.0) with Windows 11, Python 3.14 and hidapi 0.15, over USB
-and Bluetooth, between 2026-11-15 and 2026-11-16. Linux and macOS notes in the spec are
+and Bluetooth, between 2026-11-15 and 2026-11-17. Linux and macOS notes in the spec are
 untested. Open questions are listed in spec §9.
 
 ## About the logs
