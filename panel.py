@@ -3,7 +3,7 @@
 Written from scratch 2026-11-16 from verified test results (see tests/ and logs/).
 
     from panel import Panel
-    with Panel() as p:
+    with Panel() as p:          # transport "auto": USB if plugged in, else Bluetooth
         p.run(print)            # blocking; or p.start(cb) for a background thread
 
     p.set_leds({"OFFSET", "BYPASS"})       # status LEDs (11 keys, fixed colours)
@@ -16,6 +16,7 @@ Events (dataclass Event):
     ball    name, dx, dy (steps of 16 raw; +x = right, +y = up), raw_x, raw_y
     ring    name, delta (steps of 16 raw, ~300/rev; + = CW), raw
     battery name "BATTERY", charging (bool), level (0..100)
+    link    name "usb"/"bt", up (bool) [, error, down_s]: the link was lost or reopened
 
 Protocol facts used here (all in PANEL_PROTOCOL.md; verified unless marked):
   * Input stream read with length 65; only each report's payload is decoded
@@ -28,6 +29,13 @@ Protocol facts used here (all in PANEL_PROTOCOL.md; verified unless marked):
     input 0x02 len 9, feature 0x01 len 8, 0x08 len 3, 0x09 len 33, 0x0a len 2.
   * 0a 01 enables reporting for ~60 s; resent every 20 s (Resolve uses 30 s).
     Feature 0x0a reads back the enable flag.
+  * At the ~60 s timeout every light goes off, and a bare 0a 01 brings the backlight
+    back dim with the LEDs off: backlight and LEDs are resent after any re-enable.
+  * Plugging USB drops Bluetooth at once (reads raise OSError); unplugging brings BT
+    back 2-5 s later. With reconnect=True the driver reopens whichever transport
+    appears, checking the device list at most once a second (faster polling made USB
+    string-descriptor reads stall), then re-enables, restores the lights and re-reads
+    the held buttons.
   * 03 a b: b = white backlight 0..100; a has no visible effect; Resolve sends a = b.
   * Output 0x04 (6 bytes): status LEDs, see LEDS. They ignore the backlight level.
   * Never writes feature 0x07 (unknown) or output 0x02 other than zeros.
@@ -49,6 +57,8 @@ INIT = bytes([0x0A, 0x01])
 # one init -> stream died 58.7 s later; only 0a 01 revives it. 03 is brightness, not
 # a keep-alive, and is sent only when it changes.
 KEEPALIVE = {"init": 20.0}
+TIMEOUT_GUARD = 55.0   # 0a 01 later than this after the last one = a re-enable (timer ~58.7-60 s)
+ENUM_EVERY = 1.0       # minimum seconds between device-list checks while the link is down
 
 # Status LEDs, output 0x04: name -> bit (logs/led_walk_20261116_184710.jsonl).
 # Colours are fixed per key: BYPASS/DISABLE red, the rest green (VIEWER looks faint
@@ -100,18 +110,23 @@ def _is_bt(d):
     return d.get("bus_type") == 2 or b"{00001812-" in d["path"].lower()
 
 
-def find_path(transport="usb"):
-    """hidapi path of the panel over 'usb' (interface 2) or 'bt' (BLE)."""
+def find_device(transport="auto"):
+    """(hidapi path, "usb"|"bt"). transport: "usb" (interface 2), "bt" (BLE) or "auto"
+    (USB if present, else BT; the panel itself drops BT while USB is plugged in)."""
     allp = hid.enumerate(VID, PID)
-    if transport == "bt":
-        devs = [d for d in allp if _is_bt(d)]
-    else:
-        devs = [d for d in allp if not _is_bt(d) and
-                (d.get("interface_number") == IFACE or b"mi_02" in d["path"].lower())]
-    if not devs:
-        raise IOError("Micro Color Panel not found over %s (present: %s)" % (
-            transport, ["bt" if _is_bt(d) else "usb" for d in allp] or "none"))
-    return devs[0]["path"]
+    usb = [d for d in allp if not _is_bt(d) and
+           (d.get("interface_number") == IFACE or b"mi_02" in d["path"].lower())]
+    bt = [d for d in allp if _is_bt(d)]
+    for tr, devs in (("usb", usb), ("bt", bt)):
+        if devs and transport in (tr, "auto"):
+            return devs[0]["path"], tr
+    raise IOError("Micro Color Panel not found over %s (present: %s)" % (
+        transport, ["bt" if _is_bt(d) else "usb" for d in allp] or "none"))
+
+
+def find_path(transport="usb"):
+    """hidapi path of the panel over 'usb', 'bt' or 'auto'."""
+    return find_device(transport)[0]
 
 
 def _s24(b, i):
@@ -152,13 +167,21 @@ class AxisLock:
 
 class Panel:
     def __init__(self, keepalive=KEEPALIVE, axis_lock=None, path=None, open_device=True,
-                 backlight=100, transport=None):
+                 backlight=100, transport=None, reconnect=True):
         """axis_lock: None (raw) or a ratio such as 0.25.
         backlight: white backlight 0..100 set at start (Resolve's maximum is 100).
-        transport: "usb" (HID interface 2) or "bt" (BLE HID); default: env
-        PANEL_TRANSPORT, else "usb". The report protocol is identical on both.
+        transport: "auto" (USB if present, else BT), "usb" (HID interface 2) or "bt"
+        (BLE HID); default: env PANEL_TRANSPORT, else "auto". The report protocol is
+        identical on both.
+        reconnect: when the link drops, poll()/run() keep going and reopen the panel
+        on the allowed transport(s), emitting "link" events. False: the read error
+        is raised, as before.
         open_device=False gives a decoder only (for replaying logs)."""
-        self.transport = (transport or os.environ.get("PANEL_TRANSPORT", "usb")).lower()
+        self.transport = (transport or os.environ.get("PANEL_TRANSPORT", "auto")).lower()
+        if self.transport not in ("auto", "usb", "bt"):
+            raise ValueError("transport must be auto, usb or bt, not %r" % self.transport)
+        self.reconnect = reconnect
+        self.link = None            # transport in use: "usb" / "bt" (None while down)
         self.keepalive = dict(keepalive)
         self.lock = AxisLock(axis_lock) if axis_lock else None
         self.held = set()
@@ -167,29 +190,36 @@ class Panel:
         self.totals = {}            # (device, axis) -> accumulated value
         self.stats = {"sends_ok": 0, "sends_failed": 0, "writes_ok": 0, "writes_failed": 0,
                       "gets_failed": 0, "reports": 0, "unknown_ids": 0, "inits": 0,
-                      "resyncs": 0}
+                      "resyncs": 0, "links_lost": 0, "reopens": 0, "restores": 0}
         self._t_sent = {}
         self._io = threading.Lock()  # hidapi is not thread-safe: one call at a time
         self._stop = threading.Event()
         self._thread = None
         self._pending = []          # synthetic events with no callback yet -> next poll()
+        self._t_enum = 0.0
+        self._t_lost = None
         self.dev = None
         if not open_device:
             return
         if path is None:
-            path = find_path(self.transport)
+            path, self.link = find_device(self.transport)
+        else:
+            self.link = self.transport if self.transport != "auto" else None
         self.dev = hid.device()
         self.dev.open_path(path)
-        # Resolve's start order: brightness, LEDs off, enable (capture 2026-11-16)
-        self.set_backlight(backlight)
-        self.set_leds(())
+        # Enable first, then the lights: 0a 01 after a timeout resets the backlight to a
+        # dim level (quick_checks_led 2026-11-17), so 03/04 must follow it. (Resolve
+        # sends 03 00 00 and LEDs off before enabling, then its brightness after.)
         self.init()
+        self.restore()
 
     # ---------------------------------------------------------------- transport
     def send(self, pkt):
         """Send a feature report. Failures are counted and logged, never hidden."""
         try:
             with self._io:
+                if self.dev is None:
+                    raise IOError("link down")
                 rc = self.dev.send_feature_report(bytes(pkt))
             if rc is None or rc < 0:
                 raise IOError("send_feature_report returned %r" % rc)
@@ -204,6 +234,8 @@ class Panel:
         """Send an output report (interrupt OUT). Failures counted and logged."""
         try:
             with self._io:
+                if self.dev is None:
+                    raise IOError("link down")
                 rc = self.dev.write(bytes(pkt))
             if rc is None or rc <= 0:
                 raise IOError("write returned %r" % rc)
@@ -218,6 +250,8 @@ class Panel:
         """GET_REPORT feature with the EXACT size (id + payload); None on failure."""
         try:
             with self._io:
+                if self.dev is None:
+                    raise IOError("link down")
                 return bytes(self.dev.get_feature_report(rid, size))
         except Exception as e:
             self.stats["gets_failed"] += 1
@@ -227,6 +261,8 @@ class Panel:
     def get_input(self, rid, size):
         try:
             with self._io:
+                if self.dev is None:
+                    raise IOError("link down")
                 return bytes(self.dev.get_input_report(rid, size))
         except Exception as e:
             self.stats["gets_failed"] += 1
@@ -269,26 +305,41 @@ class Panel:
         return _bits(b) if b and b[0] == 0x02 and len(b) >= 9 else None
 
     def set_leds(self, names):
-        """Light exactly these status LEDs (names from LEDS); others off."""
+        """Light exactly these status LEDs (names from LEDS); others off.
+        The wanted set is kept even if the write fails or the link is down, and is
+        resent by restore() (after a reconnect or a re-enable)."""
         names = set(names)
         bad = names - set(LEDS)
         if bad:
             raise ValueError("no LED for %s; LEDs exist for %s" % (sorted(bad), sorted(LEDS)))
+        self.leds = names
+        if self._link_down():
+            return False                        # restored on reopen
         v = 0
         for n in names:
             v |= 1 << LEDS[n]
-        ok = self.write(bytes([0x04]) + v.to_bytes(6, "little"))
-        if ok:
-            self.leds = names
-        return ok
+        return self.write(bytes([0x04]) + v.to_bytes(6, "little"))
 
     def set_backlight(self, level):
-        """White key backlight 0..100 (sent as 03 n n, like Resolve)."""
+        """White key backlight 0..100 (sent as 03 n n, like Resolve). Kept like the
+        LEDs when the link is down."""
         level = max(0, min(100, int(level)))
-        ok = self.send(bytes([0x03, level, level]))
-        if ok:
-            self.backlight = level
-        return ok
+        self.backlight = level
+        if self._link_down():
+            return False
+        return self.send(bytes([0x03, level, level]))
+
+    def restore(self):
+        """Resend backlight and LEDs. Needed after any re-enable: at the timeout the
+        panel turns every light off and a bare 0a 01 brings only a dim backlight back."""
+        self.stats["restores"] += 1
+        a = self.set_backlight(self.backlight)
+        b = self.set_leds(self.leds)
+        return a and b
+
+    def _link_down(self):
+        """True while reconnecting (not for a decoder-only Panel, whose sends fail)."""
+        return self.dev is None and self.reconnect and self.stats["links_lost"] > 0
 
     def info(self):
         """{'version': '2.2.0', 'build': '155b3bfd', 'serial': '...'} (None on failure)."""
@@ -313,9 +364,16 @@ class Panel:
 
     def _keepalive(self):
         period = self.keepalive.get("init")
-        if period and time.time() - self._t_sent.get("init", 0) >= period:
+        last = self._t_sent.get("init", 0)
+        gap = time.time() - last
+        if period and gap >= period:
             self.send(INIT)               # periodic, NOT a recovery path
             self._t_sent["init"] = time.time()
+            if last and gap >= TIMEOUT_GUARD:
+                # the panel may have timed out (lights off): this 0a 01 re-enabled it
+                log.warning("keep-alive %.0f s late: panel may have timed out; "
+                            "restoring lights", gap)
+                self.restore()
 
     def read_report(self, timeout_ms=20):
         """One raw report (bytes) or None. Raises if the device is gone."""
@@ -382,8 +440,66 @@ class Panel:
     # ---------------------------------------------------------------- loops
     def poll(self, timeout_ms=20):
         ev, self._pending = self._pending, []
-        b = self.read_report(timeout_ms)
+        if self._link_down():
+            if not self._stop.is_set():
+                ev += self._try_reopen(timeout_ms)
+            return ev
+        try:
+            b = self.read_report(timeout_ms)
+        except OSError as e:
+            if not self.reconnect:
+                raise
+            return ev + self._lost(e)
         return ev + (self.decode(b) if b else [])
+
+    # ---------------------------------------------------------------- reconnect
+    def _lost(self, err):
+        """A read failed: the link is gone (USB unplugged, or BT dropped because USB
+        was plugged in). Close, release held buttons, start looking for the panel."""
+        tr, ts = self.link, time.time()
+        log.warning("link %s lost: %r; reconnecting", tr, err)
+        self.stats["links_lost"] += 1
+        with self._io:
+            dev, self.dev = self.dev, None
+            try:
+                dev.close()
+            except Exception as e:      # a dead handle may refuse to close; logged
+                log.warning("close after link loss failed: %r", e)
+        self.link, self._t_lost, self._t_enum = None, ts, 0.0
+        ev = [Event("link", tr or "?", ts, {"up": False, "error": repr(err)})]
+        for bit in sorted(self.held):   # nothing can stay held on a dead link
+            ev.append(Event("button", BUTTONS.get(bit, "b%02d" % bit), ts,
+                            {"bit": bit, "down": False, "synthetic": True}))
+        self.held = set()
+        return ev
+
+    def _try_reopen(self, timeout_ms):
+        """One reopen attempt at most every ENUM_EVERY s; otherwise just waits."""
+        now = time.time()
+        if now - self._t_enum < ENUM_EVERY:
+            time.sleep(timeout_ms / 1000.0)
+            return []
+        self._t_enum = now
+        try:
+            path, tr = find_device(self.transport)
+        except IOError:
+            time.sleep(timeout_ms / 1000.0)
+            return []
+        dev = hid.device()
+        try:
+            dev.open_path(path)
+        except Exception as e:
+            log.warning("reopen over %s failed: %r; retrying", tr, e)
+            return []
+        with self._io:
+            self.dev, self.link = dev, tr
+        self.stats["reopens"] += 1
+        ev = []
+        self.init(ev.append)            # 0a 01 + re-read held buttons (synthetic presses)
+        self.restore()
+        down = round(time.time() - self._t_lost, 1) if self._t_lost else None
+        log.warning("link up over %s after %s s", tr, down)
+        return [Event("link", tr, time.time(), {"up": True, "down_s": down})] + ev
 
     def run(self, callback):
         """Blocking read loop; never sleeps, so the OS input buffer cannot overflow
@@ -405,7 +521,7 @@ class Panel:
         """Like Resolve's quit: LEDs off and (dark=True) backlight 0, so a panel left
         on battery does not keep lighting. No disable report exists; the panel stops
         reporting ~60 s after the last 0a 01."""
-        self.stop()
+        self.stop()             # _stop also ends reconnect attempts
         if self.dev:
             try:
                 self.set_leds(())
@@ -425,7 +541,7 @@ class Panel:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     with Panel(axis_lock=0.25) as p:
-        print("panel up; Ctrl+C to stop")
+        print("panel up over %s; Ctrl+C to stop" % p.link)
         try:
             p.run(print)
         except KeyboardInterrupt:

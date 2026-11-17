@@ -1,0 +1,18 @@
+{"t": "link", "rel": 14.96, "tr": "usb", "up": false, "error": "OSError('read error')", "ts": 1794955407.4631}
+{"t": "link", "rel": 16.21, "tr": "bt", "up": true, "down_s": 1.2, "ts": 1794955408.7085}
+{"t": "button", "rel": 21.31, "name": "USER", "link": "bt", "bit": 30, "down": true, "ts": 1794955413.8072}
+{"t": "button", "rel": 21.61, "name": "USER", "link": "bt", "bit": 30, "down": false, "ts": 1794955414.1071}
+{"t": "link", "rel": 29.33, "tr": "bt", "up": false, "error": "OSError('read error')", "ts": 1794955421.835}
+{"t": "link", "rel": 29.42, "tr": "usb", "up": true, "down_s": 0.1, "ts": 1794955421.9231}
+{"t": "button", "rel": 33.39, "name": "USER", "link": "usb", "bit": 30, "down": true, "ts": 1794955425.8907}
+{"t": "button", "rel": 33.65, "name": "USER", "link": "usb", "bit": 30, "down": false, "ts": 1794955426.1547}
+{"t": "button", "rel": 37.43, "name": "USER", "link": "usb", "bit": 30, "down": true, "ts": 1794955429.9307}
+{"t": "button", "rel": 37.54, "name": "USER", "link": "usb", "bit": 30, "down": false, "ts": 1794955430.0427}
+{"t": "button", "rel": 37.61, "name": "USER", "link": "usb", "bit": 30, "down": true, "ts": 1794955430.1066}
+{"t": "button", "rel": 37.72, "name": "USER", "link": "usb", "bit": 30, "down": false, "ts": 1794955430.2187}
+{"t": "button", "rel": 37.78, "name": "USER", "link": "usb", "bit": 30, "down": true, "ts": 1794955430.2827}
+{"t": "button", "rel": 37.88, "name": "USER", "link": "usb", "bit": 30, "down": false, "ts": 1794955430.3787}
+{"t": "button", "rel": 37.96, "name": "USER", "link": "usb", "bit": 30, "down": true, "ts": 1794955430.4586}
+{"t": "button", "rel": 38.05, "name": "USER", "link": "usb", "bit": 30, "down": false, "ts": 1794955430.5547}
+{"t": "button", "rel": 38.13, "name": "USER", "link": "usb", "bit": 30, "down": true, "ts": 1794955430.6267}
+{"t": "summary", "links": [[14.96, "usb", false], [16.21, "bt", true], [29.33, "bt", false], [29.42, "usb", true]], "users": [[21.31, "bt"], [33.39, "usb"], [37.43, "usb"], [37.61, "usb"], [37.78, "usb"], [37.96, "usb"], [38.13, "usb"]], "stats": {"sends_ok": 8, "sends_failed": 0, "writes_ok": 5, "writes_failed": 0, "gets_failed": 0, "reports": 15, "unknown_ids": 0, "inits": 3, "resyncs": 3, "links_lost": 2, "reopens": 2, "restores": 3}, "fails": [], "ts": 1794955430.6692}

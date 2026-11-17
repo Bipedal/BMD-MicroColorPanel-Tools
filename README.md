@@ -19,7 +19,7 @@ in Python. The goal is to let the panel drive software other than DaVinci Resolv
 | Path | What it is |
 |---|---|
 | [`PANEL_PROTOCOL.md`](PANEL_PROTOCOL.md) | **The spec.** Every statement is tagged **[V]** verified (with the log that shows it), **[A]** assumed, **[D]** from documentation, or **[?]** open. |
-| [`panel.py`](panel.py) | Reference driver (hidapi): init and keep-alive, decoded buttons / balls / rings / knobs, key LEDs, backlight, battery, firmware/serial info, state re-sync. USB or Bluetooth. |
+| [`panel.py`](panel.py) | Reference driver (hidapi): init and keep-alive, decoded buttons / balls / rings / knobs, key LEDs, backlight, battery, firmware/serial info, state re-sync, automatic reconnect across USB and Bluetooth. |
 | [`tests/`](tests) | The standalone test scripts that produced the evidence. Most guided tests end on a panel gesture (the same key pressed 5× within 3 s). |
 | [`logs/`](logs) | The raw logs and USB captures cited in the spec (JSONL, text, pcapng). |
 | [`tools/make_publish.py`](tools/make_publish.py) | Builds this public copy and redacts unit identifiers. |
@@ -42,8 +42,8 @@ Requirements: Python 3 and [hidapi](https://pypi.org/project/hidapi/).
 
 ```
 pip install -r requirements.txt
-python panel.py                         # print live events (USB)
-PANEL_TRANSPORT=bt python panel.py      # same over Bluetooth (POSIX shell syntax)
+python panel.py                         # print live events (USB if plugged in, else Bluetooth)
+PANEL_TRANSPORT=bt python panel.py      # force one transport: usb or bt (POSIX shell syntax)
 ```
 
 Close DaVinci Resolve first, or both programs will write to the panel.
@@ -91,8 +91,8 @@ HID access works (hidapi, Windows HID API, Linux hidraw, macOS IOHID).
 For a working host to imitate, see spec §12: exactly what DaVinci Resolve sends at
 startup, every 30 s, on key presses and at quit.
 
-`panel.py` implements steps 1–5 and the button re-sync. It does not yet reopen
-automatically after a USB↔Bluetooth switch.
+`panel.py` implements all seven steps: when the cable is plugged in or pulled out it
+follows the panel to the other transport, restores the lights and re-reads the held buttons.
 
 ## Status
 

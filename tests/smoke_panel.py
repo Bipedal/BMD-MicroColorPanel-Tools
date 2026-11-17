@@ -3,6 +3,7 @@
 Usage: python tests/smoke_panel.py offline     # replay verified logs, no device
        python tests/smoke_panel.py live        # move everything, end with USER x5
        python tests/smoke_panel.py features    # info/battery, held-button state(), LEDs
+       python tests/smoke_panel.py reconnect   # unplug/replug USB; driver follows (cap 180 s)
 
 offline: maps in panel.py == tests/panel_map.py; replaying the task-4 captures gives
          ball RIGHT -> +dx, UP -> +dy, ring CW -> +delta, knob CW -> +delta, and the
@@ -163,6 +164,170 @@ def offline():
     b[20:30] = b"\xff" * 10  # garbage beyond payload
     ev = p.decode(bytes(b))
     check([e.name for e in ev] == ["USER"], "only USER decoded: %s" % [e.name for e in ev])
+    reconnect_sim()
+
+
+class FakeTime:
+    def __init__(self):
+        self.t = 1000.0
+
+    def time(self):
+        return self.t
+
+    def sleep(self, s):
+        self.t += s
+
+
+class FakeHid:
+    """Panel present over self.where ("usb" / "bt" / None). A handle opened on one
+    transport raises OSError on read once the panel has left it (as hidapi does)."""
+
+    def __init__(self, clock):
+        self.clock, self.where = clock, "usb"
+        self.enums, self.sent, self.held_bits = [], [], set()
+        self.queue = []
+
+    def enumerate(self, vid, pid):
+        self.enums.append(self.clock.t)
+        if self.where == "usb":
+            return [{"path": b"\\\\?\\hid#vid_1edb&pid_da0f&mi_02#x", "interface_number": 2,
+                     "bus_type": 1}]
+        if self.where == "bt":
+            return [{"path": b"\\\\?\\hid#{00001812-0000-1000-8000-00805f9b34fb}#x",
+                     "interface_number": -1, "bus_type": 2}]
+        return []
+
+    def device(self):
+        fh = self
+
+        class D:
+            def open_path(self, p):
+                self.tr = "bt" if b"{00001812-" in p else "usb"
+                if fh.where != self.tr:
+                    raise OSError("open failed")
+
+            def _alive(self):
+                if fh.where != self.tr:
+                    raise OSError("read error")
+
+            def send_feature_report(self, b):
+                self._alive()
+                fh.sent.append((self.tr, bytes(b).hex(" ")))
+                return len(b)
+
+            def write(self, b):
+                self._alive()
+                fh.sent.append((self.tr, bytes(b).hex(" ")))
+                return len(b)
+
+            def get_input_report(self, rid, n):
+                self._alive()
+                b = bytearray(9)
+                b[0] = 2
+                for bit in fh.held_bits:
+                    b[bit // 8] |= 1 << bit % 8
+                return list(b)
+
+            def get_feature_report(self, rid, n):
+                self._alive()
+                return [rid] + [0] * (n - 1)
+
+            def read(self, n, to):
+                self._alive()
+                if fh.queue:
+                    return list(fh.queue.pop(0))
+                fh.clock.t += to / 1000.0
+                return []
+
+            def close(self):
+                pass
+        return D()
+
+
+def reconnect_sim():
+    print("== reconnect: USB unplug -> BT, BT -> USB plug; lights restored (simulated)")
+    real_hid, real_time = panel.hid, panel.time
+    clk = FakeTime()
+    fh = FakeHid(clk)
+    panel.hid, panel.time = fh, clk
+    try:
+        p = panel.Panel(transport="auto")
+        check(p.link == "usb" and fh.sent == [("usb", "0a 01"), ("usb", "03 64 64"),
+                                              ("usb", "04 00 00 00 00 00 00")],
+              "auto opens USB; order 0a 01, 03, 04: %s" % fh.sent)
+        p.set_leds({"OFFSET"})
+        p.set_backlight(40)
+        usr = bytearray(9)
+        usr[0], usr[3] = 2, 0x40                  # USER held
+        fh.queue.append(bytes(usr))
+        ev = p.poll()
+        check([(e.name, e.data["down"]) for e in ev] == [("USER", True)], "USER pressed")
+        # unplug USB: BT appears 3 s later
+        fh.where, t_unplug, fh.enums = None, clk.t, []
+        fh.held_bits = {30}                       # still held when BT is back
+        events = []
+        while clk.t - t_unplug < 3.0:
+            events += p.poll()
+        p.set_leds({"OFFSET", "BYPASS"})          # changed while the link is down
+        fh.where, fh.sent = "bt", []
+        while clk.t - t_unplug < 6.0:
+            events += p.poll()
+        got = [(e.kind, e.name, e.data.get("up", e.data.get("down"))) for e in events]
+        check(got == [("link", "usb", False), ("button", "USER", False),
+                      ("link", "bt", True), ("button", "USER", True)],
+              "events: link down, USER released, link up over bt, USER pressed again: %s" % got)
+        gaps = [b - a for a, b in zip(fh.enums, fh.enums[1:])]
+        check(fh.enums and min(gaps) >= 0.999 and len(fh.enums) <= 7,
+              "device list checked at most 1/s (%d checks in 6 s)" % len(fh.enums))
+        check(fh.sent[:3] == [("bt", "0a 01"), ("bt", "03 28 28"), ("bt", "04 05 00 00 00 00 00")],
+              "BT reopen: 0a 01, backlight 40, LEDs OFFSET+BYPASS: %s" % fh.sent[:3])
+        check(p.link == "bt" and p.stats["reopens"] == 1 and p.stats["links_lost"] == 1,
+              "link bt, 1 loss, 1 reopen")
+        # plug USB in: BT drops at once
+        fh.where, fh.sent, fh.held_bits = "usb", [], set()
+        t_plug, events = clk.t, []
+        while clk.t - t_plug < 2.5:
+            events += p.poll()
+        got = [(e.kind, e.name, e.data.get("up", e.data.get("down"))) for e in events]
+        check(got == [("link", "bt", False), ("button", "USER", False), ("link", "usb", True)]
+              and p.link == "usb", "BT -> USB: %s" % got)
+        check(fh.sent[:3] == [("usb", "0a 01"), ("usb", "03 28 28"),
+                              ("usb", "04 05 00 00 00 00 00")], "USB reopen restores lights")
+        # a late keep-alive (stalled host) restores the lights; a normal one does not
+        fh.sent = []
+        p._t_sent["init"] = clk.t - 21
+        p.poll()
+        check(fh.sent == [("usb", "0a 01")], "on-time keep-alive: 0a 01 only")
+        fh.sent = []
+        p._t_sent["init"] = clk.t - 56
+        p.poll()
+        check(fh.sent == [("usb", "0a 01"), ("usb", "03 28 28"), ("usb", "04 05 00 00 00 00 00")],
+              "keep-alive 56 s late: 0a 01 then lights: %s" % fh.sent)
+        # fixed transport waits for its own link
+        q = panel.Panel(transport="usb")
+        fh.where, fh.sent = "bt", []
+        t1 = clk.t
+        while clk.t - t1 < 3:
+            q.poll()
+        check(q.dev is None and not fh.sent, "transport=usb ignores BT while unplugged")
+        # reconnect=False raises as before
+        fh.where = "usb"
+        r = panel.Panel(transport="usb", reconnect=False)
+        fh.where = None
+        try:
+            r.poll()
+            check(False, "reconnect=False raises on link loss")
+        except OSError:
+            check(True, "reconnect=False raises on link loss")
+        p._stop.set()
+        fh.where, fh.enums = None, []
+        p._lost(OSError("x"))
+        p.poll()
+        check(not fh.enums, "no reconnect attempts after stop/close")
+        check(p.stats["sends_failed"] == 0 and p.stats["writes_failed"] == 0,
+              "no failed sends/writes counted while down")
+    finally:
+        panel.hid, panel.time = real_hid, real_time
 
 
 def features():
@@ -270,8 +435,56 @@ def live():
     print("   log: %s" % path)
 
 
+def reconnect_live():
+    """Start on USB with OFFSET+BYPASS lit and the backlight at 40.
+    R1 unplug USB; wait until the lights are back (BT); press USER once.
+    R2 plug USB back in; wait 3 s; press USER once.  End: USER x5."""
+    path = log_path("smoke_reconnect")
+    log = JsonLog(path)
+    links, taps, users = [], [], []
+    p = panel.Panel(transport="auto")
+    p.set_leds({"OFFSET", "BYPASS"})
+    p.set_backlight(40)
+    print(">>> on %s. R1 unplug USB, wait for the lights, press USER once. "
+          "R2 plug USB in, wait 3 s, press USER once. End with USER x5." % p.link, flush=True)
+    t0 = time.time()
+    try:
+        while time.time() - t0 < 180:
+            for e in p.poll(20):
+                rel = round(e.ts - t0, 2)
+                if e.kind == "link":
+                    links.append((rel, e.name, e.data["up"]))
+                    print("  %6.1f s  link %s %s %s" % (rel, e.name, "UP" if e.data["up"] else "DOWN",
+                                                       e.data.get("down_s", "")), flush=True)
+                    log.write(t="link", rel=rel, **{"tr": e.name}, **e.data)
+                elif e.kind == "button":
+                    log.write(t="button", rel=rel, name=e.name, link=p.link, **e.data)
+                    if e.name == "USER" and e.data["down"] and not e.data.get("synthetic"):
+                        users.append((rel, p.link))
+                        taps = [t for t in taps if e.ts - t < 3] + [e.ts]
+            if len(taps) >= 5:
+                break
+    finally:
+        p.close()
+    seq = [(tr, up) for _, tr, up in links]
+    print("== reconnect summary (%.0f s)" % (time.time() - t0))
+    print("   links: %s" % links)
+    print("   USER presses (time, link): %s" % users[:-5])
+    check(seq[:4] == [("usb", False), ("bt", True), ("bt", False), ("usb", True)],
+          "usb lost -> bt up -> bt lost -> usb up")
+    check(any(l == "bt" for _, l in users) and any(l == "usb" for _, l in users),
+          "USER seen over bt and over usb after the switches")
+    check(p.stats["sends_failed"] == 0 and p.stats["writes_failed"] == 0,
+          "sends ok=%d failed=%d, writes ok=%d failed=%d, reopens %d, restores %d" % (
+              p.stats["sends_ok"], p.stats["sends_failed"], p.stats["writes_ok"],
+              p.stats["writes_failed"], p.stats["reopens"], p.stats["restores"]))
+    log.write(t="summary", links=links, users=users, stats=p.stats, fails=fails)
+    log.close()
+    print("   log: %s" % path)
+
+
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "offline"
-    {"offline": offline, "live": live, "features": features}[mode]()
+    {"offline": offline, "live": live, "features": features, "reconnect": reconnect_live}[mode]()
     print("\n%s (%d failures)" % ("PASS" if not fails else "FAIL", len(fails)))
     sys.exit(1 if fails else 0)
