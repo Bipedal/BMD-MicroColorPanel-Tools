@@ -42,8 +42,8 @@ Reading a report on request (GET_REPORT) **must ask for the exact size (ID + pay
 |---|---|---|---|---|
 | 0x01 | Feature (Const) | 7 B | **Firmware version.** The descriptor tags it with standard version fields (page 0x06: Software Version ×4 bytes, Major, Minor, Revision). Read: `15 5b 3b fd` / **2.2.0** [V read]. [?] What the 4-byte build ID means. | yes, len 8 [V] |
 | 0x02 | Input | 64 × 1 bit (8 B) | Button snapshot (§4) [V] | **yes, len 9** [V] |
-| 0x02 | Output | 64 × 1 bit (8 B) | Resolve sends only all-zero, once at start and once at quit [V capture]. All-ones, tried twice, had **no visible effect** [V]. So it's not per-key backlight control as far as can be seen. [?] Purpose. | – |
-| 0x03 | Feature | 2 × 8 bit | **Byte 2 (the report's third byte) = white key-backlight brightness, 0–100**: `03 64 00` → backlight dark [V by eye]. **Byte 1: no visible effect**: `03 00 64` looked like full brightness [V]; [?] purpose. Resolve always sends byte 1 = byte 2, with 100 (0x64) as its maximum [V capture]. The coloured status LEDs **ignore 0x03**: still on at `03 00 00` [V]. | USB: no, stalls [V]. **BT: yes**, len 3, read `03 00 00` [V] get_reports_bt |
+| 0x02 | Output | 64 × 1 bit (8 B) | Resolve sends only all-zero, once at start and once at quit [V capture]. All-ones, tried twice, had **no visible effect** [V]. Neither did each byte set to `ff` on its own, nor any of the 64 single bits, on a dark panel; none of them provoked an input report [V] `logs/probe_02_03_20261117_233424.jsonl`. So it's not per-key backlight control as far as can be seen. [?] Purpose; send zeros like Resolve. | – |
+| 0x03 | Feature | 2 × 8 bit | **Byte 2 (the report's third byte) = white key-backlight brightness, 0–100**: `03 64 00` → backlight dark [V by eye]. **Byte 1: no visible effect**: `03 00 64` looked like full brightness [V]; sweeping byte 1 through 0–100 changed nothing with the backlight off or at 50 [V] same log. [?] Purpose; send byte 1 = byte 2 like Resolve. Resolve always sends byte 1 = byte 2, with 100 (0x64) as its maximum [V capture]. The coloured status LEDs **ignore 0x03**: still on at `03 00 00` [V]. | USB: no, stalls [V]. **BT: yes**, len 3, read `03 00 00` [V] get_reports_bt |
 | 0x04 | Output | 48 × 1 bit (6 B) | **Key status LEDs**, sent over interrupt OUT [V capture]. **One bit per LED, one fixed colour per key** (§4a) [V walk `logs/led_walk_20261116_184710.jsonl`]. | – |
 | 0x05 | Input | 3 × 96 bit (36 B) | Balls and rings (§5) [V] | yes, len 37 [V] |
 | 0x06 | Input | 16 × 32 bit (64 B) | Knobs (§6) [V] | yes, len 65 [V] |
@@ -166,8 +166,8 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 ## 9. Open questions
 
 1. (closed: VIEWER is green, just faint next to the backlight)
-2. **Output 0x02:** what it does. Resolve only sends zeros; all-ones has no visible effect.
-3. **`03` byte 1:** no visible effect; what is it for?
+2. **Output 0x02:** purpose unknown. No visible effect and no input reports for any byte or single bit (§2). Send zeros, as Resolve does.
+3. **`03` byte 1:** purpose unknown. No visible effect anywhere in 0–100 (§2). Send byte 1 = byte 2, as Resolve does.
 4. **Feature 0x07** bytes 2–3: scale of the battery-voltage value (§2). Never write it blindly.
 5. (closed: `get_input_report(0x02, 9)` shows held buttons)
 6. (closed: no speed dependence on knobs or rings; all rings 4800 raw/rev, §5/§6)
@@ -210,6 +210,7 @@ Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT lay
 | `tests/usb_capture.py --bt` | USBPcap capture of the Bluetooth adapter (always `*_PRIVATE_*`) | `bt_resolve_PRIVATE_20261117_231230.pcapng` (not published) |
 | `tests/bt_att_timeline.py` | ATT timeline of the panel's BT connection: report-mapped writes, reads, notifications, timing; no addresses or keys | `bttimeline_bt_resolve_20261117_231230.txt` |
 | `tests/vendor_gatt.py` | vendor GATT service via WinRT: reads, notifications, whitelisted writes (0x0A, 0x03, 0x04 mirrors) | `vendor_gatt_20261117_232909` |
+| `tests/probe_02_03.py` | output 0x02 byte and single-bit walk; `03` byte 1 sweep at backlight 0 and 50 | `probe_02_03_20261117_233424` |
 
 ## 11. Bluetooth
 
