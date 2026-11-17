@@ -1,0 +1,11 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "err": null, "rel": 0.08, "ts": 1794953937.8227}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "err": null, "rel": 0.12, "ts": 1794953937.8604}
+{"t": "phase", "phase": "led", "rel": 0.12, "ts": 1794953937.8605}
+{"t": "send", "why": "led:all on", "data": "0a 01", "ok": true, "err": null, "rel": 0.12, "ts": 1794953937.8656}
+{"t": "send", "why": "led:all on", "data": "03 64 64", "ok": true, "err": null, "rel": 0.12, "ts": 1794953937.866}
+{"t": "send", "why": "led:all on", "data": "04 ff 07 00 00 00 00", "ok": true, "err": null, "rel": 0.13, "ts": 1794953937.8679}
+{"t": "send", "why": "led:0a 01 only", "data": "0a 01", "ok": true, "err": null, "rel": 72.21, "ts": 1794954009.9466}
+{"t": "send", "why": "led:03 64 64 only", "data": "03 64 64", "ok": true, "err": null, "rel": 84.16, "ts": 1794954021.8963}
+{"t": "send", "why": "led:LEDs off, end", "data": "04 00 00 00 00 00 00", "ok": true, "err": null, "rel": 96.14, "ts": 1794954033.8839}
+{"t": "led_result", "rx_times": [], "flag_at_end": "0a 01", "rel": 96.14, "ts": 1794954033.8844}
+{"t": "result", "ended": "done", "steps": [], "idle": {}, "led_rx": [], "flag_at_end": "0a 01", "sends_failed": 0, "end": 96.14, "ts": 1794954033.8844}

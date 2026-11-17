@@ -82,7 +82,9 @@ HID access works (hidapi, Windows HID API, Linux hidraw, macOS IOHID).
    (0–100).
 6. **Recover** (spec §4, §11.4). Plugging in USB drops Bluetooth and unplugging brings
    it back within seconds. Reopen whichever transport appears, resend `0a 01`, and
-   re-read the held buttons with GET input report `0x02` (exact length 9).
+   re-read the held buttons with GET input report `0x02` (exact length 9). After any
+   re-enable, resend the backlight (`03`) and LEDs (`04`): the panel forgets both at a
+   timeout (spec §3).
 7. **Mind the pitfalls**: exact sizes for every GET_REPORT (spec §2 table); never write
    feature 0x07; check the device list at most once a second (spec §11.4).
 

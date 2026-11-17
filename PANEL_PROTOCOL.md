@@ -66,7 +66,9 @@ Report IDs received as interrupt input: 0x02, 0x05, 0x06 and 0x08 (battery, rare
 - **The enable state can be read back:** feature 0x0A reads `01` while enabled and `00` after the timeout [V].
 - **Several programs can read at once:** our script read reports while Resolve had the panel open (77 reports, nothing sent) [V] `logs/concurrency_20261116_183041.jsonl`. Both programs receive every input report. Writes from two programs would conflict (brightness, LEDs).
 - **Reading feature 0x0A also resets the timer.** One `0a 01`, then only a GET of 0x0A every 5 s: the stream ran the full 100 s with no gap over 3 s. The control run without GETs died at 60.0 s [V] `logs/keepalive_get_get_20261116_222320.jsonl`, `logs/keepalive_get_none_20261116_222533.jsonl`. So a status poll (e.g. `panel.enabled()`) keeps the panel alive as a side effect. Writing `0a 01` stays the recommended keep-alive; it's what Resolve does.
-- **At timeout** the enable flag drops to `00` [V] keepalive_get_none, and **the white backlight turns off** [V by eye, same run]. [?] Whether the status LEDs also turn off.
+- **At timeout** the enable flag drops to `00` [V] keepalive_get_none, and **the white backlight and the coloured status LEDs all turn off** [V by eye] keepalive_get_none, `logs/quick_checks_led_20261117_221857.jsonl`.
+- **Re-enabling does not restore the lights.** After the timeout, `0a 01` alone brought the white backlight back **dim** (not the 100 % set earlier), and the coloured LEDs stayed off. `03 64 64` then brightened the backlight [V by eye, same log]. The LEDs did not come back by themselves, and the closing all-off `04` caused no visible change. So after any re-enable, resend `03` and `04` [V].
+  [A] The dim level is the panel's default brightness after enable; its value is unmeasured.
 - **The enable state survives a transport switch** (BT → USB → BT): USB streamed at once with no USB-side init, and 0x0A read `01` on both sides [V] `logs/transport_switch_none_20261116_221846.jsonl`. After a timeout, only `0a 01` (or a 0x0A read, above) restores the stream [V].
 - **[?] Fresh power-up:** whether a panel that has just been switched on streams before any init is untested.
 
@@ -128,18 +130,18 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 | 8 | RIGHT ring | CW = + | [V] |
 
 - **Ball signs are the same on all three balls, and both axes are inverted from screen convention.** Negate both to get right = +X, up = +Y; `panel.py` does this [V].
-- **Ring scale:** about **4800 raw per revolution** (~300 steps of 16, ~1200 per quarter turn). Measured on the middle ring, four full turns at slow and fast speeds: 4816 / 4640 / 4816 / 4784. **Turning speed makes no difference** (fast/slow = 0.98) [V] `logs/axis_ringturns_20261116_174831.jsonl`. [A] The left and right rings are the same.
+- **Ring scale:** **4800 raw per revolution** (300 steps of 16) on all three rings. The middle ring measured 4816 / 4640 / 4816 / 4784 over four full turns, slow and fast, and **turning speed makes no difference** (fast/slow = 0.98) [V] `logs/axis_ringturns_20261116_174831.jsonl`. Left and right rings: exactly 9600 raw over 2 turns each [V] `logs/quick_checks_20261117_221355.jsonl`.
 - **Cross-axis leak on the balls:** 0.2–7.9 % net and 5–20 % absolute of the main axis, with off-axis per-report peaks of 32–208 raw [V] axis_balls. These figures include hand drift; separating the panel's own leakage would need a jig [?].
   - **No fixed deadzone works**, because the off-axis peaks overlap slow intentional rolls (median 112 raw per report).
   - **Suggested instead:** an axis lock that zeroes the minor axis while it stays under 25 % of the major one (smoothed). This is optional in `panel.py`.
-- **[?] Idle ring jitter:** ring slots showed ±16 twice with nobody touching the panel. Too few samples to confirm.
+- **Idle jitter:** a hands-off log of 87 s had **no ball, ring or knob deltas at all** [V] `logs/quick_checks_20261117_221355.jsonl` (idle part, stopped early). Two earlier ±16 ring ticks with nobody touching the panel were probably a touch or a vibration [A]; even so, a host should not treat a single ±16 as intent.
 
 ## 6. Knobs: input report 0x06
 
 - **Layout:** 16 × signed 32-bit little-endian at `1+4k`. **Slots 0–11 = knobs left → right**, Y_LIFT … LUM_MIX, in the same order as their press bits [V] `logs/axis_knobs_20261116_175340.jsonl`. Slots 12–15 always 0 [V].
 - **Values are relative deltas, always multiples of 360** (gcd 360 in all 12 slots) [V] raw_check. 1 count = 360 raw. **CW = +** on all 12 knobs [V].
-- **Resolution:** one hand-measured full turn of Y_LIFT = 1,469,160 raw = 4081 counts [V]. **[A] 12-bit encoder, 4096 counts per revolution** (1,474,560 raw). Knobs have no detents [tester].
-- **[?]** Whether knob counts depend on turning speed (not tested; the rings don't).
+- **Resolution:** hand-measured turns of Y_LIFT gave 4081 (one turn), 4089 (3 turns, moderate speed), 4100 and 4170 (fast) and 4094 and 4128 (slow) counts per turn [V] axis_knobs, `logs/quick_checks_20261117_221355.jsonl`. **[A] 12-bit encoder, 4096 counts per revolution** (1,474,560 raw). Knobs have no detents [tester].
+- **Turning speed makes no difference:** fast turns never come out low; the ±1 % spread is hand placement [V] same log (mean rate ~2100 counts/s fast vs ~500–650 slow).
 - **Report size:** knob reports are large and infrequent; up to ~35,000 raw in a single report was seen [V].
 - **Readable on request:** `get_input_report(0x06, 65)` returns all zeros when idle [V].
 
@@ -168,7 +170,7 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 3. **`03` byte 1:** no visible effect; what is it for?
 4. **Feature 0x07** bytes 2–3: scale of the battery-voltage value (§2). Never write it blindly.
 5. (closed: `get_input_report(0x02, 9)` shows held buttons)
-6. **Knob speed dependence**, and the ring scale on the left and right rings.
+6. (closed: no speed dependence on knobs or rings; all rings 4800 raw/rev, §5/§6)
 7. (closed: Bluetooth, §11)
 8. **Linux/macOS port notes** (§8) need a real test.
 9. **Blackmagic vendor GATT service:** what it's for, and whether writes to it act like HID reports.
@@ -176,9 +178,10 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 11. **Blue light on the back:** the manual says it flashes while pairing (after pressing the rear Bluetooth button) [D p.6]; the ~5 s light at unplug is assumed to be BT reconnecting (§11.4).
 12. **Resolve over Bluetooth:** does it behave as on USB (§12: keep-alive, LEDs)? Not captured.
 13. **Fresh power-up:** does the panel stream before any init (§3)?
-14. **Status LEDs at timeout:** off or on (§3)?
+14. (closed: everything turns off at the timeout and nothing comes back by itself after re-enable, §3)
 15. **Resolve LED behaviour** for USER, DISABLE, PLAY_STILL, WIPE_STILL, H_LITE, VIEWER and CURSOR (§12.3).
 16. **What triggers Resolve's startup sequence** (§12.1): Resolve starting, or detecting the device.
+17. **Backlight level after a bare `0a 01`** (§3): the default value, and whether a fresh enable also starts dim.
 
 Closed 2026-11-16 by the Resolve capture: the 33-byte feature length (= 0x09), what 0x03 and 0x08 are, running alongside Resolve, and that 0x04 drives the key LEDs. Closed by the LED probe: the full 0x04 bit map, one colour per key, and 0x03 byte 2 = backlight.
 Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT layout, report framing (identical), USB↔BT hand-over, and keep-alive by reading 0x0A.
@@ -203,6 +206,7 @@ Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT lay
 | `tests/transport_switch.py --usb-init now/none` | USB ↔ BT hand-over (B4b) | `transport_switch_now_20261116_221546`, `transport_switch_none_20261116_221846`, `usb_b4b1_20261116_221543.pcapng`, `usb_b4b2_20261116_221843.pcapng`; superseded: `transport_switch_20261116_191703` |
 | `tests/keepalive_get.py --mode get/none` | does a GET of 0x0A keep the panel alive (K2) | `keepalive_get_get_20261116_222320`, `keepalive_get_none_20261116_222533` |
 | `tests/battery_log.py` | 0x07 and battery over 36 min, following USB↔BT switches | `battery_log_20261116_223322` |
+| `tests/quick_checks.py [--part turns/idle/led]` | knob speed, ring scale L/R, idle jitter, lights at timeout | `quick_checks_20261117_221355` (turns + 87 s idle; stopped during idle), `quick_checks_led_20261117_221857` |
 
 ## 11. Bluetooth
 
