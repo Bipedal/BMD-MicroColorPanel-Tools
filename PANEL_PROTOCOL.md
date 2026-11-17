@@ -179,8 +179,8 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 12. **Resolve over Bluetooth:** does it behave as on USB (§12: keep-alive, LEDs)? Not captured.
 13. **Fresh power-up:** does the panel stream before any init (§3)?
 14. (closed: everything turns off at the timeout and nothing comes back by itself after re-enable, §3)
-15. **Resolve LED behaviour** for USER, DISABLE, PLAY_STILL, WIPE_STILL, H_LITE, VIEWER and CURSOR (§12.3).
-16. **What triggers Resolve's startup sequence** (§12.1): Resolve starting, or detecting the device.
+15. (closed: §12.3)
+16. (closed: both Resolve starting and the panel arriving, §12.1)
 17. **Backlight level after a bare `0a 01`** (§3): the default value, and whether a fresh enable also starts dim.
 
 Closed 2026-11-16 by the Resolve capture: the 33-byte feature length (= 0x09), what 0x03 and 0x08 are, running alongside Resolve, and that 0x04 drives the key LEDs. Closed by the LED probe: the full 0x04 bit map, one colour per key, and 0x03 byte 2 = backlight.
@@ -197,7 +197,7 @@ Closed 2026-11-16 by the Bluetooth work: the BT descriptor (identical), GATT lay
 | `tests/state_probe.py` | GET_REPORT, init → state, overflow / stuck | `state_probe_20261116_175652`, `state_probe_20261116_175916` |
 | `tests/keepalive_test.py` | keep-alive necessity and timing | `keepalive_20261116_180432` |
 | `tests/smoke_panel.py` | `panel.py` offline replay (now also a simulated reconnect and light restore), `live` run, `features` (info/battery/state()/LEDs) and `reconnect` (unplug/replug USB) | `smoke_live_20261116_180732`; `smoke_features_20261116_185454`; `smoke_live_20261116_185621` (one failure: a button held at startup gave an unmatched release. Fixed in `panel.py` and checked offline only; the live rerun was skipped.); `smoke_reconnect_20261117_224312` |
-| `tests/usb_capture.py` + `tests/usb_decode.py` | USBPcap capture of the panel only, and its decoder | `usb_resolve_20261116_182613.pcapng`, `usbdecode_usb_resolve_20261116_182613.txt` |
+| `tests/usb_capture.py` + `tests/usb_decode.py` | USBPcap capture of the panel only (`--list` finds its address; clean stop via `logs/STOP_CAPTURE`), and its decoder (`--marker`, LED names) | `usb_resolve_20261116_182613.pcapng`, `usbdecode_usb_resolve_20261116_182613.txt`, `usb_resolve3_20261117_230040.pcapng`, `usbdecode_usb_resolve3_20261117_230040.txt` |
 | `tests/concurrency_check.py` | read-only read alongside Resolve | `concurrency_20261116_183041` |
 | `tests/led_probe.py look/look2/walk` | LED patterns, brightness bytes, 0x04 bit walk | `led_look2_20261116_184426`, `led_walk_20261116_184710`, `usb_ledlook_20261116_183826.pcapng` (look: P3/P4 invalid, brightness was being resent) |
 | `tests/dump_caps.py` (PANEL_TRANSPORT=bt) | BT enumeration and caps | `dump_caps_bt_20261116_190825.txt` |
@@ -254,10 +254,15 @@ Paired from Windows Settings; Windows asked only for an accept, no PIN [V tester
 
 ## 12. How DaVinci Resolve drives the panel
 
-Resolve is the reference host. Copying its behaviour is the safest way to drive the panel. Source: one USB session on Windows, with Resolve's own panel support. Evidence: `logs/usb_resolve_20261116_182613.pcapng`, decoded in `logs/usbdecode_usb_resolve_20261116_182613.txt`; the times below are seconds into that capture. Resolve over Bluetooth has not been captured (§9).
+Resolve is the reference host. Copying its behaviour is the safest way to drive the panel. Sources: two USB sessions on Windows, with Resolve's own panel support: `logs/usb_resolve_20261116_182613.pcapng`, decoded in `logs/usbdecode_usb_resolve_20261116_182613.txt` (times below are seconds into that capture unless marked) and `logs/usb_resolve3_20261117_230040.pcapng` (Resolve start, the remaining LED keys, a replug; decoded in `logs/usbdecode_usb_resolve3_20261117_230040.txt`). Resolve over Bluetooth has not been captured (§9).
 
 ### 12.1 Startup [V]
-The panel enumerated at 18.5 s. That included reading the 297-byte descriptor and a `SET_IDLE 0` from Windows, and the panel sent one battery report (`08 01 63`). Resolve's first write came at 33.1 s, 14.6 s later. [?] What triggered it is not recorded (Resolve starting up, or its device scan). The sequence then took under 10 ms:
+The panel enumerated at 18.5 s. That included reading the 297-byte descriptor and a `SET_IDLE 0` from Windows, and the panel sent one battery report (`08 01 63`). Resolve's first write came at 33.1 s, 14.6 s later. **Two events start the sequence** [V] resolve3:
+- **Resolve launching:** the panel lights during the splash screen [V by eye]. Brightness followed 5.8 s after `0a 01`.
+- **The panel arriving while Resolve runs** (USB replug): the sequence began 30 ms after the report-descriptor read [V] resolve3. **The backlight then stayed dark:** the sequence's `03 00 00` was not followed by the brightness for 16 s, and the panel did not relight [V by eye]. A `03 08 08` came 0.5 s before Resolve's quit sequence; [A] it is part of quitting, not a reaction to the replug. Without the quit, the brightness would presumably have come with the next keep-alive, ≤ 30 s after the replug [A].
+- **Unplugging USB while Resolve runs:** a brief backlight blackout, then the backlight came back over Bluetooth [V by eye]. Resolve's Bluetooth traffic was not captured (§9 #12).
+
+The sequence itself took under 10 ms:
 
 | Time | Resolve sends / reads | Meaning |
 |---|---|---|
@@ -272,7 +277,7 @@ The panel enumerated at 18.5 s. That included reading the 297-byte descriptor an
 It never read 0x07 or 0x09, and never wrote 0x07.
 
 ### 12.2 Steady state [V]
-- **Keep-alive:** `0a 01` every **30.00 s**, each followed at once by the current brightness `03 b b` (9 pairs, 33.1 s → 273.1 s).
+- **Keep-alive:** `0a 01` every **30.00 s**, each followed at once by the current brightness `03 b b` (9 pairs, 33.1 s → 273.1 s). Confirmed in the second session: 30.00 s, each followed by the brightness `03 08 08` [V] resolve3.
 - **Battery:** feature 0x08 is read right after each battery input report (158.44 s and 221.80 s, same timestamp as the report) and twice at startup. No polling between events.
 - **Brightness setting:** every change in Resolve's settings goes out at once as `03 b b`, the two bytes always equal. Seen: 0, 4, 8, 12, 38, 100 (`00 04 08 0c 26 64`). Resolve's maximum is 100.
 - **Device scan:** string-descriptor reads at 268.1 s and 268.2 s. [A] This is a device-list scan by Resolve or Windows.
@@ -286,14 +291,16 @@ Resolve sends output 0x04 (7 bytes on the wire) only when an LED should change, 
 | BYPASS | 0 | toggles on each press |
 | SHIFT_UP | 4 | lit only while held; on at press, off at release |
 | SHIFT_DOWN | 5 | lit only while held |
+| DISABLE, PLAY_STILL, H_LITE, CURSOR | 3, 6, 8, 10 | toggle on press (a held second press turns it off at once) [V] resolve3 |
+| USER, WIPE_STILL, VIEWER | 1, 7, 9 | no LED write at all [V] resolve3. [A] WIPE_STILL may need a still in the gallery. |
 
-[?] USER, DISABLE, PLAY_STILL, WIPE_STILL, H_LITE, VIEWER and CURSOR were not exercised under Resolve. What each key *does* inside Resolve is described in the product manual [D] and is not repeated here.
+LED latency 30–130 ms after the press [V] resolve3. What each key *does* inside Resolve is described in the product manual [D] and is not repeated here.
 
 ### 12.4 Quit [V]
 At 290.80 s: feature `03 00 00` (backlight off), then output 0x04 all zero and output 0x02 all zero. **No disable report is sent**: the panel stays enabled until its 60 s timer runs out (§3). A host that wants the panel dark at once should copy this; `panel.py`'s `close()` does.
 
 ### 12.5 Summary for host authors
-1. On connect: backlight off, LEDs off, output 0x02 zero, read version, `0a 01`, read battery, set brightness.
+1. On connect: backlight off, LEDs off, output 0x02 zero, read version, `0a 01`, read battery, set brightness. Send the brightness immediately after `0a 01`. Resolve sometimes waits up to a keep-alive period (§12.1), which leaves a reconnected panel dark.
 2. Every 30 s (20 s is safer): `0a 01`, then the current brightness.
 3. On a battery input report: optionally read feature 0x08 to confirm.
 4. Drive the status LEDs yourself from your app's state: toggle-type for modes, momentary for Shift.

@@ -1,6 +1,6 @@
 """Decode a USBPcap pcapng of the panel: what does the host send, and when?
 
-Usage: python tests/usb_decode.py logs/usb_<name>_<ts>.pcapng [--addr N]
+Usage: python tests/usb_decode.py logs/usb_<name>_<ts>.pcapng [--addr N] [--marker USER]
 
 Reads pcapng directly (no tshark needed). Pairs control SETUP/completion by IRP id.
 Reports:
@@ -9,7 +9,8 @@ Reports:
     grouped, with distinct payloads, counts and typical interval
   * GET_REPORT requests with status (STALL etc.) and responses
   * IN interrupt reports per ID with wire lengths; all 0x08 values
-  * a timeline split at USER x5 markers (0x02 bit 30), with repeats collapsed;
+  * a timeline split at marker x5 (default USER, bit 30; --marker LOOP etc.), with
+    repeats collapsed, the marker key's own presses hidden, 0x04 shown as LED names;
     output 0x02 payloads also shown as "LED bit n = button bit n" (HYPOTHESIS)
 Log: logs/usbdecode_<pcapname>.txt
 """
@@ -150,8 +151,19 @@ def led_names(payload):
     return ",".join(BUTTONS.get(b, "b%d" % b) for b in bits) or "none"
 
 
+LED_BITS = {0: "BYPASS", 1: "USER", 2: "OFFSET", 3: "DISABLE", 4: "SHIFT_UP",
+            5: "SHIFT_DOWN", 6: "PLAY_STILL", 7: "WIPE_STILL", 8: "H_LITE",
+            9: "VIEWER", 10: "CURSOR"}   # output 0x04 bits (spec §4a, led_walk)
+
+
+def leds04(b):
+    """output report 0x04 (id + 6 bytes) -> lit LED names."""
+    v = int.from_bytes(b[1:7], "little")
+    return ",".join(n for k, n in sorted(LED_BITS.items()) if v >> k & 1) or "none"
+
+
 def markers(ins):
-    """Times at which USER was pressed 5 times within 3 s."""
+    """Times at which the marker key (USER_BIT) was pressed 5 times within 3 s."""
     held, taps, out = set(), [], []
     for t, b in ins:
         if b[0] != 0x02 or len(b) < 9:
@@ -170,7 +182,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pcap")
     ap.add_argument("--addr", type=int, default=None)
+    ap.add_argument("--marker", default="USER", help="key pressed 5x in 3 s between steps")
     a = ap.parse_args()
+    global USER_BIT
+    names = {v: k for k, v in BUTTONS.items()}
+    if a.marker not in names:
+        ap.error("unknown key %r" % a.marker)
+    USER_BIT = names[a.marker]
     d = decode(a.pcap, a.addr)
     lines = []
     pr = lines.append
@@ -236,7 +254,7 @@ def main():
 
     # timeline
     mk = markers(d["ins"])
-    pr("\n== USER x5 markers at: %s" % ", ".join("%.1f" % m for m in mk))
+    pr("\n== %s x5 markers at: %s" % (a.marker, ", ".join("%.1f" % m for m in mk)))
     bounds = [0.0] + mk + [float("inf")]
     for si in range(len(bounds) - 1):
         lo, hi = bounds[si], bounds[si + 1]
@@ -255,6 +273,8 @@ def main():
         for t, b in iout:
             txt = "INT OUT report 0x%02x: %s" % (b[0], b.hex(" "))
             shown = txt + (("   LEDs? " + led_names(b)) if b[0] == 0x02 else "")
+            if b[0] == 0x04 and len(b) >= 7:
+                shown = txt + "   LEDs: " + leds04(b)
             items.append((t, txt, shown))
         # button presses in this segment, so LED changes can be matched to keys
         held = set()
