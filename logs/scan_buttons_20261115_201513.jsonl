@@ -1,0 +1,442 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773714.1098}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773714.151}
+{"t": "block", "block": "KNOB", "n": 1, "ts": 1794773714.1512}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773716.0766}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773718.1372}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773720.1982}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773722.2538}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773724.3115}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773726.3142}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773728.3151}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773729.0603}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773730.3683}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773732.382}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773734.4403}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773736.4983}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773738.5051}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773740.558}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773742.6208}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773744.1173}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773744.6813}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773746.7393}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773748.7986}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773750.8589}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773752.8633}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773754.8633}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773756.9193}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773758.9771}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773759.1627}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773760.9781}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773762.9862}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773765.052}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773767.1093}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773769.1678}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773771.2254}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773773.2858}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773774.223}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773775.3434}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773777.3444}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773779.4033}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773781.4064}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773783.4072}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773785.4676}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773787.4742}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773789.2256}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773789.4764}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773791.4893}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773793.5494}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773795.551}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773797.5532}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773799.5562}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773801.5607}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773803.5683}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773804.2535}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773805.6266}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773807.6853}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773809.6938}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773811.7519}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773813.7506}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773815.8107}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773817.8111}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773819.3091}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773819.8682}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773821.8752}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773823.8811}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773825.9394}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773827.988}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773829.996}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773832.003}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773834.0591}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773834.3726}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773836.0612}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773838.064}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773840.127}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773842.1271}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773844.186}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773846.2418}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773848.2419}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773849.4313}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773850.2471}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773852.2563}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773854.3145}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773856.3726}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773858.4333}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773860.4424}
+{"t": "btn", "block": "KNOB", "bit": 8, "v": 1, "ts": 1794773860.6119}
+{"t": "btn", "block": "KNOB", "bit": 8, "v": 0, "ts": 1794773860.8359}
+{"t": "btn", "block": "KNOB", "bit": 9, "v": 1, "ts": 1794773861.6359}
+{"t": "btn", "block": "KNOB", "bit": 9, "v": 0, "ts": 1794773861.9158}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773862.4867}
+{"t": "btn", "block": "KNOB", "bit": 10, "v": 1, "ts": 1794773862.7157}
+{"t": "btn", "block": "KNOB", "bit": 10, "v": 0, "ts": 1794773862.9077}
+{"t": "btn", "block": "KNOB", "bit": 11, "v": 1, "ts": 1794773863.7238}
+{"t": "btn", "block": "KNOB", "bit": 11, "v": 0, "ts": 1794773863.9318}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773864.4785}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773864.5447}
+{"t": "btn", "block": "KNOB", "bit": 12, "v": 1, "ts": 1794773865.1397}
+{"t": "btn", "block": "KNOB", "bit": 12, "v": 0, "ts": 1794773865.4357}
+{"t": "btn", "block": "KNOB", "bit": 13, "v": 1, "ts": 1794773866.2277}
+{"t": "btn", "block": "KNOB", "bit": 13, "v": 0, "ts": 1794773866.4678}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773866.5932}
+{"t": "btn", "block": "KNOB", "bit": 14, "v": 1, "ts": 1794773867.2039}
+{"t": "btn", "block": "KNOB", "bit": 14, "v": 0, "ts": 1794773867.4277}
+{"t": "btn", "block": "KNOB", "bit": 15, "v": 1, "ts": 1794773868.3558}
+{"t": "btn", "block": "KNOB", "bit": 15, "v": 0, "ts": 1794773868.5558}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773868.6171}
+{"t": "btn", "block": "KNOB", "bit": 16, "v": 1, "ts": 1794773869.4998}
+{"t": "btn", "block": "KNOB", "bit": 16, "v": 0, "ts": 1794773869.7318}
+{"t": "btn", "block": "KNOB", "bit": 17, "v": 1, "ts": 1794773870.6118}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773870.6407}
+{"t": "btn", "block": "KNOB", "bit": 17, "v": 0, "ts": 1794773870.8277}
+{"t": "btn", "block": "KNOB", "bit": 18, "v": 1, "ts": 1794773871.7639}
+{"t": "btn", "block": "KNOB", "bit": 18, "v": 0, "ts": 1794773871.9877}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773872.6796}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 1, "ts": 1794773873.1639}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 0, "ts": 1794773873.3078}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 1, "ts": 1794773874.2679}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 0, "ts": 1794773874.4037}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 1, "ts": 1794773874.4917}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 0, "ts": 1794773874.6199}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773874.7196}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 1, "ts": 1794773874.7317}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 0, "ts": 1794773874.8757}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 1, "ts": 1794773874.9797}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 0, "settle": true, "ts": 1794773875.1238}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 1, "settle": true, "ts": 1794773875.1957}
+{"t": "btn", "block": "KNOB", "bit": 19, "v": 0, "settle": true, "ts": 1794773875.3238}
+{"t": "block", "block": "LCOL", "n": 2, "ts": 1794773876.6994}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773876.7631}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773878.775}
+{"t": "btn", "block": "LCOL", "bit": 20, "v": 1, "ts": 1794773879.0999}
+{"t": "btn", "block": "LCOL", "bit": 20, "v": 0, "ts": 1794773879.3877}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773879.5143}
+{"t": "btn", "block": "LCOL", "bit": 22, "v": 1, "ts": 1794773879.9397}
+{"t": "btn", "block": "LCOL", "bit": 22, "v": 0, "ts": 1794773880.2118}
+{"t": "btn", "block": "LCOL", "bit": 24, "v": 1, "ts": 1794773880.7237}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773880.7762}
+{"t": "btn", "block": "LCOL", "bit": 24, "v": 0, "ts": 1794773880.9958}
+{"t": "btn", "block": "LCOL", "bit": 26, "v": 1, "ts": 1794773881.4837}
+{"t": "btn", "block": "LCOL", "bit": 26, "v": 0, "ts": 1794773881.7557}
+{"t": "btn", "block": "LCOL", "bit": 28, "v": 1, "ts": 1794773882.1799}
+{"t": "btn", "block": "LCOL", "bit": 28, "v": 0, "ts": 1794773882.4677}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773882.8385}
+{"t": "btn", "block": "LCOL", "bit": 30, "v": 1, "ts": 1794773882.8998}
+{"t": "btn", "block": "LCOL", "bit": 30, "v": 0, "ts": 1794773883.2038}
+{"t": "btn", "block": "LCOL", "bit": 32, "v": 1, "ts": 1794773883.6758}
+{"t": "btn", "block": "LCOL", "bit": 32, "v": 0, "ts": 1794773883.9637}
+{"t": "btn", "block": "LCOL", "bit": 21, "v": 1, "ts": 1794773884.5077}
+{"t": "btn", "block": "LCOL", "bit": 21, "v": 0, "ts": 1794773884.7798}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773884.8965}
+{"t": "btn", "block": "LCOL", "bit": 23, "v": 1, "ts": 1794773885.2277}
+{"t": "btn", "block": "LCOL", "bit": 23, "v": 0, "ts": 1794773885.5559}
+{"t": "btn", "block": "LCOL", "bit": 25, "v": 1, "ts": 1794773886.0039}
+{"t": "btn", "block": "LCOL", "bit": 25, "v": 0, "ts": 1794773886.2918}
+{"t": "btn", "block": "LCOL", "bit": 27, "v": 1, "ts": 1794773886.7239}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773886.9112}
+{"t": "btn", "block": "LCOL", "bit": 27, "v": 0, "ts": 1794773887.0198}
+{"t": "btn", "block": "LCOL", "bit": 29, "v": 1, "ts": 1794773887.4678}
+{"t": "btn", "block": "LCOL", "bit": 29, "v": 0, "ts": 1794773887.7477}
+{"t": "btn", "block": "LCOL", "bit": 31, "v": 1, "ts": 1794773888.2199}
+{"t": "btn", "block": "LCOL", "bit": 31, "v": 0, "ts": 1794773888.4838}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773888.9163}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 1, "ts": 1794773889.0037}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 0, "ts": 1794773889.2757}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 1, "ts": 1794773890.2197}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 0, "ts": 1794773890.3558}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 1, "ts": 1794773890.4358}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 0, "ts": 1794773890.5477}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 1, "ts": 1794773890.6598}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 0, "ts": 1794773890.7718}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 1, "ts": 1794773890.8598}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 0, "settle": true, "ts": 1794773890.9719}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773890.9724}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 1, "settle": true, "ts": 1794773891.0357}
+{"t": "btn", "block": "LCOL", "bit": 33, "v": 0, "settle": true, "ts": 1794773891.1397}
+{"t": "block", "block": "LBALL", "n": 3, "ts": 1794773892.577}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773893.0245}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773894.5314}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773895.0322}
+{"t": "btn", "block": "LBALL", "bit": 34, "v": 1, "ts": 1794773895.7157}
+{"t": "btn", "block": "LBALL", "bit": 34, "v": 0, "ts": 1794773895.9878}
+{"t": "btn", "block": "LBALL", "bit": 35, "v": 1, "ts": 1794773896.3399}
+{"t": "btn", "block": "LBALL", "bit": 35, "v": 0, "ts": 1794773896.7317}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773897.0473}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 1, "ts": 1794773897.0598}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 0, "ts": 1794773897.3958}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 1, "ts": 1794773898.3797}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 0, "ts": 1794773898.4837}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 1, "ts": 1794773898.5797}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 0, "ts": 1794773898.6677}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 1, "ts": 1794773898.7557}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 0, "ts": 1794773898.8358}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 1, "ts": 1794773898.9158}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 0, "settle": true, "ts": 1794773899.0038}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773899.0672}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 1, "settle": true, "ts": 1794773899.0916}
+{"t": "btn", "block": "LBALL", "bit": 36, "v": 0, "settle": true, "ts": 1794773899.1797}
+{"t": "block", "block": "MEXTRA", "n": 4, "ts": 1794773900.616}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773901.1189}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773903.1372}
+{"t": "btn", "block": "MEXTRA", "bit": 37, "v": 1, "ts": 1794773903.4117}
+{"t": "btn", "block": "MEXTRA", "bit": 37, "v": 0, "ts": 1794773903.6678}
+{"t": "btn", "block": "MEXTRA", "bit": 38, "v": 1, "ts": 1794773904.1558}
+{"t": "btn", "block": "MEXTRA", "bit": 38, "v": 0, "ts": 1794773904.4917}
+{"t": "btn", "block": "MEXTRA", "bit": 39, "v": 1, "ts": 1794773904.8918}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773905.1977}
+{"t": "btn", "block": "MEXTRA", "bit": 39, "v": 0, "ts": 1794773905.2198}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 1, "ts": 1794773905.6117}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 0, "ts": 1794773905.8757}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773907.2537}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 1, "ts": 1794773907.3559}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 0, "ts": 1794773907.4598}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 1, "ts": 1794773907.5479}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 0, "ts": 1794773907.6277}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 1, "ts": 1794773907.6997}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 0, "ts": 1794773907.7799}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 1, "ts": 1794773907.8597}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 0, "settle": true, "ts": 1794773907.9398}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 1, "settle": true, "ts": 1794773908.0118}
+{"t": "btn", "block": "MEXTRA", "bit": 40, "v": 0, "settle": true, "ts": 1794773908.1077}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773909.2851}
+{"t": "block", "block": "MBALL", "n": 5, "ts": 1794773909.5346}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773909.5355}
+{"t": "btn", "block": "MBALL", "bit": 41, "v": 1, "ts": 1794773909.9237}
+{"t": "btn", "block": "MBALL", "bit": 41, "v": 0, "ts": 1794773910.2677}
+{"t": "btn", "block": "MBALL", "bit": 42, "v": 1, "ts": 1794773910.8039}
+{"t": "btn", "block": "MBALL", "bit": 42, "v": 0, "ts": 1794773911.0998}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773911.346}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 1, "ts": 1794773911.5478}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 0, "ts": 1794773911.8437}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 1, "ts": 1794773912.9478}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 0, "ts": 1794773913.0357}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 1, "ts": 1794773913.1157}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 0, "ts": 1794773913.2037}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 1, "ts": 1794773913.2677}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 0, "ts": 1794773913.3639}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773913.3647}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 1, "ts": 1794773913.4439}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 0, "settle": true, "ts": 1794773913.5398}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 1, "settle": true, "ts": 1794773913.6038}
+{"t": "btn", "block": "MBALL", "bit": 43, "v": 0, "settle": true, "ts": 1794773913.6997}
+{"t": "btn", "block": "MBALL", "bit": 44, "v": 1, "settle": true, "ts": 1794773914.8277}
+{"t": "btn", "block": "MBALL", "bit": 44, "v": 0, "ts": 1794773915.156}
+{"t": "block", "block": "RBALL", "n": 6, "ts": 1794773915.1563}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773915.3952}
+{"t": "btn", "block": "RBALL", "bit": 45, "v": 1, "ts": 1794773915.5878}
+{"t": "btn", "block": "RBALL", "bit": 45, "v": 0, "ts": 1794773915.9077}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794773916.3316}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794773916.6037}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773917.4271}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794773917.6358}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794773917.7238}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794773917.8037}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794773917.8757}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794773917.9638}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794773918.0438}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794773918.1239}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "settle": true, "ts": 1794773918.2037}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "settle": true, "ts": 1794773918.2838}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "settle": true, "ts": 1794773918.3797}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773919.4334}
+{"t": "block", "block": "RCOL", "n": 7, "ts": 1794773919.8063}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773921.4362}
+{"t": "btn", "block": "RCOL", "bit": 47, "v": 1, "ts": 1794773923.2357}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773923.4832}
+{"t": "btn", "block": "RCOL", "bit": 47, "v": 0, "ts": 1794773923.5318}
+{"t": "btn", "block": "RCOL", "bit": 49, "v": 1, "ts": 1794773923.9877}
+{"t": "btn", "block": "RCOL", "bit": 49, "v": 0, "ts": 1794773924.2518}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773924.5675}
+{"t": "btn", "block": "RCOL", "bit": 51, "v": 1, "ts": 1794773924.7317}
+{"t": "btn", "block": "RCOL", "bit": 51, "v": 0, "ts": 1794773924.9957}
+{"t": "btn", "block": "RCOL", "bit": 53, "v": 1, "ts": 1794773925.4678}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773925.5302}
+{"t": "btn", "block": "RCOL", "bit": 53, "v": 0, "ts": 1794773925.7719}
+{"t": "btn", "block": "RCOL", "bit": 55, "v": 1, "ts": 1794773926.1957}
+{"t": "btn", "block": "RCOL", "bit": 55, "v": 0, "ts": 1794773926.4919}
+{"t": "btn", "block": "RCOL", "bit": 48, "v": 1, "ts": 1794773927.2759}
+{"t": "btn", "block": "RCOL", "bit": 48, "v": 0, "ts": 1794773927.5397}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773927.5402}
+{"t": "btn", "block": "RCOL", "bit": 50, "v": 1, "ts": 1794773927.9958}
+{"t": "btn", "block": "RCOL", "bit": 50, "v": 0, "ts": 1794773928.2998}
+{"t": "btn", "block": "RCOL", "bit": 52, "v": 1, "ts": 1794773928.6757}
+{"t": "btn", "block": "RCOL", "bit": 52, "v": 0, "ts": 1794773929.0197}
+{"t": "btn", "block": "RCOL", "bit": 54, "v": 1, "ts": 1794773929.3719}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773929.5595}
+{"t": "btn", "block": "RCOL", "bit": 54, "v": 0, "ts": 1794773929.7077}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 1, "ts": 1794773930.0757}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 0, "ts": 1794773930.3719}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 1, "ts": 1794773931.0677}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 0, "ts": 1794773931.1719}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 1, "ts": 1794773931.2518}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 0, "ts": 1794773931.3398}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 1, "ts": 1794773931.4197}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 0, "ts": 1794773931.5077}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773931.5782}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 1, "ts": 1794773931.5878}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 0, "settle": true, "ts": 1794773931.6678}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 1, "settle": true, "ts": 1794773931.748}
+{"t": "btn", "block": "RCOL", "bit": 56, "v": 0, "settle": true, "ts": 1794773931.8517}
+{"t": "block", "block": "TRANS", "n": 8, "ts": 1794773933.2898}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773933.6048}
+{"t": "btn", "block": "TRANS", "bit": 57, "v": 1, "ts": 1794773935.4756}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773935.6559}
+{"t": "btn", "block": "TRANS", "bit": 57, "v": 0, "ts": 1794773935.7476}
+{"t": "btn", "block": "TRANS", "bit": 58, "v": 1, "ts": 1794773936.3718}
+{"t": "btn", "block": "TRANS", "bit": 58, "v": 0, "ts": 1794773936.6517}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794773937.2838}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794773937.5638}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773937.6828}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794773938.4438}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794773938.5478}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794773938.6357}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794773938.7158}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794773938.7957}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794773938.8837}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794773938.9637}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "settle": true, "ts": 1794773939.0518}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "settle": true, "ts": 1794773939.1238}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "settle": true, "ts": 1794773939.2278}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773939.5916}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773939.7124}
+{"t": "summary", "line": "", "ts": 1794773940.6545}
+{"t": "summary", "line": "== scan_buttons summary", "ts": 1794773940.6546}
+{"t": "summary", "line": "KNOB (Knob PRESSES, top row, left -> right): 12 buttons", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_1 -> bit 8", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_2 -> bit 9", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_3 -> bit 10", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_4 -> bit 11", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_5 -> bit 12", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_6 -> bit 13", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_7 -> bit 14", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_8 -> bit 15", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_9 -> bit 16", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_10 -> bit 17", "ts": 1794773940.6546}
+{"t": "summary", "line": "   KNOB_11 -> bit 18", "ts": 1794773940.6547}
+{"t": "summary", "line": "   KNOB_12 -> bit 19", "ts": 1794773940.6547}
+{"t": "summary", "line": "LCOL (LEFT two columns: left column top -> bottom, then right column top -> bottom): 14 buttons", "ts": 1794773940.6547}
+{"t": "summary", "line": "   LCOL_1 -> bit 20", "ts": 1794773940.6547}
+{"t": "summary", "line": "   LCOL_2 -> bit 22", "ts": 1794773940.6547}
+{"t": "summary", "line": "   LCOL_3 -> bit 24", "ts": 1794773940.6547}
+{"t": "summary", "line": "   LCOL_4 -> bit 26", "ts": 1794773940.6547}
+{"t": "summary", "line": "   LCOL_5 -> bit 28", "ts": 1794773940.6548}
+{"t": "summary", "line": "   LCOL_6 -> bit 30", "ts": 1794773940.6548}
+{"t": "summary", "line": "   LCOL_7 -> bit 32", "ts": 1794773940.6548}
+{"t": "summary", "line": "   LCOL_8 -> bit 21", "ts": 1794773940.6548}
+{"t": "summary", "line": "   LCOL_9 -> bit 23", "ts": 1794773940.6549}
+{"t": "summary", "line": "   LCOL_10 -> bit 25", "ts": 1794773940.6549}
+{"t": "summary", "line": "   LCOL_11 -> bit 27", "ts": 1794773940.6549}
+{"t": "summary", "line": "   LCOL_12 -> bit 29", "ts": 1794773940.655}
+{"t": "summary", "line": "   LCOL_13 -> bit 31", "ts": 1794773940.655}
+{"t": "summary", "line": "   LCOL_14 -> bit 33", "ts": 1794773940.655}
+{"t": "summary", "line": "LBALL (3 buttons above the LEFT ball, left -> right): 3 buttons", "ts": 1794773940.655}
+{"t": "summary", "line": "   LBALL_1 -> bit 34", "ts": 1794773940.655}
+{"t": "summary", "line": "   LBALL_2 -> bit 35", "ts": 1794773940.655}
+{"t": "summary", "line": "   LBALL_3 -> bit 36", "ts": 1794773940.6551}
+{"t": "summary", "line": "MEXTRA (the extra 4 buttons above the middle three, left -> right): 4 buttons", "ts": 1794773940.6551}
+{"t": "summary", "line": "   MEXTRA_1 -> bit 37", "ts": 1794773940.6551}
+{"t": "summary", "line": "   MEXTRA_2 -> bit 38", "ts": 1794773940.6551}
+{"t": "summary", "line": "   MEXTRA_3 -> bit 39", "ts": 1794773940.6551}
+{"t": "summary", "line": "   MEXTRA_4 -> bit 40", "ts": 1794773940.6551}
+{"t": "summary", "line": "MBALL (3 buttons above the MIDDLE ball, left -> right): 3 buttons", "ts": 1794773940.6552}
+{"t": "summary", "line": "   MBALL_1 -> bit 41", "ts": 1794773940.6552}
+{"t": "summary", "line": "   MBALL_2 -> bit 42", "ts": 1794773940.6552}
+{"t": "summary", "line": "   MBALL_3 -> bit 43", "ts": 1794773940.6552}
+{"t": "summary", "line": "   NOTE: bit 44 pressed during end-gesture settle; ignored", "ts": 1794773940.6552}
+{"t": "summary", "line": "RBALL (3 buttons above the RIGHT ball, left -> right): 2 buttons", "ts": 1794773940.6552}
+{"t": "summary", "line": "   RBALL_1 -> bit 45", "ts": 1794773940.6552}
+{"t": "summary", "line": "   RBALL_2 -> bit 46", "ts": 1794773940.6552}
+{"t": "summary", "line": "   NOTE: expected 3 buttons, got 2", "ts": 1794773940.6552}
+{"t": "summary", "line": "RCOL (RIGHT two columns: left column top -> bottom, then right column top -> bottom): 10 buttons", "ts": 1794773940.6553}
+{"t": "summary", "line": "   RCOL_1 -> bit 47", "ts": 1794773940.6553}
+{"t": "summary", "line": "   RCOL_2 -> bit 49", "ts": 1794773940.6553}
+{"t": "summary", "line": "   RCOL_3 -> bit 51", "ts": 1794773940.6553}
+{"t": "summary", "line": "   RCOL_4 -> bit 53", "ts": 1794773940.6553}
+{"t": "summary", "line": "   RCOL_5 -> bit 55", "ts": 1794773940.6553}
+{"t": "summary", "line": "   RCOL_6 -> bit 48", "ts": 1794773940.6554}
+{"t": "summary", "line": "   RCOL_7 -> bit 50", "ts": 1794773940.6554}
+{"t": "summary", "line": "   RCOL_8 -> bit 52", "ts": 1794773940.6554}
+{"t": "summary", "line": "   RCOL_9 -> bit 54", "ts": 1794773940.6554}
+{"t": "summary", "line": "   RCOL_10 -> bit 56", "ts": 1794773940.6554}
+{"t": "summary", "line": "TRANS (3 transport buttons at the bottom, left -> right): 3 buttons", "ts": 1794773940.6554}
+{"t": "summary", "line": "   TRANS_1 -> bit 57", "ts": 1794773940.6554}
+{"t": "summary", "line": "   TRANS_2 -> bit 58", "ts": 1794773940.6554}
+{"t": "summary", "line": "   TRANS_3 -> bit 59", "ts": 1794773940.6554}
+{"t": "summary", "line": "bits in more than one block: none", "ts": 1794773940.6555}
+{"t": "summary", "line": "bits 8..59 never pressed: [44]", "ts": 1794773940.6555}
+{"t": "summary", "line": "bits outside 8..59: none", "ts": 1794773940.6555}
+{"t": "summary", "line": "", "ts": 1794773940.6555}
+{"t": "summary", "line": "POSITIONS = {", "ts": 1794773940.6555}
+{"t": "summary", "line": "    8: \"KNOB_1\",", "ts": 1794773940.6555}
+{"t": "summary", "line": "    9: \"KNOB_2\",", "ts": 1794773940.6555}
+{"t": "summary", "line": "    10: \"KNOB_3\",", "ts": 1794773940.6555}
+{"t": "summary", "line": "    11: \"KNOB_4\",", "ts": 1794773940.6555}
+{"t": "summary", "line": "    12: \"KNOB_5\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    13: \"KNOB_6\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    14: \"KNOB_7\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    15: \"KNOB_8\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    16: \"KNOB_9\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    17: \"KNOB_10\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    18: \"KNOB_11\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    19: \"KNOB_12\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    20: \"LCOL_1\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    21: \"LCOL_8\",", "ts": 1794773940.6556}
+{"t": "summary", "line": "    22: \"LCOL_2\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    23: \"LCOL_9\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    24: \"LCOL_3\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    25: \"LCOL_10\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    26: \"LCOL_4\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    27: \"LCOL_11\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    28: \"LCOL_5\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    29: \"LCOL_12\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    30: \"LCOL_6\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    31: \"LCOL_13\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    32: \"LCOL_7\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    33: \"LCOL_14\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    34: \"LBALL_1\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    35: \"LBALL_2\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    36: \"LBALL_3\",", "ts": 1794773940.6557}
+{"t": "summary", "line": "    37: \"MEXTRA_1\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    38: \"MEXTRA_2\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    39: \"MEXTRA_3\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    40: \"MEXTRA_4\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    41: \"MBALL_1\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    42: \"MBALL_2\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    43: \"MBALL_3\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    45: \"RBALL_1\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    46: \"RBALL_2\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    47: \"RCOL_1\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    48: \"RCOL_6\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    49: \"RCOL_2\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    50: \"RCOL_7\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    51: \"RCOL_3\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    52: \"RCOL_8\",", "ts": 1794773940.6558}
+{"t": "summary", "line": "    53: \"RCOL_4\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "    54: \"RCOL_9\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "    55: \"RCOL_5\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "    56: \"RCOL_10\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "    57: \"TRANS_1\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "    58: \"TRANS_2\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "    59: \"TRANS_3\",", "ts": 1794773940.6559}
+{"t": "summary", "line": "}", "ts": 1794773940.6559}
+{"t": "summary", "line": "feature sends ok=128 failed=0", "ts": 1794773940.6559}
+{"t": "summary", "line": "log: C:\\panel\\logs\\scan_buttons_20261115_201513.jsonl", "ts": 1794773940.6559}

@@ -1,0 +1,115 @@
+== logs/usb_ledlook_20261116_183826.pcapng
+packets 362, duration 184.5 s, device addresses {64: 362}
+
+== control requests (grouped)
+GET_DESCRIPTOR 1: 1 x, first 0.00 s, last 0.00 s
+        1 x  GET_DESCRIPTOR type 0x01 idx 0 len 18 [OK] 18 bytes
+GET_DESCRIPTOR 2: 1 x, first 0.00 s, last 0.00 s
+        1 x  GET_DESCRIPTOR type 0x02 idx 0 len 86 [OK] 86 bytes
+STD 0 9: 1 x, first 0.00 s, last 0.00 s
+        1 x  bm=0x00 req=0x09 wValue=0x0001 wIndex=0x0000 out= [OK] resp=
+GET_DESCRIPTOR 3: 6 x, first 2.37 s, last 2.50 s, median interval 0.00 s
+        2 x  GET_DESCRIPTOR type 0x03 idx 3 len 254 [OK] 66 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 1 len 254 [OK] 36 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 2 len 254 [OK] 68 bytes
+SET_REPORT feature 10: 13 x, first 2.50 s, last 182.92 s, median interval 15.04 s
+       13 x  SET_REPORT feature 0x0a: 0a 01 [OK]
+SET_REPORT feature 3: 93 x, first 2.59 s, last 184.47 s, median interval 2.06 s
+       91 x  SET_REPORT feature 0x03: 03 64 64 [OK]
+        1 x  SET_REPORT feature 0x03: 03 64 00 [OK]
+        1 x  SET_REPORT feature 0x03: 03 00 64 [OK]
+
+== interrupt OUT: 6 transfers
+        2 x  04 00 00 00 00 00 00
+        2 x  02 00 00 00 00 00 00 00 00
+        1 x  04 ff ff ff ff ff ff
+        1 x  02 ff ff ff ff ff ff ff ff
+
+== interrupt IN reports
+   0x02: 60 reports, wire lengths {9: 60}
+
+== USER x5 markers at: 44.9, 74.3, 127.3, 142.8
+
+-- segment 0 (0.0 .. 44.9 s): 34 control requests, 2 interrupt OUT, 8 IN reports
+      0.00  GET_DESCRIPTOR type 0x01 idx 0 len 18 [OK] 18 bytes
+      0.00  GET_DESCRIPTOR type 0x02 idx 0 len 86 [OK] 86 bytes
+      0.00  bm=0x00 req=0x09 wValue=0x0001 wIndex=0x0000 out= [OK] resp=
+      2.37  GET_DESCRIPTOR type 0x03 idx 3 len 254 [OK] 66 bytes
+      2.37  GET_DESCRIPTOR type 0x03 idx 1 len 254 [OK] 36 bytes
+      2.37  GET_DESCRIPTOR type 0x03 idx 2 len 254 [OK] 68 bytes
+      2.50  GET_DESCRIPTOR type 0x03 idx 3 len 254 [OK] 66 bytes
+      2.50  GET_DESCRIPTOR type 0x03 idx 1 len 254 [OK] 36 bytes
+      2.50  GET_DESCRIPTOR type 0x03 idx 2 len 254 [OK] 68 bytes
+      2.50  SET_REPORT feature 0x0a: 0a 01 [OK]
+      2.59  SET_REPORT feature 0x03: 03 64 64 [OK]
+      2.62  INT OUT report 0x04: 04 00 00 00 00 00 00
+      2.63  INT OUT report 0x02: 02 00 00 00 00 00 00 00 00   LEDs? none
+      2.64  SET_REPORT feature 0x03: 03 64 64 [OK]   (x8, until 16.86)
+     17.54  SET_REPORT feature 0x0a: 0a 01 [OK]
+     18.91  SET_REPORT feature 0x03: 03 64 64 [OK]   (x7, until 31.26)
+     32.57  SET_REPORT feature 0x0a: 0a 01 [OK]
+     33.32  SET_REPORT feature 0x03: 03 64 64 [OK]   (x6, until 43.50)
+
+-- segment 1 (44.9 .. 74.3 s): 17 control requests, 1 interrupt OUT, 10 IN reports
+     45.56  SET_REPORT feature 0x03: 03 64 64 [OK]
+     45.93  INT OUT report 0x04: 04 ff ff ff ff ff ff
+     47.61  SET_REPORT feature 0x03: 03 64 64 [OK]
+     47.61  SET_REPORT feature 0x0a: 0a 01 [OK]
+     49.67  SET_REPORT feature 0x03: 03 64 64 [OK]   (x7, until 61.98)
+     62.66  SET_REPORT feature 0x0a: 0a 01 [OK]
+     64.04  SET_REPORT feature 0x03: 03 64 64 [OK]   (x6, until 74.23)
+
+-- segment 2 (74.3 .. 127.3 s): 29 control requests, 2 interrupt OUT, 20 IN reports
+     75.34  INT OUT report 0x04: 04 00 00 00 00 00 00
+     75.35  INT OUT report 0x02: 02 ff ff ff ff ff ff ff ff   LEDs? Y_LIFT,Y_GAMMA,Y_GAIN,CONTRAST,PIVOT,MID_DETAIL,COLOR_BOOST,SHADOWS,HIGHLIGHTS,SATURATION,HUE,LUM_MIX,AUTO_COLOR,OFFSET,COPY,PASTE,UNDO,REDO,DELETE,RESET,BYPASS,DISABLE,USER,LOOP,SHIFT_UP,SHIFT_DOWN,PLAY_STILL,WIPE_STILL,GRAB_STILL,H_LITE,VIEWER,CURSOR,SELECT,RESET_LIFT,RESET_GAMMA,RESET_GAIN,ADD_NODE,ADD_WINDOW,ADD_KEYFRM,PREV_STILL,NEXT_STILL,PREV_KEYFRM,NEXT_KEYFRM,PREV_NODE,NEXT_NODE,PREV_FRAME,NEXT_FRAME,PREV_CLIP,NEXT_CLIP,PLAY_REV,PLAY_FWD,STOP,b60,b61,b62,b63,b64,b65,b66,b67,b68,b69,b70,b71
+     76.29  SET_REPORT feature 0x03: 03 64 64 [OK]
+     77.72  SET_REPORT feature 0x0a: 0a 01 [OK]
+     78.29  SET_REPORT feature 0x03: 03 64 64 [OK]   (x8, until 92.66)
+     92.78  SET_REPORT feature 0x0a: 0a 01 [OK]
+     94.71  SET_REPORT feature 0x03: 03 64 64 [OK]   (x7, until 107.07)
+    107.81  SET_REPORT feature 0x0a: 0a 01 [OK]
+    109.13  SET_REPORT feature 0x03: 03 64 64 [OK]   (x3, until 113.19)
+    114.83     [press BYPASS]
+    114.92     [release BYPASS]
+    115.01     [press BYPASS]
+    115.08     [release BYPASS]
+    115.19     [press BYPASS]
+    115.24  SET_REPORT feature 0x03: 03 64 64 [OK]
+    115.28     [release BYPASS]
+    115.37     [press BYPASS]
+    115.46     [release BYPASS]
+    115.55     [press BYPASS]
+    115.64     [release BYPASS]
+    117.27  SET_REPORT feature 0x03: 03 64 64 [OK]   (x3, until 121.27)
+    122.84  SET_REPORT feature 0x0a: 0a 01 [OK]
+    123.28  SET_REPORT feature 0x03: 03 64 64 [OK]   (x2, until 125.33)
+
+-- segment 3 (127.3 .. 142.8 s): 10 control requests, 1 interrupt OUT, 10 IN reports
+    127.34  SET_REPORT feature 0x03: 03 64 64 [OK]
+    128.37  INT OUT report 0x02: 02 00 00 00 00 00 00 00 00   LEDs? none
+    128.37  SET_REPORT feature 0x03: 03 64 00 [OK]
+    129.40  SET_REPORT feature 0x03: 03 64 64 [OK]   (x5, until 137.53)
+    137.85  SET_REPORT feature 0x0a: 0a 01 [OK]
+    139.59  SET_REPORT feature 0x03: 03 64 64 [OK]   (x2, until 141.59)
+
+-- segment 4 (142.8 .. end s): 25 control requests, 0 interrupt OUT, 12 IN reports
+    143.65  SET_REPORT feature 0x03: 03 64 64 [OK]
+    143.84  SET_REPORT feature 0x03: 03 00 64 [OK]
+    145.66  SET_REPORT feature 0x03: 03 64 64 [OK]   (x4, until 151.74)
+    152.87  SET_REPORT feature 0x0a: 0a 01 [OK]
+    153.80  SET_REPORT feature 0x03: 03 64 64 [OK]   (x7, until 166.04)
+    167.91  SET_REPORT feature 0x0a: 0a 01 [OK]
+    168.00     [press BYPASS]
+    168.05  SET_REPORT feature 0x03: 03 64 64 [OK]
+    168.10     [release BYPASS]
+    168.19     [press BYPASS]
+    168.26     [release BYPASS]
+    168.36     [press BYPASS]
+    168.44     [release BYPASS]
+    168.54     [press BYPASS]
+    168.62     [release BYPASS]
+    168.72     [press BYPASS]
+    168.82     [release BYPASS]
+    170.07  SET_REPORT feature 0x03: 03 64 64 [OK]   (x7, until 182.42)
+    182.92  SET_REPORT feature 0x0a: 0a 01 [OK]
+    184.47  SET_REPORT feature 0x03: 03 64 64 [OK]

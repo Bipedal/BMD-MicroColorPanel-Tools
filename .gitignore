@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+private_ids.json
+*_PRIVATE_*
+*_OFFLINE_*
+*.pdf

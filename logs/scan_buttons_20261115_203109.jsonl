@@ -1,0 +1,71 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794774669.6128}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774669.646}
+{"t": "block", "block": "RBALL", "n": 6, "ts": 1794774669.6462}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774671.5758}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774673.6372}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774675.6917}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774677.7479}
+{"t": "btn", "block": "RBALL", "bit": 44, "v": 1, "ts": 1794774679.0513}
+{"t": "btn", "block": "RBALL", "bit": 44, "v": 0, "ts": 1794774679.3633}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774679.7869}
+{"t": "btn", "block": "RBALL", "bit": 45, "v": 1, "ts": 1794774680.0912}
+{"t": "btn", "block": "RBALL", "bit": 45, "v": 0, "ts": 1794774680.3952}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794774681.1152}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794774681.3873}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774681.8224}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794774682.3712}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794774682.4993}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794774682.5712}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794774682.6752}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794774682.7393}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "ts": 1794774682.8353}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "ts": 1794774682.9233}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "settle": true, "ts": 1794774683.0192}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 1, "settle": true, "ts": 1794774683.1072}
+{"t": "btn", "block": "RBALL", "bit": 46, "v": 0, "settle": true, "ts": 1794774683.2272}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774683.8487}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794774684.5396}
+{"t": "block", "block": "TRANS", "n": 8, "ts": 1794774684.6613}
+{"t": "btn", "block": "TRANS", "bit": 57, "v": 1, "ts": 1794774685.8272}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774685.8806}
+{"t": "btn", "block": "TRANS", "bit": 57, "v": 0, "ts": 1794774686.1632}
+{"t": "btn", "block": "TRANS", "bit": 58, "v": 1, "ts": 1794774686.8272}
+{"t": "btn", "block": "TRANS", "bit": 58, "v": 0, "ts": 1794774687.1392}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794774687.8193}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774687.942}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794774688.1153}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794774688.7952}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794774688.8913}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794774688.9713}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794774689.0513}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794774689.1233}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "ts": 1794774689.2032}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "ts": 1794774689.2752}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "settle": true, "ts": 1794774689.3713}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 1, "settle": true, "ts": 1794774689.4512}
+{"t": "btn", "block": "TRANS", "bit": 59, "v": 0, "settle": true, "ts": 1794774689.5394}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794774689.9699}
+{"t": "summary", "line": "", "ts": 1794774690.9723}
+{"t": "summary", "line": "== scan_buttons summary", "ts": 1794774690.9725}
+{"t": "summary", "line": "RBALL (3 buttons above the RIGHT ball, left -> right): 3 buttons", "ts": 1794774690.9726}
+{"t": "summary", "line": "   RBALL_1 -> bit 44", "ts": 1794774690.9726}
+{"t": "summary", "line": "   RBALL_2 -> bit 45", "ts": 1794774690.9727}
+{"t": "summary", "line": "   RBALL_3 -> bit 46", "ts": 1794774690.9728}
+{"t": "summary", "line": "TRANS (transport: LEFT ARROW, then RIGHT ARROW, then STOP (wide key below)): 3 buttons", "ts": 1794774690.9729}
+{"t": "summary", "line": "   TRANS_1 -> bit 57", "ts": 1794774690.9729}
+{"t": "summary", "line": "   TRANS_2 -> bit 58", "ts": 1794774690.973}
+{"t": "summary", "line": "   TRANS_3 -> bit 59", "ts": 1794774690.973}
+{"t": "summary", "line": "bits in more than one block: none", "ts": 1794774690.9731}
+{"t": "summary", "line": "bits 8..59 never pressed: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56]", "ts": 1794774690.9732}
+{"t": "summary", "line": "bits outside 8..59: none", "ts": 1794774690.9732}
+{"t": "summary", "line": "", "ts": 1794774690.9733}
+{"t": "summary", "line": "POSITIONS = {", "ts": 1794774690.9736}
+{"t": "summary", "line": "    44: \"RBALL_1\",", "ts": 1794774690.9737}
+{"t": "summary", "line": "    45: \"RBALL_2\",", "ts": 1794774690.9737}
+{"t": "summary", "line": "    46: \"RBALL_3\",", "ts": 1794774690.9738}
+{"t": "summary", "line": "    57: \"TRANS_1\",", "ts": 1794774690.9739}
+{"t": "summary", "line": "    58: \"TRANS_2\",", "ts": 1794774690.9739}
+{"t": "summary", "line": "    59: \"TRANS_3\",", "ts": 1794774690.974}
+{"t": "summary", "line": "}", "ts": 1794774690.974}
+{"t": "summary", "line": "feature sends ok=13 failed=0", "ts": 1794774690.9741}
+{"t": "summary", "line": "log: C:\\panel\\logs\\scan_buttons_20261115_203109.jsonl", "ts": 1794774690.9741}

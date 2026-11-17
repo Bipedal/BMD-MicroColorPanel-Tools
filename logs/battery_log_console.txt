@@ -1,0 +1,63 @@
+    0.0 s  transport -> usb
+    0.0 s  usb 0x07=07 03 70 41 00 00  raw=16752 (/4 = 4188.0 mV)  batt chg=1  99%
+   60.1 s  usb 0x07=07 03 59 41 00 00  raw=16729 (/4 = 4182.2 mV)  batt chg=1  99%
+  120.3 s  usb 0x07=07 03 7f 41 00 00  raw=16767 (/4 = 4191.8 mV)  batt chg=1  99%
+  180.4 s  usb 0x07=07 03 6c 41 00 00  raw=16748 (/4 = 4187.0 mV)  batt chg=1  99%
+  240.7 s  usb 0x07=07 03 5b 41 00 00  raw=16731 (/4 = 4182.8 mV)  batt chg=1  99%
+  300.9 s  usb 0x07=07 03 72 41 00 00  raw=16754 (/4 = 4188.5 mV)  batt chg=1  99%
+  305.3 s  transport -> None
+  306.3 s  transport -> bt
+  337.7 s  battery event 08 00 60
+  356.5 s  bt  0x07=07 00 93 40 00 00  raw=16531 (/4 = 4132.8 mV)  batt chg=0  96%
+  416.7 s  bt  0x07=07 00 41 40 00 00  raw=16449 (/4 = 4112.2 mV)  batt chg=0  96%
+  477.0 s  bt  0x07=07 00 77 40 00 00  raw=16503 (/4 = 4125.8 mV)  batt chg=0  96%
+  537.1 s  bt  0x07=07 00 7f 40 00 00  raw=16511 (/4 = 4127.8 mV)  batt chg=0  96%
+  547.6 s  battery event 08 00 5f
+  597.3 s  bt  0x07=07 00 61 40 00 00  raw=16481 (/4 = 4120.2 mV)  batt chg=0  95%
+  657.6 s  bt  0x07=07 00 8d 40 00 00  raw=16525 (/4 = 4131.2 mV)  batt chg=0  95%
+  717.7 s  bt  0x07=07 00 79 40 00 00  raw=16505 (/4 = 4126.2 mV)  batt chg=0  95%
+  778.0 s  bt  0x07=07 00 64 40 00 00  raw=16484 (/4 = 4121.0 mV)  batt chg=0  95%
+  838.2 s  bt  0x07=07 00 3b 40 00 00  raw=16443 (/4 = 4110.8 mV)  batt chg=0  95%
+  898.3 s  bt  0x07=07 00 80 40 00 00  raw=16512 (/4 = 4128.0 mV)  batt chg=0  95%
+  958.4 s  bt  0x07=07 00 43 40 00 00  raw=16451 (/4 = 4112.8 mV)  batt chg=0  95%
+ 1018.7 s  bt  0x07=07 00 3b 40 00 00  raw=16443 (/4 = 4110.8 mV)  batt chg=0  95%
+ 1027.1 s  battery event 08 00 5e
+ 1079.0 s  bt  0x07=07 00 6d 40 00 00  raw=16493 (/4 = 4123.2 mV)  batt chg=0  94%
+ 1117.0 s  battery event 08 00 5f
+ 1139.4 s  bt  0x07=07 00 63 40 00 00  raw=16483 (/4 = 4120.8 mV)  batt chg=0  95%
+ 1146.9 s  battery event 08 00 5e
+ 1199.6 s  bt  0x07=07 00 45 40 00 00  raw=16453 (/4 = 4113.2 mV)  batt chg=0  94%
+ 1259.9 s  bt  0x07=07 00 36 40 00 00  raw=16438 (/4 = 4109.5 mV)  batt chg=0  94%
+ 1320.1 s  bt  0x07=07 00 36 40 00 00  raw=16438 (/4 = 4109.5 mV)  batt chg=0  94%
+ 1380.2 s  bt  0x07=07 00 14 40 00 00  raw=16404 (/4 = 4101.0 mV)  batt chg=0  94%
+ 1440.4 s  bt  0x07=07 00 39 40 00 00  raw=16441 (/4 = 4110.2 mV)  batt chg=0  94%
+ 1500.6 s  bt  0x07=07 00 59 40 00 00  raw=16473 (/4 = 4118.2 mV)  batt chg=0  94%
+ 1560.8 s  bt  0x07=07 00 3b 40 00 00  raw=16443 (/4 = 4110.8 mV)  batt chg=0  94%
+ 1620.9 s  bt  0x07=07 00 e6 3f 00 00  raw=16358 (/4 = 4089.5 mV)  batt chg=0  94%
+ 1681.2 s  bt  0x07=07 00 26 40 00 00  raw=16422 (/4 = 4105.5 mV)  batt chg=0  94%
+ 1716.4 s  battery event 08 00 5d
+ 1741.4 s  bt  0x07=07 00 21 40 00 00  raw=16417 (/4 = 4104.2 mV)  batt chg=0  93%
+ 1801.6 s  bt  0x07=07 00 1f 40 00 00  raw=16415 (/4 = 4103.8 mV)  batt chg=0  93%
+ 1818.9 s  battery event 08 01 5d
+ 1819.2 s  battery event 08 01 5d
+ 1819.4 s  battery event 08 01 5d
+ 1819.7 s  transport -> usb
+ 1819.7 s  battery event 08 01 5d
+ 1859.7 s  usb 0x07=07 03 66 41 00 00  raw=16742 (/4 = 4185.5 mV)  batt chg=1  93%
+ 1920.1 s  usb 0x07=07 03 4c 41 00 00  raw=16716 (/4 = 4179.0 mV)  batt chg=1  93%
+ 1980.3 s  usb 0x07=07 03 b9 41 00 00  raw=16825 (/4 = 4206.2 mV)  batt chg=1  93%
+ 2016.1 s  battery event 08 01 5e
+ 2040.5 s  usb 0x07=07 03 52 41 00 00  raw=16722 (/4 = 4180.5 mV)  batt chg=1  94%
+ 2100.7 s  usb 0x07=07 03 a2 41 00 00  raw=16802 (/4 = 4200.5 mV)  batt chg=1  94%
+
+ended by cap, 216 samples
+
+== per transport / charging state
+   usb chg=1:  65 samples,   0.0.. 35.8 min, raw 16690..16825 (mean 16747), level 93..99 %, state byte [3]
+   bt  chg=0: 151 samples,   5.1.. 30.2 min, raw 16315..16559 (mean 16457), level 93..100 %, state byte [0]
+
+== trend per segment (mean of first 5 vs last 5 samples)
+   usb chg=1   0.0-  5.0 min: raw 16738 -> 16745 (+7), level 99 -> 99
+   bt  chg=0   5.1- 30.2 min: raw 16536 -> 16410 (-127), level 100 -> 93
+   usb chg=1  30.3- 35.8 min: raw 16743 -> 16735 (-8), level 93 -> 94
+log: C:\panel\logs\battery_log_20261116_223322.jsonl

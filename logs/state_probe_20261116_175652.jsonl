@@ -1,0 +1,35 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794851813.1438}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794851813.1774}
+{"t": "get_feature", "rid": 3, "n": 33, "err": "OSError('read error')", "ts": 1794851813.1918}
+{"t": "get_feature", "rid": 7, "n": 33, "err": "OSError('read error')", "ts": 1794851813.1927}
+{"t": "get_feature", "rid": 8, "n": 33, "err": "OSError('read error')", "ts": 1794851813.1933}
+{"t": "get_feature", "rid": 10, "n": 33, "err": "OSError('read error')", "ts": 1794851813.1938}
+{"t": "get_input", "rid": 2, "n": 65, "err": "OSError('read error')", "ts": 1794851813.1944}
+{"t": "get_input", "rid": 5, "n": 65, "err": "OSError('read error')", "ts": 1794851813.195}
+{"t": "get_input", "rid": 6, "n": 65, "data": "06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00", "ts": 1794851813.1964}
+{"t": "get_input", "rid": 8, "n": 65, "err": "OSError('read error')", "ts": 1794851813.2007}
+{"t": "rx", "rid": 5, "data": "05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00", "ts": 1794851813.201}
+{"t": "send", "why": "probe", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794851813.3055}
+{"t": "send", "why": "probe", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794851813.9226}
+{"t": "send", "why": "probe", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794851814.5354}
+{"t": "send", "why": "probe", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794851815.1605}
+{"t": "send", "why": "probe", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794851815.7808}
+{"t": "send", "why": "probe", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794851816.4041}
+{"t": "summary", "line": "\n== A1 feature/input report reads (nothing held)", "ts": 1794851816.9148}
+{"t": "summary", "line": "   get_feature 0x03: OSError('read error')", "ts": 1794851816.9148}
+{"t": "summary", "line": "   get_feature 0x07: OSError('read error')", "ts": 1794851816.9148}
+{"t": "summary", "line": "   get_feature 0x08: OSError('read error')", "ts": 1794851816.9148}
+{"t": "summary", "line": "   get_feature 0x0a: OSError('read error')", "ts": 1794851816.9149}
+{"t": "summary", "line": "   get_input   0x02: OSError('read error')", "ts": 1794851816.9149}
+{"t": "summary", "line": "   get_input   0x05: OSError('read error')", "ts": 1794851816.9149}
+{"t": "summary", "line": "   get_input   0x06: 65 bytes, id byte 0x06, nonzero offsets none", "ts": 1794851816.9149}
+{"t": "summary", "line": "   get_input   0x08: OSError('read error')", "ts": 1794851816.9149}
+{"t": "summary", "line": "\n== A2 init/light with nothing held (3 tries each, 500 ms listen)", "ts": 1794851816.9149}
+{"t": "summary", "line": "   send 0a 01    ok=True -> 0 reports []; 0x02: none", "ts": 1794851816.9149}
+{"t": "summary", "line": "   send 0a 01    ok=True -> 0 reports []; 0x02: none", "ts": 1794851816.9149}
+{"t": "summary", "line": "   send 0a 01    ok=True -> 0 reports []; 0x02: none", "ts": 1794851816.9149}
+{"t": "summary", "line": "   send 03 64 64 ok=True -> 0 reports []; 0x02: none", "ts": 1794851816.9149}
+{"t": "summary", "line": "   send 03 64 64 ok=True -> 0 reports []; 0x02: none", "ts": 1794851816.9149}
+{"t": "summary", "line": "   send 03 64 64 ok=True -> 0 reports []; 0x02: none", "ts": 1794851816.9149}
+{"t": "summary", "line": "\nfeature sends ok=8 failed=0; report reads failed=7", "ts": 1794851816.9149}
+{"t": "summary", "line": "log: C:\\panel\\logs\\state_probe_20261116_175652.jsonl", "ts": 1794851816.9149}

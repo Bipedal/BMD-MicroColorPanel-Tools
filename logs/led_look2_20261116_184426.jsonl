@@ -1,0 +1,24 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854666.2604}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794854666.3018}
+{"t": "pattern", "name": "Q0", "desc": "status LEDs all ON, brightness 100/100 (reference)", "ts": 1794854666.302}
+{"t": "write", "why": "Q0", "data": "04 ff ff ff ff ff ff", "ok": true, "rc": 9, "err": null, "ts": 1794854666.3026}
+{"t": "send", "why": "Q0", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794854666.3166}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854681.2221}
+{"t": "pattern", "name": "Q1", "desc": "status LEDs all ON, brightness 100/0", "ts": 1794854688.7398}
+{"t": "send", "why": "Q1", "data": "03 64 00", "ok": true, "rc": 3, "err": null, "ts": 1794854688.7556}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854696.2478}
+{"t": "pattern", "name": "Q2", "desc": "status LEDs all ON, brightness 0/100", "ts": 1794854705.4024}
+{"t": "send", "why": "Q2", "data": "03 00 64", "ok": true, "rc": 3, "err": null, "ts": 1794854705.4339}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854711.2951}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854726.3156}
+{"t": "pattern", "name": "Q3", "desc": "status LEDs all ON, brightness 0/0", "ts": 1794854731.2795}
+{"t": "send", "why": "Q3", "data": "03 00 00", "ok": true, "rc": 3, "err": null, "ts": 1794854731.2951}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854741.3285}
+{"t": "pattern", "name": "Q4", "desc": "brightness 100/100, status LEDs all ON and 0x02 all ON", "ts": 1794854747.1268}
+{"t": "send", "why": "Q4", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794854747.1612}
+{"t": "write", "why": "Q4", "data": "02 ff ff ff ff ff ff ff ff", "ok": true, "rc": 9, "err": null, "ts": 1794854747.1666}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854756.3407}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854771.3986}
+{"t": "write", "why": "restore", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854775.9586}
+{"t": "write", "why": "restore", "data": "02 00 00 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854775.9746}
+{"t": "send", "why": "restore", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794854775.9953}

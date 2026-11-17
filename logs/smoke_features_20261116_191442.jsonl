@@ -1,0 +1,3 @@
+{"t": "info", "info": {"build": "155b3bfd", "version": "2.2.0", "serial": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}, "battery": {"charging": false, "level": 97}, "enabled": true, "ts": 1794856483.5965}
+{"t": "state", "fired": true, "state": ["H_LITE", "USER"], "stream": [30, 37], "ts": 1794856492.7478}
+{"t": "summary", "stats": {"sends_ok": 5, "sends_failed": 0, "writes_ok": 15, "writes_failed": 0, "gets_failed": 0, "reports": 11, "unknown_ids": 0, "inits": 1, "resyncs": 1}, "fails": [], "ts": 1794856506.5315}

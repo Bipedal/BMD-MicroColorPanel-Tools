@@ -1,0 +1,202 @@
+dump_caps  2026-11-16 19:08:25  python 3.14.7  hidapi 0.15.0
+
+== enumerate(1edb:da0f): 1 entries
+  iface=-1  usage_page=0xff00 usage=0x0000  release=0x0100  bus=2
+    product='DaVinci_Resolve_Micro_Color_Panel' mfr='Blackmagic_Design' serial='XXXXXXXXXXXX'
+    path=\\?\HID#{00001812-0000-1000-8000-00805f9b34fb}_Dev_VID&021edb_PID&da0f_REV&0100_XXXXXXXXXXXX#a&2e0c8d27&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+transport: bt
+
+== interface 2 collections: 1
+
+-- \\?\HID#{00001812-0000-1000-8000-00805f9b34fb}_Dev_VID&021edb_PID&da0f_REV&0100_XXXXXXXXXXXX#a&2e0c8d27&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+  HidP_GetCaps:
+    top-level usage page 0xff00 usage 0x0000
+    Input   report byte length (incl. ID byte): 65
+    Output  report byte length (incl. ID byte): 9
+    Feature report byte length (incl. ID byte): 33
+    link collection nodes: 11
+    Input   button caps 1, value caps 4, data indices 5
+    Output  button caps 2, value caps 0, data indices 2
+    Feature button caps 0, value caps 7, data indices 7
+      Input VALUE  id=0x05 page=0xff04 usage=0x0000 bits=96 count=3 logical=[0,255] physical=[0,0] flags=0x0002 dataidx=1
+      Input VALUE  id=0x06 page=0xff05 usage=0x0000 bits=32 count=16 logical=[0,65535] physical=[0,0] flags=0x0002 dataidx=2
+      Input VALUE  id=0x08 page=0xff07 usage=0x0000 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0002 dataidx=3
+      Input VALUE  id=0x08 page=0xff07 usage=0x0001 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0002 dataidx=4
+      Input BUTTON id=0x02 page=0xff01 usage=0x0000 count=64 flags=0x0002
+      Output BUTTON id=0x02 page=0xff01 usage=0x0000 count=64 flags=0x0002
+      Output BUTTON id=0x04 page=0xff03 usage=0x0000 count=48 flags=0x0002
+      Feature VALUE  id=0x03 page=0xff02 usage=0x0000 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=0
+      Feature VALUE  id=0x03 page=0xff02 usage=0x0001 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=1
+      Feature VALUE  id=0x07 page=0xff06 usage=0x0000 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=2
+      Feature VALUE  id=0x07 page=0xff06 usage=0x0001 bits=8 count=4 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=3
+      Feature VALUE  id=0x08 page=0xff07 usage=0x0000 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=4
+      Feature VALUE  id=0x08 page=0xff07 usage=0x0001 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=5
+      Feature VALUE  id=0x0a page=0xff09 usage=0x0000 bits=8 count=1 logical=[0,255] physical=[0,0] flags=0x0082 dataidx=6
+  get_manufacturer_string: 'Blackmagic_Design'
+  get_product_string: 'DaVinci_Resolve_Micro_Color_Panel'
+  get_serial_number_string: 'XXXXXXXXXXXX'
+  report descriptor: 251 bytes (on Windows hidapi rebuilds this from preparsed data; it is equivalent, not byte-identical)
+    06 00 ff 09 00 a1 01 09 01 a1 01 c0 05 06 09 02
+    a1 01 85 02 06 01 ff 09 00 15 00 25 01 75 01 95
+    40 81 02 09 00 15 00 25 01 75 01 95 40 91 02 c0
+    09 03 a1 01 85 03 06 02 ff 09 00 09 01 15 00 26
+    ff 00 75 08 95 02 b1 82 c0 09 04 a1 01 85 04 06
+    03 ff 09 00 15 00 25 01 75 01 95 30 91 02 c0 09
+    05 a1 01 85 05 06 04 ff 09 00 15 00 26 ff 00 75
+    60 95 03 81 02 c0 09 06 a1 01 85 06 06 05 ff 09
+    00 15 00 27 ff ff 00 00 75 20 95 10 81 02 c0 09
+    07 a1 01 85 07 06 06 ff 09 00 15 00 26 ff 00 75
+    08 95 01 b1 82 09 01 15 00 26 ff 00 75 08 95 04
+    b1 82 c0 09 08 a1 01 85 08 06 07 ff 09 00 09 01
+    15 00 26 ff 00 75 08 95 02 81 02 09 00 09 01 15
+    00 26 ff 00 75 08 95 02 b1 82 c0 09 09 a1 01 c0
+    06 08 ff 09 0a a1 01 85 0a 06 09 ff 09 00 15 00
+    26 ff 00 75 08 95 01 b1 82 c0 c0
+  parsed:
+    0000  06 00 ff           UsagePage 0xff00
+    0003  09 00              Usage 0x0
+    0005  a1 01              Collection 0x1
+    0007  09 01                Usage 0x1
+    0009  a1 01                Collection 0x1
+    000b  c0                   EndCollection 0x0
+    000c  05 06                UsagePage 0x06
+    000e  09 02                Usage 0x2
+    0010  a1 01                Collection 0x1
+    0012  85 02                  ReportID 0x02
+    0014  06 01 ff               UsagePage 0xff01
+    0017  09 00                  Usage 0x0
+    0019  15 00                  LogicalMin 0
+    001b  25 01                  LogicalMax 1
+    001d  75 01                  ReportSize 1
+    001f  95 40                  ReportCount 64
+    0021  81 02                  Input 0x2 (Var) size=1 count=64 -> 64 bits
+    0023  09 00                  Usage 0x0
+    0025  15 00                  LogicalMin 0
+    0027  25 01                  LogicalMax 1
+    0029  75 01                  ReportSize 1
+    002b  95 40                  ReportCount 64
+    002d  91 02                  Output 0x2 (Var) size=1 count=64 -> 64 bits
+    002f  c0                   EndCollection 0x0
+    0030  09 03                Usage 0x3
+    0032  a1 01                Collection 0x1
+    0034  85 03                  ReportID 0x03
+    0036  06 02 ff               UsagePage 0xff02
+    0039  09 00                  Usage 0x0
+    003b  09 01                  Usage 0x1
+    003d  15 00                  LogicalMin 0
+    003f  26 ff 00               LogicalMax 255
+    0042  75 08                  ReportSize 8
+    0044  95 02                  ReportCount 2
+    0046  b1 82                  Feature 0x82 (Var) size=8 count=2 -> 16 bits
+    0048  c0                   EndCollection 0x0
+    0049  09 04                Usage 0x4
+    004b  a1 01                Collection 0x1
+    004d  85 04                  ReportID 0x04
+    004f  06 03 ff               UsagePage 0xff03
+    0052  09 00                  Usage 0x0
+    0054  15 00                  LogicalMin 0
+    0056  25 01                  LogicalMax 1
+    0058  75 01                  ReportSize 1
+    005a  95 30                  ReportCount 48
+    005c  91 02                  Output 0x2 (Var) size=1 count=48 -> 48 bits
+    005e  c0                   EndCollection 0x0
+    005f  09 05                Usage 0x5
+    0061  a1 01                Collection 0x1
+    0063  85 05                  ReportID 0x05
+    0065  06 04 ff               UsagePage 0xff04
+    0068  09 00                  Usage 0x0
+    006a  15 00                  LogicalMin 0
+    006c  26 ff 00               LogicalMax 255
+    006f  75 60                  ReportSize 96
+    0071  95 03                  ReportCount 3
+    0073  81 02                  Input 0x2 (Var) size=96 count=3 -> 288 bits
+    0075  c0                   EndCollection 0x0
+    0076  09 06                Usage 0x6
+    0078  a1 01                Collection 0x1
+    007a  85 06                  ReportID 0x06
+    007c  06 05 ff               UsagePage 0xff05
+    007f  09 00                  Usage 0x0
+    0081  15 00                  LogicalMin 0
+    0083  27 ff ff 00 00         LogicalMax 65535
+    0088  75 20                  ReportSize 32
+    008a  95 10                  ReportCount 16
+    008c  81 02                  Input 0x2 (Var) size=32 count=16 -> 512 bits
+    008e  c0                   EndCollection 0x0
+    008f  09 07                Usage 0x7
+    0091  a1 01                Collection 0x1
+    0093  85 07                  ReportID 0x07
+    0095  06 06 ff               UsagePage 0xff06
+    0098  09 00                  Usage 0x0
+    009a  15 00                  LogicalMin 0
+    009c  26 ff 00               LogicalMax 255
+    009f  75 08                  ReportSize 8
+    00a1  95 01                  ReportCount 1
+    00a3  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00a5  09 01                  Usage 0x1
+    00a7  15 00                  LogicalMin 0
+    00a9  26 ff 00               LogicalMax 255
+    00ac  75 08                  ReportSize 8
+    00ae  95 04                  ReportCount 4
+    00b0  b1 82                  Feature 0x82 (Var) size=8 count=4 -> 32 bits
+    00b2  c0                   EndCollection 0x0
+    00b3  09 08                Usage 0x8
+    00b5  a1 01                Collection 0x1
+    00b7  85 08                  ReportID 0x08
+    00b9  06 07 ff               UsagePage 0xff07
+    00bc  09 00                  Usage 0x0
+    00be  09 01                  Usage 0x1
+    00c0  15 00                  LogicalMin 0
+    00c2  26 ff 00               LogicalMax 255
+    00c5  75 08                  ReportSize 8
+    00c7  95 02                  ReportCount 2
+    00c9  81 02                  Input 0x2 (Var) size=8 count=2 -> 16 bits
+    00cb  09 00                  Usage 0x0
+    00cd  09 01                  Usage 0x1
+    00cf  15 00                  LogicalMin 0
+    00d1  26 ff 00               LogicalMax 255
+    00d4  75 08                  ReportSize 8
+    00d6  95 02                  ReportCount 2
+    00d8  b1 82                  Feature 0x82 (Var) size=8 count=2 -> 16 bits
+    00da  c0                   EndCollection 0x0
+    00db  09 09                Usage 0x9
+    00dd  a1 01                Collection 0x1
+    00df  c0                   EndCollection 0x0
+    00e0  06 08 ff             UsagePage 0xff08
+    00e3  09 0a                Usage 0xa
+    00e5  a1 01                Collection 0x1
+    00e7  85 0a                  ReportID 0x0a
+    00e9  06 09 ff               UsagePage 0xff09
+    00ec  09 00                  Usage 0x0
+    00ee  15 00                  LogicalMin 0
+    00f0  26 ff 00               LogicalMax 255
+    00f3  75 08                  ReportSize 8
+    00f5  95 01                  ReportCount 1
+    00f7  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00f9  c0                   EndCollection 0x0
+    00fa  c0                 EndCollection 0x0
+  per report ID (payload bits -> bytes, +1 for ID byte if ID != 0):
+    Input   id=0x02    64 bits =   8 bytes payload
+    Output  id=0x02    64 bits =   8 bytes payload
+    Feature id=0x03    16 bits =   2 bytes payload
+    Output  id=0x04    48 bits =   6 bytes payload
+    Input   id=0x05   288 bits =  36 bytes payload
+    Input   id=0x06   512 bits =  64 bytes payload
+    Feature id=0x07    40 bits =   5 bytes payload
+    Feature id=0x08    16 bits =   2 bytes payload
+    Input   id=0x08    16 bits =   2 bytes payload
+    Feature id=0x0a     8 bits =   1 bytes payload
+
+== SUMMARY
+  Input   id=0x02    64 bits =   8 bytes payload
+  Output  id=0x02    64 bits =   8 bytes payload
+  Feature id=0x03    16 bits =   2 bytes payload
+  Output  id=0x04    48 bits =   6 bytes payload
+  Input   id=0x05   288 bits =  36 bytes payload
+  Input   id=0x06   512 bits =  64 bytes payload
+  Feature id=0x07    40 bits =   5 bytes payload
+  Feature id=0x08    16 bits =   2 bytes payload
+  Input   id=0x08    16 bits =   2 bytes payload
+  Feature id=0x0a     8 bits =   1 bytes payload
+  caps lengths: in=65 out=9 feat=33
+  errors: 0
+log: C:\panel\logs\dump_caps_bt_20261116_190825.txt

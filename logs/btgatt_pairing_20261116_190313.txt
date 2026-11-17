@@ -1,0 +1,317 @@
+== logs/bt_pair_panelonly_PRIVATE_20261116_190313.pcapng, adapter 14, LE handle 0x0e02
+L2CAP channels: {'0x0006': 15, '0x0004': 227, '0x0005': 2} (0x0004 ATT, 0x0005 LE signalling, 0x0006 SMP = pairing, not printed)
+ATT ops: dev->host Error x16, dev->host Find By Type Rsp x1, dev->host Find Info Rsp x18, dev->host MTU Rsp x1, dev->host Read Blob Rsp x1, dev->host Read By Group Rsp x2, dev->host Read By Type Rsp x9, dev->host Read Rsp x58, dev->host Write Rsp x7, host->dev Find By Type Req x2, host->dev Find Info Req x19, host->dev MTU Req x1, host->dev Read Blob Req x1, host->dev Read By Group Req x2, host->dev Read By Type Req x23, host->dev Read Req x58, host->dev Write Cmd x1, host->dev Write Req x7
+
+== GATT table
+SERVICE 0x0001-0x0008  0x1801 Generic Attribute
+  CHAR value 0x0003  0x2A05 Service Changed                 [indicate]
+      DESC 0x0004 0x2902 CCCD = 02 00
+  CHAR value 0x0006  0x2B2A Database Hash                   [read]
+      value (16 B): c8 62 16 7f 88 69 f7 4e c7 ca 41 a0 02 17 77 ac
+  CHAR value 0x0008  0x2B29 Client Supported Features       [read,write]
+      value (1 B): 01
+SERVICE 0x0009-0x000d  0x1800 Generic Access
+  CHAR value 0x000b  0x2A00 Device Name                     [read]
+      value (17 B): 4d 69 63 72 6f 20 43 6f 6c 6f 72 20 50 61 6e 65 6c
+      ascii: 'Micro Color Panel'
+  CHAR value 0x000d  0x2A01 Appearance                      [read]
+      value (2 B): c1 03
+SERVICE 0x000e-0x0016  0x180A Device Information
+  CHAR value 0x0010  0x2A29 Manufacturer Name               [read]
+      value (17 B): 42 6c 61 63 6b 6d 61 67 69 63 20 44 65 73 69 67 6e
+      ascii: 'Blackmagic Design'
+  CHAR value 0x0012  0x2A24 Model Number                    [read]
+      value (33 B): 44 61 56 69 6e 63 69 20 52 65 73 6f 6c 76 65 20 4d 69 63 72 6f 20 43 6f 6c 6f 72 20 50 61 6e 65 6c
+      ascii: 'DaVinci Resolve Micro Color Panel'
+  CHAR value 0x0014  0x2A25 Serial Number                   [read]
+      value (32 B): 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
+      ascii: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+  CHAR value 0x0016  0x2A50 PnP ID                          [read]
+      value (7 B): 02 db 1e 0f da 00 01
+SERVICE 0x0017-0x0043  0x1812 Human Interface Device
+  CHAR value 0x0019  0x2A4D Report                          [read,write]
+      value (7 B): 15 5b 3b fd 02 02 00
+      DESC 0x001a 0x2908 Report Reference = 01 03   -> report ID 0x01 feature
+  CHAR value 0x001c  0x2A4D Report                          [read,notify]
+      value (8 B): 00 00 00 00 00 00 00 00
+      DESC 0x001d 0x2908 Report Reference = 02 01   -> report ID 0x02 input
+      DESC 0x001e 0x2902 CCCD = 00 00
+  CHAR value 0x0020  0x2A4D Report                          [read,write-no-rsp,write]
+      value (8 B): 00 00 00 00 00 00 00 00
+      DESC 0x0021 0x2908 Report Reference = 02 02   -> report ID 0x02 output
+  CHAR value 0x0023  0x2A4D Report                          [read,write]
+      value (2 B): 00 00
+      DESC 0x0024 0x2908 Report Reference = 03 03   -> report ID 0x03 feature
+  CHAR value 0x0026  0x2A4D Report                          [read,write-no-rsp,write]
+      value (6 B): 00 00 00 00 00 00
+      DESC 0x0027 0x2908 Report Reference = 04 02   -> report ID 0x04 output
+  CHAR value 0x0029  0x2A4D Report                          [read,notify]
+      value (36 B): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 ff ff 00 00 00 00 00 00 00 00 00 00 00 00
+      DESC 0x002a 0x2908 Report Reference = 05 01   -> report ID 0x05 input
+      DESC 0x002b 0x2902 CCCD = 00 00
+  CHAR value 0x002d  0x2A4D Report                          [read,notify]
+      value (64 B): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 e8 17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ...
+      DESC 0x002e 0x2908 Report Reference = 06 01   -> report ID 0x06 input
+      DESC 0x002f 0x2902 CCCD = 00 00
+  CHAR value 0x0031  0x2A4D Report                          [read,write]
+      value (5 B): 00 0f 41 00 00
+      DESC 0x0032 0x2908 Report Reference = 07 03   -> report ID 0x07 feature
+  CHAR value 0x0034  0x2A4D Report                          [read,write]
+      value (2 B): 00 63
+      DESC 0x0035 0x2908 Report Reference = 08 03   -> report ID 0x08 feature
+  CHAR value 0x0037  0x2A4D Report                          [read,notify]
+      value (2 B): 00 63
+      DESC 0x0038 0x2908 Report Reference = 08 01   -> report ID 0x08 input
+      DESC 0x0039 0x2902 CCCD = 00 00
+  CHAR value 0x003b  0x2A4D Report                          [read,write]
+      value (32 B): 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
+      ascii: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+      DESC 0x003c 0x2908 Report Reference = 09 03   -> report ID 0x09 feature
+  CHAR value 0x003e  0x2A4D Report                          [read,write]
+      value (1 B): 00
+      DESC 0x003f 0x2908 Report Reference = 0a 03   -> report ID 0x0a feature
+  CHAR value 0x0041  0x2A4B Report Map                      [read]
+      value (297 B): 06 00 ff 09 00 a1 01 09 01 a1 01 85 01 05 06 15 00 26 ff 00 09 2a 75 08 95 04 b1 81 09 2d 09 2e 09 2f 75 08 95 03 b1 81 c0 09 02 a1 01 85 02 06 ...
+  CHAR value 0x0043  0x2A4A HID Information                 [read]
+      value (4 B): 01 01 00 02
+SERVICE 0x0044-0x0047  0x180F Battery
+  CHAR value 0x0046  0x2A19 Battery Level                   [read,notify]
+      value (1 B): 63
+      ascii: 'c'
+      DESC 0x0047 0x2902 CCCD = 00 00
+SERVICE 0x0048-0x004a  0x1813 Scan Parameters
+  CHAR value 0x004a  0x2A4F Scan Interval Window            [write-no-rsp,write]
+SERVICE 0x004b-0xffff  1DCE0A9A-D84D-4A9F-878C-B48F0FBE12D3
+  CHAR value 0x004d  5B71420F-565B-4992-883D-B154F39C5CFC   [read,write]
+      value (7 B): 15 5b 3b fd 02 02 00
+  CHAR value 0x004f  CD343346-81A6-492D-91DD-FF0EAE5A8365   [read,notify]
+      value (8 B): 00 00 00 00 00 00 00 00
+      DESC 0x0050 0x2902 CCCD = 00 00
+  CHAR value 0x0052  8E073915-1CFB-413A-B82D-60ABA1F39348   [read,write-no-rsp,write]
+      value (8 B): 00 00 00 00 00 00 00 00
+  CHAR value 0x0054  41AE032B-ED25-44CB-93EC-88CC0588F0A9   [read,write]
+      value (2 B): 00 00
+  CHAR value 0x0056  4054B034-03B4-412A-B57B-9BD062A31A41   [read,write-no-rsp,write]
+      value (6 B): 00 00 00 00 00 00
+  CHAR value 0x0058  5A1FF3F8-C087-4762-98C0-D3318CA7D8F2   [read,notify]
+      value (36 B): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 ff ff 00 00 00 00 00 00 00 00 00 00 00 00
+      DESC 0x0059 0x2902 CCCD = 00 00
+  CHAR value 0x005b  A997AAE7-5355-4E86-80A6-BD6A5E9674CE   [read,notify]
+      value (64 B): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 e8 17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ...
+      DESC 0x005c 0x2902 CCCD = 00 00
+  CHAR value 0x005e  1AFFFB5D-EC03-4FDE-B589-11146B49A031   [read,write]
+      value (5 B): 00 0f 41 00 00
+  CHAR value 0x0060  6D121CC9-4E98-41C6-9B18-B8DFCC75090C   [read,write]
+      value (2 B): 00 63
+  CHAR value 0x0062  8E428E8D-C9D3-434A-873E-3DA62C16F4BF   [read,notify]
+      value (2 B): 00 00
+      DESC 0x0063 0x2902 CCCD = 00 00
+  CHAR value 0x0065  0CF74FCE-FDCD-4337-892E-154C55AF197A   [read,write]
+      value (1 B): 00
+
+== REPORT MAP (handle 0x0041, 297 bytes)
+   06 00 ff 09 00 a1 01 09 01 a1 01 85 01 05 06 15
+   00 26 ff 00 09 2a 75 08 95 04 b1 81 09 2d 09 2e
+   09 2f 75 08 95 03 b1 81 c0 09 02 a1 01 85 02 06
+   01 ff 15 00 25 01 09 00 75 01 95 40 81 02 09 00
+   75 01 95 40 91 02 c0 09 03 a1 01 85 03 06 02 ff
+   15 00 26 ff 00 09 00 75 08 95 01 b1 82 09 01 75
+   08 95 01 b1 82 c0 09 04 a1 01 85 04 06 03 ff 15
+   00 25 01 09 00 75 01 95 30 91 02 c0 09 05 a1 01
+   85 05 06 04 ff 15 00 26 ff 00 09 00 75 60 95 03
+   81 02 c0 09 06 a1 01 85 06 06 05 ff 15 00 27 ff
+   ff 00 00 09 00 75 20 95 10 81 02 c0 09 07 a1 01
+   85 07 06 06 ff 15 00 26 ff 00 09 00 75 08 95 01
+   b1 82 09 01 75 08 95 04 b1 82 c0 09 08 a1 01 85
+   08 06 07 ff 15 00 26 ff 00 09 00 75 08 95 01 b1
+   82 09 01 75 08 95 01 b1 82 09 00 75 08 95 01 81
+   02 09 01 75 08 95 01 81 02 c0 09 09 a1 01 85 09
+   06 08 ff 15 00 26 ff 00 09 00 75 08 95 20 b1 81
+   c0 09 0a a1 01 85 0a 06 09 ff 15 00 26 ff 00 09
+   00 75 08 95 01 b1 82 c0 c0
+    0000  06 00 ff           UsagePage 0xff00
+    0003  09 00              Usage 0x0
+    0005  a1 01              Collection 0x1
+    0007  09 01                Usage 0x1
+    0009  a1 01                Collection 0x1
+    000b  85 01                  ReportID 0x01
+    000d  05 06                  UsagePage 0x06
+    000f  15 00                  LogicalMin 0
+    0011  26 ff 00               LogicalMax 255
+    0014  09 2a                  Usage 0x2a
+    0016  75 08                  ReportSize 8
+    0018  95 04                  ReportCount 4
+    001a  b1 81                  Feature 0x81 (Const) size=8 count=4 -> 32 bits
+    001c  09 2d                  Usage 0x2d
+    001e  09 2e                  Usage 0x2e
+    0020  09 2f                  Usage 0x2f
+    0022  75 08                  ReportSize 8
+    0024  95 03                  ReportCount 3
+    0026  b1 81                  Feature 0x81 (Const) size=8 count=3 -> 24 bits
+    0028  c0                   EndCollection 0x0
+    0029  09 02                Usage 0x2
+    002b  a1 01                Collection 0x1
+    002d  85 02                  ReportID 0x02
+    002f  06 01 ff               UsagePage 0xff01
+    0032  15 00                  LogicalMin 0
+    0034  25 01                  LogicalMax 1
+    0036  09 00                  Usage 0x0
+    0038  75 01                  ReportSize 1
+    003a  95 40                  ReportCount 64
+    003c  81 02                  Input 0x2 (Var) size=1 count=64 -> 64 bits
+    003e  09 00                  Usage 0x0
+    0040  75 01                  ReportSize 1
+    0042  95 40                  ReportCount 64
+    0044  91 02                  Output 0x2 (Var) size=1 count=64 -> 64 bits
+    0046  c0                   EndCollection 0x0
+    0047  09 03                Usage 0x3
+    0049  a1 01                Collection 0x1
+    004b  85 03                  ReportID 0x03
+    004d  06 02 ff               UsagePage 0xff02
+    0050  15 00                  LogicalMin 0
+    0052  26 ff 00               LogicalMax 255
+    0055  09 00                  Usage 0x0
+    0057  75 08                  ReportSize 8
+    0059  95 01                  ReportCount 1
+    005b  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    005d  09 01                  Usage 0x1
+    005f  75 08                  ReportSize 8
+    0061  95 01                  ReportCount 1
+    0063  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    0065  c0                   EndCollection 0x0
+    0066  09 04                Usage 0x4
+    0068  a1 01                Collection 0x1
+    006a  85 04                  ReportID 0x04
+    006c  06 03 ff               UsagePage 0xff03
+    006f  15 00                  LogicalMin 0
+    0071  25 01                  LogicalMax 1
+    0073  09 00                  Usage 0x0
+    0075  75 01                  ReportSize 1
+    0077  95 30                  ReportCount 48
+    0079  91 02                  Output 0x2 (Var) size=1 count=48 -> 48 bits
+    007b  c0                   EndCollection 0x0
+    007c  09 05                Usage 0x5
+    007e  a1 01                Collection 0x1
+    0080  85 05                  ReportID 0x05
+    0082  06 04 ff               UsagePage 0xff04
+    0085  15 00                  LogicalMin 0
+    0087  26 ff 00               LogicalMax 255
+    008a  09 00                  Usage 0x0
+    008c  75 60                  ReportSize 96
+    008e  95 03                  ReportCount 3
+    0090  81 02                  Input 0x2 (Var) size=96 count=3 -> 288 bits
+    0092  c0                   EndCollection 0x0
+    0093  09 06                Usage 0x6
+    0095  a1 01                Collection 0x1
+    0097  85 06                  ReportID 0x06
+    0099  06 05 ff               UsagePage 0xff05
+    009c  15 00                  LogicalMin 0
+    009e  27 ff ff 00 00         LogicalMax 65535
+    00a3  09 00                  Usage 0x0
+    00a5  75 20                  ReportSize 32
+    00a7  95 10                  ReportCount 16
+    00a9  81 02                  Input 0x2 (Var) size=32 count=16 -> 512 bits
+    00ab  c0                   EndCollection 0x0
+    00ac  09 07                Usage 0x7
+    00ae  a1 01                Collection 0x1
+    00b0  85 07                  ReportID 0x07
+    00b2  06 06 ff               UsagePage 0xff06
+    00b5  15 00                  LogicalMin 0
+    00b7  26 ff 00               LogicalMax 255
+    00ba  09 00                  Usage 0x0
+    00bc  75 08                  ReportSize 8
+    00be  95 01                  ReportCount 1
+    00c0  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00c2  09 01                  Usage 0x1
+    00c4  75 08                  ReportSize 8
+    00c6  95 04                  ReportCount 4
+    00c8  b1 82                  Feature 0x82 (Var) size=8 count=4 -> 32 bits
+    00ca  c0                   EndCollection 0x0
+    00cb  09 08                Usage 0x8
+    00cd  a1 01                Collection 0x1
+    00cf  85 08                  ReportID 0x08
+    00d1  06 07 ff               UsagePage 0xff07
+    00d4  15 00                  LogicalMin 0
+    00d6  26 ff 00               LogicalMax 255
+    00d9  09 00                  Usage 0x0
+    00db  75 08                  ReportSize 8
+    00dd  95 01                  ReportCount 1
+    00df  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00e1  09 01                  Usage 0x1
+    00e3  75 08                  ReportSize 8
+    00e5  95 01                  ReportCount 1
+    00e7  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00e9  09 00                  Usage 0x0
+    00eb  75 08                  ReportSize 8
+    00ed  95 01                  ReportCount 1
+    00ef  81 02                  Input 0x2 (Var) size=8 count=1 -> 8 bits
+    00f1  09 01                  Usage 0x1
+    00f3  75 08                  ReportSize 8
+    00f5  95 01                  ReportCount 1
+    00f7  81 02                  Input 0x2 (Var) size=8 count=1 -> 8 bits
+    00f9  c0                   EndCollection 0x0
+    00fa  09 09                Usage 0x9
+    00fc  a1 01                Collection 0x1
+    00fe  85 09                  ReportID 0x09
+    0100  06 08 ff               UsagePage 0xff08
+    0103  15 00                  LogicalMin 0
+    0105  26 ff 00               LogicalMax 255
+    0108  09 00                  Usage 0x0
+    010a  75 08                  ReportSize 8
+    010c  95 20                  ReportCount 32
+    010e  b1 81                  Feature 0x81 (Const) size=8 count=32 -> 256 bits
+    0110  c0                   EndCollection 0x0
+    0111  09 0a                Usage 0xa
+    0113  a1 01                Collection 0x1
+    0115  85 0a                  ReportID 0x0a
+    0117  06 09 ff               UsagePage 0xff09
+    011a  15 00                  LogicalMin 0
+    011c  26 ff 00               LogicalMax 255
+    011f  09 00                  Usage 0x0
+    0121  75 08                  ReportSize 8
+    0123  95 01                  ReportCount 1
+    0125  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    0127  c0                   EndCollection 0x0
+    0128  c0                 EndCollection 0x0
+   Feature id=0x01   56 bits = 7 bytes
+   Input   id=0x02   64 bits = 8 bytes
+   Output  id=0x02   64 bits = 8 bytes
+   Feature id=0x03   16 bits = 2 bytes
+   Output  id=0x04   48 bits = 6 bytes
+   Input   id=0x05  288 bits = 36 bytes
+   Input   id=0x06  512 bits = 64 bytes
+   Feature id=0x07   40 bits = 5 bytes
+   Feature id=0x08   16 bits = 2 bytes
+   Input   id=0x08   16 bits = 2 bytes
+   Feature id=0x09  256 bits = 32 bytes
+   Feature id=0x0a    8 bits = 1 bytes
+
+== ATT errors: 16
+      1.01 Find By Type Req handle 0x0009 code 0x0a
+      1.25 Read By Type Req handle 0x0008 code 0x0a
+      2.30 Read By Type Req handle 0x0048 code 0x0a
+      2.38 Read By Type Req handle 0x004a code 0x0a
+      2.42 Read By Type Req handle 0x0009 code 0x0a
+      2.52 Read By Type Req handle 0x000d code 0x0a
+      4.04 Read By Type Req handle 0x004b code 0x0a
+      4.28 Read By Type Req handle 0x0065 code 0x0a
+      4.36 Find Info Req handle 0x0066 code 0x0a
+      5.18 Read By Type Req handle 0x0044 code 0x0a
+      5.26 Read By Type Req handle 0x0046 code 0x0a
+      5.42 Read By Type Req handle 0x0017 code 0x0a
+      5.56 Read By Type Req handle 0x0043 code 0x0a
+      7.74 Read By Type Req handle 0x000e code 0x0a
+      7.82 Read By Type Req handle 0x0016 code 0x0a
+      8.06 Read By Type Req handle 0x0001 code 0x0a
+
+== writes host->dev: 8
+      1.43 Write Req 0x0004 = 02 00
+      1.55 Write Req 0x0008 = 01
+      2.64 Write Cmd 0x004a = 00 04 12 00
+      8.25 Write Req 0x0047 = 01 00
+      8.55 Write Req 0x001e = 01 00
+      8.61 Write Req 0x002b = 01 00
+      8.64 Write Req 0x002f = 01 00
+      8.67 Write Req 0x0039 = 01 00
+
+== notifications dev->host: 0

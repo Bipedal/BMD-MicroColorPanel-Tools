@@ -1,0 +1,213 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854830.4477}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794854830.4482}
+{"t": "send", "why": "walk-init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794854830.4487}
+{"t": "write", "why": "walk-init", "data": "02 00 00 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854830.4545}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854830.4626}
+{"t": "write", "why": "bit0", "data": "04 01 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854830.7666}
+{"t": "bit", "bit": 0, "ts": 1794854830.7668}
+{"t": "answer", "bit": 0, "key": 28, "presses": 1, "ts": 1794854835.2759}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854835.2786}
+{"t": "write", "why": "bit1", "data": "04 02 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854835.5826}
+{"t": "bit", "bit": 1, "ts": 1794854835.5828}
+{"t": "answer", "bit": 1, "key": 30, "presses": 1, "ts": 1794854837.457}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854837.4626}
+{"t": "write", "why": "bit2", "data": "04 04 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854837.7666}
+{"t": "bit", "bit": 2, "ts": 1794854837.7668}
+{"t": "answer", "bit": 2, "key": 21, "presses": 1, "ts": 1794854839.5722}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854839.5746}
+{"t": "write", "why": "bit3", "data": "04 08 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854839.8786}
+{"t": "bit", "bit": 3, "ts": 1794854839.8788}
+{"t": "answer", "bit": 3, "key": 29, "presses": 1, "ts": 1794854841.425}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854841.4306}
+{"t": "write", "why": "bit4", "data": "04 10 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854841.7346}
+{"t": "bit", "bit": 4, "ts": 1794854841.7348}
+{"t": "answer", "bit": 4, "key": 32, "presses": 1, "ts": 1794854843.321}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854843.3265}
+{"t": "write", "why": "bit5", "data": "04 20 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854843.6306}
+{"t": "bit", "bit": 5, "ts": 1794854843.6307}
+{"t": "answer", "bit": 5, "key": 33, "presses": 1, "ts": 1794854845.0896}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854845.0946}
+{"t": "write", "why": "bit6", "data": "04 40 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854845.3986}
+{"t": "bit", "bit": 6, "ts": 1794854845.3988}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854845.4761}
+{"t": "answer", "bit": 6, "key": 34, "presses": 1, "ts": 1794854847.0945}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854847.1026}
+{"t": "write", "why": "bit7", "data": "04 80 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854847.4067}
+{"t": "bit", "bit": 7, "ts": 1794854847.4068}
+{"t": "answer", "bit": 7, "key": 35, "presses": 1, "ts": 1794854848.9639}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854848.9665}
+{"t": "write", "why": "bit8", "data": "04 00 01 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854849.2705}
+{"t": "bit", "bit": 8, "ts": 1794854849.2706}
+{"t": "answer", "bit": 8, "key": 37, "presses": 1, "ts": 1794854851.0705}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854851.0786}
+{"t": "write", "why": "bit9", "data": "04 00 02 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854851.3825}
+{"t": "bit", "bit": 9, "ts": 1794854851.3826}
+{"t": "answer", "bit": 9, "key": 38, "presses": 1, "ts": 1794854853.8799}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854853.8865}
+{"t": "write", "why": "bit10", "data": "04 00 04 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854854.1905}
+{"t": "bit", "bit": 10, "ts": 1794854854.1906}
+{"t": "answer", "bit": 10, "key": 39, "presses": 1, "ts": 1794854855.9993}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854856.0065}
+{"t": "write", "why": "bit11", "data": "04 00 08 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854856.3105}
+{"t": "bit", "bit": 11, "ts": 1794854856.3106}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854860.4877}
+{"t": "answer", "bit": 11, "key": null, "presses": 0, "ts": 1794854861.3294}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854861.3345}
+{"t": "write", "why": "bit12", "data": "04 00 10 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854861.6385}
+{"t": "bit", "bit": 12, "ts": 1794854861.6386}
+{"t": "answer", "bit": 12, "key": null, "presses": 0, "ts": 1794854866.6526}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854866.6545}
+{"t": "write", "why": "bit13", "data": "04 00 20 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854866.9586}
+{"t": "bit", "bit": 13, "ts": 1794854866.9587}
+{"t": "answer", "bit": 13, "key": null, "presses": 0, "ts": 1794854871.9893}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854871.9905}
+{"t": "write", "why": "bit14", "data": "04 00 40 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854872.2946}
+{"t": "bit", "bit": 14, "ts": 1794854872.2947}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854875.495}
+{"t": "answer", "bit": 14, "key": null, "presses": 0, "ts": 1794854877.3176}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854877.3266}
+{"t": "write", "why": "bit15", "data": "04 00 80 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854877.6306}
+{"t": "bit", "bit": 15, "ts": 1794854877.6307}
+{"t": "answer", "bit": 15, "key": null, "presses": 0, "ts": 1794854882.6587}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854882.6625}
+{"t": "write", "why": "bit16", "data": "04 00 00 01 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854882.9665}
+{"t": "bit", "bit": 16, "ts": 1794854882.9666}
+{"t": "answer", "bit": 16, "key": null, "presses": 0, "ts": 1794854887.9911}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854887.9985}
+{"t": "write", "why": "bit17", "data": "04 00 00 02 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854888.3027}
+{"t": "bit", "bit": 17, "ts": 1794854888.3028}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854890.5055}
+{"t": "answer", "bit": 17, "key": null, "presses": 0, "ts": 1794854893.3081}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854893.3105}
+{"t": "write", "why": "bit18", "data": "04 00 00 04 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854893.6146}
+{"t": "bit", "bit": 18, "ts": 1794854893.6147}
+{"t": "answer", "bit": 18, "key": null, "presses": 0, "ts": 1794854898.6431}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854898.6466}
+{"t": "write", "why": "bit19", "data": "04 00 00 08 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854898.9505}
+{"t": "bit", "bit": 19, "ts": 1794854898.9506}
+{"t": "answer", "bit": 19, "key": null, "presses": 0, "ts": 1794854903.9787}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854903.9825}
+{"t": "write", "why": "bit20", "data": "04 00 00 10 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854904.2865}
+{"t": "bit", "bit": 20, "ts": 1794854904.2866}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854905.5363}
+{"t": "answer", "bit": 20, "key": null, "presses": 0, "ts": 1794854909.317}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854909.3187}
+{"t": "write", "why": "bit21", "data": "04 00 00 20 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854909.6225}
+{"t": "bit", "bit": 21, "ts": 1794854909.6226}
+{"t": "answer", "bit": 21, "key": null, "presses": 0, "ts": 1794854914.6401}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854914.6467}
+{"t": "write", "why": "bit22", "data": "04 00 00 40 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854914.9505}
+{"t": "bit", "bit": 22, "ts": 1794854914.9505}
+{"t": "answer", "bit": 22, "key": null, "presses": 0, "ts": 1794854919.9824}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854919.9905}
+{"t": "write", "why": "bit23", "data": "04 00 00 80 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854920.2945}
+{"t": "bit", "bit": 23, "ts": 1794854920.2946}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854920.5467}
+{"t": "answer", "bit": 23, "key": null, "presses": 0, "ts": 1794854925.3002}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854925.3025}
+{"t": "write", "why": "bit24", "data": "04 00 00 00 01 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854925.6065}
+{"t": "bit", "bit": 24, "ts": 1794854925.6067}
+{"t": "answer", "bit": 24, "key": null, "presses": 0, "ts": 1794854930.6168}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854930.6226}
+{"t": "write", "why": "bit25", "data": "04 00 00 00 02 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854930.9265}
+{"t": "bit", "bit": 25, "ts": 1794854930.9266}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854935.5476}
+{"t": "answer", "bit": 25, "key": null, "presses": 0, "ts": 1794854935.9542}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854935.9585}
+{"t": "write", "why": "bit26", "data": "04 00 00 00 04 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854936.2625}
+{"t": "bit", "bit": 26, "ts": 1794854936.2625}
+{"t": "answer", "bit": 26, "key": null, "presses": 0, "ts": 1794854941.289}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854941.2945}
+{"t": "write", "why": "bit27", "data": "04 00 00 00 08 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854941.5985}
+{"t": "bit", "bit": 27, "ts": 1794854941.5985}
+{"t": "answer", "bit": 27, "key": null, "presses": 0, "ts": 1794854946.6268}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854946.6305}
+{"t": "write", "why": "bit28", "data": "04 00 00 00 10 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854946.9346}
+{"t": "bit", "bit": 28, "ts": 1794854946.9348}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854950.5573}
+{"t": "answer", "bit": 28, "key": null, "presses": 0, "ts": 1794854951.9615}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854951.9665}
+{"t": "write", "why": "bit29", "data": "04 00 00 00 20 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854952.2705}
+{"t": "bit", "bit": 29, "ts": 1794854952.2705}
+{"t": "answer", "bit": 29, "key": null, "presses": 0, "ts": 1794854957.2826}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854957.2865}
+{"t": "write", "why": "bit30", "data": "04 00 00 00 40 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854957.5905}
+{"t": "bit", "bit": 30, "ts": 1794854957.5907}
+{"t": "answer", "bit": 30, "key": null, "presses": 0, "ts": 1794854962.592}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854962.5985}
+{"t": "write", "why": "bit31", "data": "04 00 00 00 80 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854962.9026}
+{"t": "bit", "bit": 31, "ts": 1794854962.9028}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854965.5766}
+{"t": "answer", "bit": 31, "key": null, "presses": 0, "ts": 1794854967.929}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854967.9344}
+{"t": "write", "why": "bit32", "data": "04 00 00 00 00 01 00", "ok": true, "rc": 9, "err": null, "ts": 1794854968.2385}
+{"t": "bit", "bit": 32, "ts": 1794854968.2387}
+{"t": "answer", "bit": 32, "key": null, "presses": 0, "ts": 1794854973.2681}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854973.2707}
+{"t": "write", "why": "bit33", "data": "04 00 00 00 00 02 00", "ok": true, "rc": 9, "err": null, "ts": 1794854973.5746}
+{"t": "bit", "bit": 33, "ts": 1794854973.5748}
+{"t": "answer", "bit": 33, "key": null, "presses": 0, "ts": 1794854978.5789}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854978.5825}
+{"t": "write", "why": "bit34", "data": "04 00 00 00 00 04 00", "ok": true, "rc": 9, "err": null, "ts": 1794854978.8864}
+{"t": "bit", "bit": 34, "ts": 1794854978.8865}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854980.5876}
+{"t": "answer", "bit": 34, "key": null, "presses": 0, "ts": 1794854983.9167}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854983.9185}
+{"t": "write", "why": "bit35", "data": "04 00 00 00 00 08 00", "ok": true, "rc": 9, "err": null, "ts": 1794854984.2225}
+{"t": "bit", "bit": 35, "ts": 1794854984.2225}
+{"t": "answer", "bit": 35, "key": null, "presses": 0, "ts": 1794854989.2403}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854989.2466}
+{"t": "write", "why": "bit36", "data": "04 00 00 00 00 10 00", "ok": true, "rc": 9, "err": null, "ts": 1794854989.5505}
+{"t": "bit", "bit": 36, "ts": 1794854989.5505}
+{"t": "answer", "bit": 36, "key": null, "presses": 0, "ts": 1794854994.5638}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854994.5665}
+{"t": "write", "why": "bit37", "data": "04 00 00 00 00 20 00", "ok": true, "rc": 9, "err": null, "ts": 1794854994.8705}
+{"t": "bit", "bit": 37, "ts": 1794854994.8706}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794854995.6154}
+{"t": "answer", "bit": 37, "key": null, "presses": 0, "ts": 1794854999.8998}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794854999.9025}
+{"t": "write", "why": "bit38", "data": "04 00 00 00 00 40 00", "ok": true, "rc": 9, "err": null, "ts": 1794855000.2065}
+{"t": "bit", "bit": 38, "ts": 1794855000.2065}
+{"t": "answer", "bit": 38, "key": null, "presses": 0, "ts": 1794855005.2284}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855005.2304}
+{"t": "write", "why": "bit39", "data": "04 00 00 00 00 80 00", "ok": true, "rc": 9, "err": null, "ts": 1794855005.5346}
+{"t": "bit", "bit": 39, "ts": 1794855005.5347}
+{"t": "answer", "bit": 39, "key": null, "presses": 0, "ts": 1794855010.5524}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855010.5584}
+{"t": "write", "why": "bit40", "data": "04 00 00 00 00 00 01", "ok": true, "rc": 9, "err": null, "ts": 1794855010.8624}
+{"t": "bit", "bit": 40, "ts": 1794855010.8625}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794855010.863}
+{"t": "answer", "bit": 40, "key": null, "presses": 0, "ts": 1794855015.8804}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855015.8865}
+{"t": "write", "why": "bit41", "data": "04 00 00 00 00 00 02", "ok": true, "rc": 9, "err": null, "ts": 1794855016.1905}
+{"t": "bit", "bit": 41, "ts": 1794855016.1907}
+{"t": "answer", "bit": 41, "key": null, "presses": 0, "ts": 1794855021.2025}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855021.2065}
+{"t": "write", "why": "bit42", "data": "04 00 00 00 00 00 04", "ok": true, "rc": 9, "err": null, "ts": 1794855021.5104}
+{"t": "bit", "bit": 42, "ts": 1794855021.5105}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794855025.8891}
+{"t": "answer", "bit": 42, "key": null, "presses": 0, "ts": 1794855026.5397}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855026.5424}
+{"t": "write", "why": "bit43", "data": "04 00 00 00 00 00 08", "ok": true, "rc": 9, "err": null, "ts": 1794855026.8464}
+{"t": "bit", "bit": 43, "ts": 1794855026.8465}
+{"t": "answer", "bit": 43, "key": null, "presses": 0, "ts": 1794855031.8569}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855031.8624}
+{"t": "write", "why": "bit44", "data": "04 00 00 00 00 00 10", "ok": true, "rc": 9, "err": null, "ts": 1794855032.1664}
+{"t": "bit", "bit": 44, "ts": 1794855032.1665}
+{"t": "answer", "bit": 44, "key": null, "presses": 0, "ts": 1794855037.1968}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855037.1984}
+{"t": "write", "why": "bit45", "data": "04 00 00 00 00 00 20", "ok": true, "rc": 9, "err": null, "ts": 1794855037.5024}
+{"t": "bit", "bit": 45, "ts": 1794855037.5025}
+{"t": "send", "why": "keepalive", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794855040.9048}
+{"t": "answer", "bit": 45, "key": null, "presses": 0, "ts": 1794855042.5294}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855042.5344}
+{"t": "write", "why": "bit46", "data": "04 00 00 00 00 00 40", "ok": true, "rc": 9, "err": null, "ts": 1794855042.8384}
+{"t": "bit", "bit": 46, "ts": 1794855042.8385}
+{"t": "answer", "bit": 46, "key": null, "presses": 0, "ts": 1794855047.8592}
+{"t": "write", "why": "blank", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855047.8624}
+{"t": "write", "why": "bit47", "data": "04 00 00 00 00 00 80", "ok": true, "rc": 9, "err": null, "ts": 1794855048.1665}
+{"t": "bit", "bit": 47, "ts": 1794855048.1667}
+{"t": "answer", "bit": 47, "key": null, "presses": 0, "ts": 1794855053.1848}
+{"t": "write", "why": "restore", "data": "04 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855053.1905}
+{"t": "write", "why": "restore", "data": "02 00 00 00 00 00 00 00 00", "ok": true, "rc": 9, "err": null, "ts": 1794855053.1984}
+{"t": "send", "why": "restore", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794855053.1988}

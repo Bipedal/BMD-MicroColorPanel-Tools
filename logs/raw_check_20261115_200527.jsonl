@@ -1,0 +1,44 @@
+{"t": "send", "why": "init", "data": "0a 01", "ok": true, "rc": 2, "err": null, "ts": 1794773127.4698}
+{"t": "send", "why": "init", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773127.5114}
+{"t": "rx", "rid": 5, "len": 65, "data": "05 00 00 00 00 00 00 00 00 00 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00", "ts": 1794773127.517}
+{"t": "rx", "rid": 5, "len": 65, "data": "05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00", "ts": 1794773127.5244}
+{"t": "send", "why": "keepalive", "data": "03 64 64", "ok": true, "rc": 3, "err": null, "ts": 1794773129.3962}
+{"t": "summary", "line": "== raw_check summary (3 s)", "ts": 1794773130.5218}
+{"t": "summary", "line": "reports by ID: 0x05=2", "ts": 1794773130.5218}
+{"t": "summary", "line": "UNEXPECTED report IDs: none", "ts": 1794773130.5218}
+{"t": "summary", "line": "  0x05 lengths returned: {65: 2}", "ts": 1794773130.5218}
+{"t": "summary", "line": "byte offsets ever nonzero (offset 0 = ID):", "ts": 1794773130.5218}
+{"t": "summary", "line": "  0x05: 10,22-24", "ts": 1794773130.5219}
+{"t": "summary", "line": "        beyond payload (>36): none", "ts": 1794773130.5219}
+{"t": "summary", "line": "0x06 knobs (s32 @ 1+4k):", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  0: no data   <-- expected 12 knobs", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  1: no data   <-- expected 12 knobs", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  2: no data   <-- expected 12 knobs", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  3: no data   <-- expected 12 knobs", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  4: no data   <-- expected 12 knobs", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  5: no data   <-- expected 12 knobs", "ts": 1794773130.5219}
+{"t": "summary", "line": "  slot  6: no data   <-- expected 12 knobs", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot  7: no data   <-- expected 12 knobs", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot  8: no data   <-- expected 12 knobs", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot  9: no data   <-- expected 12 knobs", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot 10: no data   <-- expected 12 knobs", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot 11: no data   <-- expected 12 knobs", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot 12: no data", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot 13: no data", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot 14: no data", "ts": 1794773130.522}
+{"t": "summary", "line": "  slot 15: no data", "ts": 1794773130.522}
+{"t": "summary", "line": "0x05 balls/rings (4-byte groups @ 1+4k, s24 @ 2+4k):", "ts": 1794773130.5221}
+{"t": "summary", "line": "  slot 0: no data; lowbyte nonzero 0", "ts": 1794773130.5221}
+{"t": "summary", "line": "  slot 1: no data; lowbyte nonzero 0", "ts": 1794773130.5221}
+{"t": "summary", "line": "  slot 2: n=   1 min=     16 max=     16 gcd=16 not%16=0 ; lowbyte nonzero 0", "ts": 1794773130.5222}
+{"t": "summary", "line": "  slot 3: no data; lowbyte nonzero 0", "ts": 1794773130.5222}
+{"t": "summary", "line": "  slot 4: no data; lowbyte nonzero 0", "ts": 1794773130.5222}
+{"t": "summary", "line": "  slot 5: n=   1 min=    -16 max=    -16 gcd=16 not%16=0 ; lowbyte nonzero 0", "ts": 1794773130.5223}
+{"t": "summary", "line": "  slot 6: no data; lowbyte nonzero 0", "ts": 1794773130.5223}
+{"t": "summary", "line": "  slot 7: no data; lowbyte nonzero 0", "ts": 1794773130.5224}
+{"t": "summary", "line": "  slot 8: no data; lowbyte nonzero 0", "ts": 1794773130.5224}
+{"t": "summary", "line": "0x02 button bits seen: none", "ts": 1794773130.5224}
+{"t": "summary", "line": "0x08 input values: none", "ts": 1794773130.5224}
+{"t": "summary", "line": "rx gaps > 1 s: 0 []", "ts": 1794773130.5224}
+{"t": "summary", "line": "feature sends ok=3 failed=0", "ts": 1794773130.5224}
+{"t": "summary", "line": "log: C:\\panel\\logs\\raw_check_20261115_200527.jsonl", "ts": 1794773130.5224}

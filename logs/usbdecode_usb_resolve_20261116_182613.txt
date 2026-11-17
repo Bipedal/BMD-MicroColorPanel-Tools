@@ -1,0 +1,330 @@
+== logs/usb_resolve_20261116_182613.pcapng
+packets 540, duration 290.8 s, device addresses {63: 10, 64: 530}
+
+== RAW REPORT DESCRIPTOR (297 bytes) at t=18.49
+   06 00 ff 09 00 a1 01 09 01 a1 01 85 01 05 06 15
+   00 26 ff 00 09 2a 75 08 95 04 b1 81 09 2d 09 2e
+   09 2f 75 08 95 03 b1 81 c0 09 02 a1 01 85 02 06
+   01 ff 15 00 25 01 09 00 75 01 95 40 81 02 09 00
+   75 01 95 40 91 02 c0 09 03 a1 01 85 03 06 02 ff
+   15 00 26 ff 00 09 00 75 08 95 01 b1 82 09 01 75
+   08 95 01 b1 82 c0 09 04 a1 01 85 04 06 03 ff 15
+   00 25 01 09 00 75 01 95 30 91 02 c0 09 05 a1 01
+   85 05 06 04 ff 15 00 26 ff 00 09 00 75 60 95 03
+   81 02 c0 09 06 a1 01 85 06 06 05 ff 15 00 27 ff
+   ff 00 00 09 00 75 20 95 10 81 02 c0 09 07 a1 01
+   85 07 06 06 ff 15 00 26 ff 00 09 00 75 08 95 01
+   b1 82 09 01 75 08 95 04 b1 82 c0 09 08 a1 01 85
+   08 06 07 ff 15 00 26 ff 00 09 00 75 08 95 01 b1
+   82 09 01 75 08 95 01 b1 82 09 00 75 08 95 01 81
+   02 09 01 75 08 95 01 81 02 c0 09 09 a1 01 85 09
+   06 08 ff 15 00 26 ff 00 09 00 75 08 95 20 b1 81
+   c0 09 0a a1 01 85 0a 06 09 ff 15 00 26 ff 00 09
+   00 75 08 95 01 b1 82 c0 c0
+    0000  06 00 ff           UsagePage 0xff00
+    0003  09 00              Usage 0x0
+    0005  a1 01              Collection 0x1
+    0007  09 01                Usage 0x1
+    0009  a1 01                Collection 0x1
+    000b  85 01                  ReportID 0x01
+    000d  05 06                  UsagePage 0x06
+    000f  15 00                  LogicalMin 0
+    0011  26 ff 00               LogicalMax 255
+    0014  09 2a                  Usage 0x2a
+    0016  75 08                  ReportSize 8
+    0018  95 04                  ReportCount 4
+    001a  b1 81                  Feature 0x81 (Const) size=8 count=4 -> 32 bits
+    001c  09 2d                  Usage 0x2d
+    001e  09 2e                  Usage 0x2e
+    0020  09 2f                  Usage 0x2f
+    0022  75 08                  ReportSize 8
+    0024  95 03                  ReportCount 3
+    0026  b1 81                  Feature 0x81 (Const) size=8 count=3 -> 24 bits
+    0028  c0                   EndCollection 0x0
+    0029  09 02                Usage 0x2
+    002b  a1 01                Collection 0x1
+    002d  85 02                  ReportID 0x02
+    002f  06 01 ff               UsagePage 0xff01
+    0032  15 00                  LogicalMin 0
+    0034  25 01                  LogicalMax 1
+    0036  09 00                  Usage 0x0
+    0038  75 01                  ReportSize 1
+    003a  95 40                  ReportCount 64
+    003c  81 02                  Input 0x2 (Var) size=1 count=64 -> 64 bits
+    003e  09 00                  Usage 0x0
+    0040  75 01                  ReportSize 1
+    0042  95 40                  ReportCount 64
+    0044  91 02                  Output 0x2 (Var) size=1 count=64 -> 64 bits
+    0046  c0                   EndCollection 0x0
+    0047  09 03                Usage 0x3
+    0049  a1 01                Collection 0x1
+    004b  85 03                  ReportID 0x03
+    004d  06 02 ff               UsagePage 0xff02
+    0050  15 00                  LogicalMin 0
+    0052  26 ff 00               LogicalMax 255
+    0055  09 00                  Usage 0x0
+    0057  75 08                  ReportSize 8
+    0059  95 01                  ReportCount 1
+    005b  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    005d  09 01                  Usage 0x1
+    005f  75 08                  ReportSize 8
+    0061  95 01                  ReportCount 1
+    0063  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    0065  c0                   EndCollection 0x0
+    0066  09 04                Usage 0x4
+    0068  a1 01                Collection 0x1
+    006a  85 04                  ReportID 0x04
+    006c  06 03 ff               UsagePage 0xff03
+    006f  15 00                  LogicalMin 0
+    0071  25 01                  LogicalMax 1
+    0073  09 00                  Usage 0x0
+    0075  75 01                  ReportSize 1
+    0077  95 30                  ReportCount 48
+    0079  91 02                  Output 0x2 (Var) size=1 count=48 -> 48 bits
+    007b  c0                   EndCollection 0x0
+    007c  09 05                Usage 0x5
+    007e  a1 01                Collection 0x1
+    0080  85 05                  ReportID 0x05
+    0082  06 04 ff               UsagePage 0xff04
+    0085  15 00                  LogicalMin 0
+    0087  26 ff 00               LogicalMax 255
+    008a  09 00                  Usage 0x0
+    008c  75 60                  ReportSize 96
+    008e  95 03                  ReportCount 3
+    0090  81 02                  Input 0x2 (Var) size=96 count=3 -> 288 bits
+    0092  c0                   EndCollection 0x0
+    0093  09 06                Usage 0x6
+    0095  a1 01                Collection 0x1
+    0097  85 06                  ReportID 0x06
+    0099  06 05 ff               UsagePage 0xff05
+    009c  15 00                  LogicalMin 0
+    009e  27 ff ff 00 00         LogicalMax 65535
+    00a3  09 00                  Usage 0x0
+    00a5  75 20                  ReportSize 32
+    00a7  95 10                  ReportCount 16
+    00a9  81 02                  Input 0x2 (Var) size=32 count=16 -> 512 bits
+    00ab  c0                   EndCollection 0x0
+    00ac  09 07                Usage 0x7
+    00ae  a1 01                Collection 0x1
+    00b0  85 07                  ReportID 0x07
+    00b2  06 06 ff               UsagePage 0xff06
+    00b5  15 00                  LogicalMin 0
+    00b7  26 ff 00               LogicalMax 255
+    00ba  09 00                  Usage 0x0
+    00bc  75 08                  ReportSize 8
+    00be  95 01                  ReportCount 1
+    00c0  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00c2  09 01                  Usage 0x1
+    00c4  75 08                  ReportSize 8
+    00c6  95 04                  ReportCount 4
+    00c8  b1 82                  Feature 0x82 (Var) size=8 count=4 -> 32 bits
+    00ca  c0                   EndCollection 0x0
+    00cb  09 08                Usage 0x8
+    00cd  a1 01                Collection 0x1
+    00cf  85 08                  ReportID 0x08
+    00d1  06 07 ff               UsagePage 0xff07
+    00d4  15 00                  LogicalMin 0
+    00d6  26 ff 00               LogicalMax 255
+    00d9  09 00                  Usage 0x0
+    00db  75 08                  ReportSize 8
+    00dd  95 01                  ReportCount 1
+    00df  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00e1  09 01                  Usage 0x1
+    00e3  75 08                  ReportSize 8
+    00e5  95 01                  ReportCount 1
+    00e7  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    00e9  09 00                  Usage 0x0
+    00eb  75 08                  ReportSize 8
+    00ed  95 01                  ReportCount 1
+    00ef  81 02                  Input 0x2 (Var) size=8 count=1 -> 8 bits
+    00f1  09 01                  Usage 0x1
+    00f3  75 08                  ReportSize 8
+    00f5  95 01                  ReportCount 1
+    00f7  81 02                  Input 0x2 (Var) size=8 count=1 -> 8 bits
+    00f9  c0                   EndCollection 0x0
+    00fa  09 09                Usage 0x9
+    00fc  a1 01                Collection 0x1
+    00fe  85 09                  ReportID 0x09
+    0100  06 08 ff               UsagePage 0xff08
+    0103  15 00                  LogicalMin 0
+    0105  26 ff 00               LogicalMax 255
+    0108  09 00                  Usage 0x0
+    010a  75 08                  ReportSize 8
+    010c  95 20                  ReportCount 32
+    010e  b1 81                  Feature 0x81 (Const) size=8 count=32 -> 256 bits
+    0110  c0                   EndCollection 0x0
+    0111  09 0a                Usage 0xa
+    0113  a1 01                Collection 0x1
+    0115  85 0a                  ReportID 0x0a
+    0117  06 09 ff               UsagePage 0xff09
+    011a  15 00                  LogicalMin 0
+    011c  26 ff 00               LogicalMax 255
+    011f  09 00                  Usage 0x0
+    0121  75 08                  ReportSize 8
+    0123  95 01                  ReportCount 1
+    0125  b1 82                  Feature 0x82 (Var) size=8 count=1 -> 8 bits
+    0127  c0                   EndCollection 0x0
+    0128  c0                 EndCollection 0x0
+   Feature id=0x01   56 bits = 7 bytes
+   Input   id=0x02   64 bits = 8 bytes
+   Output  id=0x02   64 bits = 8 bytes
+   Feature id=0x03   16 bits = 2 bytes
+   Output  id=0x04   48 bits = 6 bytes
+   Input   id=0x05  288 bits = 36 bytes
+   Input   id=0x06  512 bits = 64 bytes
+   Feature id=0x07   40 bits = 5 bytes
+   Feature id=0x08   16 bits = 2 bytes
+   Input   id=0x08   16 bits = 2 bytes
+   Feature id=0x09  256 bits = 32 bytes
+   Feature id=0x0a    8 bits = 1 bytes
+
+== control requests (grouped)
+GET_DESCRIPTOR 1: 2 x, first 0.00 s, last 18.47 s, median interval 18.47 s
+        2 x  GET_DESCRIPTOR type 0x01 idx 0 len 18 [OK] 18 bytes
+GET_DESCRIPTOR 2: 3 x, first 0.00 s, last 18.47 s, median interval 9.24 s
+        2 x  GET_DESCRIPTOR type 0x02 idx 0 len 86 [OK] 86 bytes
+        1 x  GET_DESCRIPTOR type 0x02 idx 0 len 9 [OK] 9 bytes
+STD 0 9: 2 x, first 0.00 s, last 18.48 s, median interval 18.48 s
+        2 x  bm=0x00 req=0x09 wValue=0x0001 wIndex=0x0000 out= [OK] resp=
+GET_DESCRIPTOR 3: 16 x, first 18.48 s, last 268.20 s, median interval 0.00 s
+        6 x  GET_DESCRIPTOR type 0x03 idx 2 len 522 [OK] 68 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 2 len 4 [OK] 4 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 2 len 68 [OK] 68 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 3 len 254 [OK] 66 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 1 len 254 [OK] 36 bytes
+        2 x  GET_DESCRIPTOR type 0x03 idx 2 len 254 [OK] 68 bytes
+SET_IDLE 0: 1 x, first 18.49 s, last 18.49 s
+        1 x  SET_IDLE wValue 0x0000 [OK]
+GET_DESCRIPTOR 34: 1 x, first 18.49 s, last 18.49 s
+        1 x  GET_DESCRIPTOR type 0x22 idx 0 len 361 [OK] 297 bytes
+SET_REPORT feature 3: 17 x, first 33.09 s, last 290.80 s, median interval 13.08 s
+        6 x  SET_REPORT feature 0x03: 03 04 04 [OK]
+        4 x  SET_REPORT feature 0x03: 03 00 00 [OK]
+        3 x  SET_REPORT feature 0x03: 03 08 08 [OK]
+        2 x  SET_REPORT feature 0x03: 03 64 64 [OK]
+        1 x  SET_REPORT feature 0x03: 03 0c 0c [OK]
+        1 x  SET_REPORT feature 0x03: 03 26 26 [OK]
+GET_REPORT feature 1: 1 x, first 33.10 s, last 33.10 s
+        1 x  GET_REPORT feature 0x01 len 8 -> [OK] 01 15 5b 3b fd 02 02 00
+SET_REPORT feature 10: 9 x, first 33.10 s, last 273.11 s, median interval 30.00 s
+        9 x  SET_REPORT feature 0x0a: 0a 01 [OK]
+GET_REPORT feature 8: 4 x, first 33.18 s, last 221.80 s, median interval 63.36 s
+        2 x  GET_REPORT feature 0x08 len 3 -> [OK] 08 01 63
+        1 x  GET_REPORT feature 0x08 len 3 -> [OK] 08 00 63
+        1 x  GET_REPORT feature 0x08 len 3 -> [OK] 08 00 64
+
+== interrupt OUT: 16 transfers
+        8 x  04 00 00 00 00 00 00
+        2 x  02 00 00 00 00 00 00 00 00
+        2 x  04 04 00 00 00 00 00
+        2 x  04 01 00 00 00 00 00
+        1 x  04 10 00 00 00 00 00
+        1 x  04 20 00 00 00 00 00
+
+== interrupt IN reports
+   0x02: 70 reports, wire lengths {9: 70}
+   0x05: 120 reports, wire lengths {37: 120}
+   0x08: 3 reports, wire lengths {3: 3}
+   0x08 @ 18.50 s: 08 01 63
+   0x08 @ 158.44 s: 08 00 63
+   0x08 @ 221.80 s: 08 00 64
+
+== USER x5 markers at: 116.8, 134.7, 143.0, 154.1, 251.8
+
+-- segment 0 (0.0 .. 116.8 s): 29 control requests, 2 interrupt OUT, 10 IN reports
+      0.00  GET_DESCRIPTOR type 0x01 idx 0 len 18 [OK] 18 bytes
+      0.00  GET_DESCRIPTOR type 0x02 idx 0 len 86 [OK] 86 bytes
+      0.00  bm=0x00 req=0x09 wValue=0x0001 wIndex=0x0000 out= [OK] resp=
+     18.47  GET_DESCRIPTOR type 0x01 idx 0 len 18 [OK] 18 bytes
+     18.47  GET_DESCRIPTOR type 0x02 idx 0 len 9 [OK] 9 bytes
+     18.47  GET_DESCRIPTOR type 0x02 idx 0 len 86 [OK] 86 bytes
+     18.48  bm=0x00 req=0x09 wValue=0x0001 wIndex=0x0000 out= [OK] resp=
+     18.48  GET_DESCRIPTOR type 0x03 idx 2 len 4 [OK] 4 bytes
+     18.48  GET_DESCRIPTOR type 0x03 idx 2 len 68 [OK] 68 bytes
+     18.49  GET_DESCRIPTOR type 0x03 idx 2 len 4 [OK] 4 bytes
+     18.49  GET_DESCRIPTOR type 0x03 idx 2 len 68 [OK] 68 bytes
+     18.49  SET_IDLE wValue 0x0000 [OK]
+     18.49  GET_DESCRIPTOR type 0x22 idx 0 len 361 [OK] 297 bytes
+     18.62  GET_DESCRIPTOR type 0x03 idx 2 len 522 [OK] 68 bytes   (x6, until 20.68)
+     33.09  SET_REPORT feature 0x03: 03 00 00 [OK]
+     33.09  INT OUT report 0x04: 04 00 00 00 00 00 00
+     33.10  INT OUT report 0x02: 02 00 00 00 00 00 00 00 00   LEDs? none
+     33.10  GET_REPORT feature 0x01 len 8 -> [OK] 01 15 5b 3b fd 02 02 00
+     33.10  SET_REPORT feature 0x0a: 0a 01 [OK]
+     33.18  GET_REPORT feature 0x08 len 3 -> [OK] 08 01 63   (x2, until 39.65)
+     39.65  SET_REPORT feature 0x03: 03 04 04 [OK]
+     63.10  SET_REPORT feature 0x0a: 0a 01 [OK]
+     63.10  SET_REPORT feature 0x03: 03 04 04 [OK]
+     93.10  SET_REPORT feature 0x0a: 0a 01 [OK]
+     93.11  SET_REPORT feature 0x03: 03 04 04 [OK]
+
+-- segment 1 (116.8 .. 134.7 s): 2 control requests, 4 interrupt OUT, 18 IN reports
+    123.10  SET_REPORT feature 0x0a: 0a 01 [OK]
+    123.10  SET_REPORT feature 0x03: 03 04 04 [OK]
+    128.04     [press OFFSET]
+    128.05  INT OUT report 0x04: 04 04 00 00 00 00 00
+    128.22     [release OFFSET]
+    129.74     [press OFFSET]
+    129.76  INT OUT report 0x04: 04 00 00 00 00 00 00
+    129.93     [release OFFSET]
+    130.93     [press OFFSET]
+    130.95  INT OUT report 0x04: 04 04 00 00 00 00 00
+    131.12     [release OFFSET]
+    131.87     [press OFFSET]
+    131.89  INT OUT report 0x04: 04 00 00 00 00 00 00
+    132.04     [release OFFSET]
+
+-- segment 2 (134.7 .. 143.0 s): 0 control requests, 4 interrupt OUT, 18 IN reports
+    137.06     [press BYPASS]
+    137.10  INT OUT report 0x04: 04 01 00 00 00 00 00
+    137.22     [release BYPASS]
+    138.45     [press BYPASS]
+    138.50  INT OUT report 0x04: 04 00 00 00 00 00 00
+    138.59     [release BYPASS]
+    139.73     [press BYPASS]
+    139.84  INT OUT report 0x04: 04 01 00 00 00 00 00
+    139.89     [release BYPASS]
+    140.89     [press BYPASS]
+    140.94  INT OUT report 0x04: 04 00 00 00 00 00 00
+    141.05     [release BYPASS]
+
+-- segment 3 (143.0 .. 154.1 s): 2 control requests, 4 interrupt OUT, 14 IN reports
+    144.90     [press SHIFT_UP]
+    144.94  INT OUT report 0x04: 04 10 00 00 00 00 00
+    148.76     [release SHIFT_UP]
+    148.76  INT OUT report 0x04: 04 00 00 00 00 00 00
+    149.79     [press SHIFT_DOWN]
+    149.79  INT OUT report 0x04: 04 20 00 00 00 00 00
+    152.50     [release SHIFT_DOWN]
+    152.50  INT OUT report 0x04: 04 00 00 00 00 00 00
+    153.11  SET_REPORT feature 0x0a: 0a 01 [OK]
+    153.11  SET_REPORT feature 0x03: 03 04 04 [OK]
+
+-- segment 4 (154.1 .. 251.8 s): 14 control requests, 0 interrupt OUT, 12 IN reports
+    158.44  GET_REPORT feature 0x08 len 3 -> [OK] 08 00 63
+    183.11  SET_REPORT feature 0x0a: 0a 01 [OK]
+    183.12  SET_REPORT feature 0x03: 03 04 04 [OK]
+    189.65  SET_REPORT feature 0x03: 03 00 00 [OK]
+    200.82  SET_REPORT feature 0x03: 03 0c 0c [OK]
+    206.72  SET_REPORT feature 0x03: 03 26 26 [OK]
+    211.89  SET_REPORT feature 0x03: 03 64 64 [OK]
+    213.11  SET_REPORT feature 0x0a: 0a 01 [OK]
+    213.11  SET_REPORT feature 0x03: 03 64 64 [OK]
+    221.80  GET_REPORT feature 0x08 len 3 -> [OK] 08 00 64
+    223.01  SET_REPORT feature 0x03: 03 00 00 [OK]
+    228.13  SET_REPORT feature 0x03: 03 08 08 [OK]
+    243.11  SET_REPORT feature 0x0a: 0a 01 [OK]
+    243.11  SET_REPORT feature 0x03: 03 08 08 [OK]
+
+-- segment 5 (251.8 .. end s): 9 control requests, 2 interrupt OUT, 121 IN reports
+    268.07  GET_DESCRIPTOR type 0x03 idx 3 len 254 [OK] 66 bytes
+    268.07  GET_DESCRIPTOR type 0x03 idx 1 len 254 [OK] 36 bytes
+    268.07  GET_DESCRIPTOR type 0x03 idx 2 len 254 [OK] 68 bytes
+    268.20  GET_DESCRIPTOR type 0x03 idx 3 len 254 [OK] 66 bytes
+    268.20  GET_DESCRIPTOR type 0x03 idx 1 len 254 [OK] 36 bytes
+    268.20  GET_DESCRIPTOR type 0x03 idx 2 len 254 [OK] 68 bytes
+    273.11  SET_REPORT feature 0x0a: 0a 01 [OK]
+    273.11  SET_REPORT feature 0x03: 03 08 08 [OK]
+    290.80  SET_REPORT feature 0x03: 03 00 00 [OK]
+    290.84  INT OUT report 0x04: 04 00 00 00 00 00 00
+    290.84  INT OUT report 0x02: 02 00 00 00 00 00 00 00 00   LEDs? none
