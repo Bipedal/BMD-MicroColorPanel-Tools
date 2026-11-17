@@ -20,6 +20,7 @@ in Python. The goal is to let the panel drive software other than DaVinci Resolv
 |---|---|
 | [`PANEL_PROTOCOL.md`](PANEL_PROTOCOL.md) | **The spec.** Every statement is tagged **[V]** verified (with the log that shows it), **[A]** assumed, **[D]** from documentation, or **[?]** open. |
 | [`panel.py`](panel.py) | Reference driver (hidapi): init and keep-alive, decoded buttons / balls / rings / knobs, key LEDs, backlight, battery, firmware/serial info, state re-sync, automatic reconnect across USB and Bluetooth. |
+| [`panel_tester.py`](panel_tester.py) | A window that draws the panel and shows every key, knob, ball and ring live, with a backlight slider and clickable key LEDs. `--demo` runs without a panel. |
 | [`tests/`](tests) | The standalone test scripts that produced the evidence. Most guided tests end on a panel gesture (the same key pressed 5× within 3 s). |
 | [`logs/`](logs) | The raw logs and USB captures cited in the spec (JSONL, text, pcapng). |
 | [`tools/make_publish.py`](tools/make_publish.py) | Builds this public copy and redacts unit identifiers. |
@@ -44,6 +45,7 @@ Requirements: Python 3 and [hidapi](https://pypi.org/project/hidapi/).
 pip install -r requirements.txt
 python panel.py                         # print live events (USB if plugged in, else Bluetooth)
 PANEL_TRANSPORT=bt python panel.py      # force one transport: usb or bt (POSIX shell syntax)
+python panel_tester.py                  # live picture of the panel; backlight and LED controls
 ```
 
 Close DaVinci Resolve first, or both programs will write to the panel.
