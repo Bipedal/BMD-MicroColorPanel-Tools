@@ -1,0 +1,39 @@
+name: release
+
+# A tag like v0.1.0 builds the Windows program and puts it into a draft release.
+# Started by hand it only builds; the zip is then under the run's artifacts.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable --no-self-update && rustup default stable
+      - run: cargo test --locked
+        working-directory: helper
+      - run: cargo test --locked
+        working-directory: integrations
+      # self-contained, and without the build machine's paths
+      - run: cargo build --release --locked -p micropanel-app
+        working-directory: integrations
+        env:
+          RUSTFLAGS: -C target-feature=+crt-static --remap-path-prefix=${{ github.workspace }}=src --remap-path-prefix=C:\Users\runneradmin=home
+      - run: python tools/package_release.py ${{ github.ref_type == 'tag' && format('--tag {0}', github.ref_name) || '' }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist/*.zip*
+      - if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" dist/*.zip dist/*.sha256 --draft --title "Helper ${{ github.ref_name }}" --notes-file tools/release_notes.md

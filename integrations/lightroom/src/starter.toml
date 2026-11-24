@@ -1,0 +1,149 @@
+
+# ---------------------------------------------------------------- Lightroom, any module
+[lightroom.button]
+PREV_FRAME = { do = "lr.cmd", id = "previousPhoto" }
+NEXT_FRAME = { do = "lr.cmd", id = "nextPhoto" }
+PREV_CLIP  = { do = "lr.cmd", id = "previousPhoto" }
+NEXT_CLIP  = { do = "lr.cmd", id = "nextPhoto" }
+PLAY_FWD   = { do = "lr.cmd", id = "pick" }
+PLAY_REV   = { do = "lr.cmd", id = "reject" }
+STOP       = { do = "lr.cmd", id = "unflag" }
+UNDO       = { do = "lr.cmd", id = "undo" }
+REDO       = { do = "lr.cmd", id = "redo" }
+COPY       = { do = "key", keys = "ctrl+shift+c" }   # no SDK call for copy/paste settings
+PASTE      = { do = "key", keys = "ctrl+shift+v" }
+VIEWER     = { do = "key", keys = "f" }              # full-screen preview
+USER       = { do = "layer", name = "mouse", mode = "hold" }
+PLAY_STILL = { do = "lr.cmd", id = "moduleLibrary" }
+GRAB_STILL = { do = "lr.cmd", id = "moduleDevelop" }
+
+# LEDs (only these keys have one: BYPASS DISABLE = red; USER OFFSET SHIFT_UP SHIFT_DOWN
+# PLAY_STILL WIPE_STILL H_LITE VIEWER CURSOR = green). Rules: lr.flag pick/reject/none,
+# lr.label red/yellow/green/blue/purple/none, lr.rating 0-5, lr.module, lr.tool, lr.cg_view,
+# lr.<DevelopSetting> (e.g. lr.Exposure2012 != 0), layer.<name>; and / or / not; ( ).
+# Layer keys light by themselves while their layer is held.
+[lightroom.leds]
+DISABLE    = "lr.flag == reject"
+VIEWER     = "lr.flag == pick"
+PLAY_STILL = "lr.module == library"
+WIPE_STILL = "lr.label != none"
+
+[lightroom.knob]
+SATURATION = { do = "lr.cmd", cw = "increaseRating", ccw = "decreaseRating", per = 512 }
+
+[lightroom.ring]
+MIDDLE = { do = "lr.cmd", cw = "nextPhoto", ccw = "previousPhoto", per = 25 }
+
+[lightroom.layer.mouse.ball]
+RIGHT  = { do = "mouse.move", speed = 0.75, accel = 2.0 }
+MIDDLE = { do = "mouse.scroll" }
+
+[lightroom.layer.mouse.ring]
+RIGHT  = { do = "mouse.scroll", axis = "v" }
+
+[lightroom.layer.mouse.button]
+PLAY_FWD = { do = "mouse.button", button = "left" }
+STOP     = { do = "mouse.button", button = "middle" }
+PLAY_REV = { do = "mouse.button", button = "right" }
+
+# ---------------------------------------------------------------- Lightroom, Develop
+# Knobs follow the panel's labels where Lightroom has a match.
+[lightroom.develop.knob]
+Y_LIFT      = { do = "lr.param", id = "Blacks2012",      per_turn = 100 }
+Y_GAMMA     = { do = "lr.param", id = "Exposure2012",    per_turn = 2 }
+Y_GAIN      = { do = "lr.param", id = "Whites2012",      per_turn = 100 }
+CONTRAST    = { do = "lr.param", id = "Contrast2012",    per_turn = 100 }
+PIVOT       = { do = "lr.param", id = "Texture",         per_turn = 100 }
+MID_DETAIL  = { do = "lr.param", id = "Clarity2012",     per_turn = 100 }
+COLOR_BOOST = { do = "lr.param", id = "Vibrance",        per_turn = 100 }
+SHADOWS     = { do = "lr.param", id = "Shadows2012",     per_turn = 100 }
+HIGHLIGHTS  = { do = "lr.param", id = "Highlights2012",  per_turn = 100 }
+SATURATION  = { do = "lr.param", id = "Saturation",      per_turn = 100 }
+HUE         = { do = "lr.param", id = "Temperature",     per_turn = 2000 }  # Kelvin on raw files
+LUM_MIX     = { do = "lr.param", id = "Tint",            per_turn = 50 }
+
+[lightroom.develop.ball]
+LEFT   = { do = "lr.wheel", zone = "shadow",    speed = 1.0 }
+MIDDLE = { do = "lr.wheel", zone = "midtone",   speed = 1.0 }
+RIGHT  = { do = "lr.wheel", zone = "highlight", speed = 1.0 }
+
+[lightroom.develop.ring]
+LEFT   = { do = "lr.param", id = "ColorGradeShadowLum",    per_turn = 100 }
+MIDDLE = { do = "lr.param", id = "ColorGradeMidtoneLum",   per_turn = 100 }
+RIGHT  = { do = "lr.param", id = "ColorGradeHighlightLum", per_turn = 100 }
+
+# Knob presses reset their setting; the reset keys above the balls clear a wheel's colour.
+[lightroom.develop.button]
+Y_LIFT      = { do = "lr.param", id = "Blacks2012",     reset = true }
+Y_GAMMA     = { do = "lr.param", id = "Exposure2012",   reset = true }
+Y_GAIN      = { do = "lr.param", id = "Whites2012",     reset = true }
+CONTRAST    = { do = "lr.param", id = "Contrast2012",   reset = true }
+PIVOT       = { do = "lr.param", id = "Texture",        reset = true }
+MID_DETAIL  = { do = "lr.param", id = "Clarity2012",    reset = true }
+COLOR_BOOST = { do = "lr.param", id = "Vibrance",       reset = true }
+SHADOWS     = { do = "lr.param", id = "Shadows2012",    reset = true }
+HIGHLIGHTS  = { do = "lr.param", id = "Highlights2012", reset = true }
+SATURATION  = { do = "lr.param", id = "Saturation",     reset = true }
+HUE         = { do = "lr.param", id = "Temperature",    reset = true }
+LUM_MIX     = { do = "lr.param", id = "Tint",           reset = true }
+RESET_LIFT  = { do = "lr.param", id = "SplitToningShadowSaturation",    reset = true }
+RESET_GAMMA = { do = "lr.param", id = "ColorGradeMidtoneSat",           reset = true }
+RESET_GAIN  = { do = "lr.param", id = "SplitToningHighlightSaturation", reset = true }
+RESET       = { do = "lr.cmd", id = "resetAll" }
+AUTO_COLOR  = { do = "lr.cmd", id = "autoTone" }
+OFFSET      = { do = "lr.cmd", id = "autoWhiteBalance" }
+BYPASS      = { do = "key", keys = "backslash" }    # before/after
+H_LITE      = { do = "lr.cmd", id = "showClipping" }
+ADD_NODE    = { do = "lr.cmd", id = "toolMasking" }
+ADD_WINDOW  = { do = "lr.cmd", id = "toolCrop" }
+ADD_KEYFRM  = { do = "lr.cmd", id = "toolSpot" }
+SELECT      = { do = "lr.cmd", id = "toolLoupe" }
+SHIFT_UP    = { do = "layer", name = "more", mode = "hold" }
+SHIFT_DOWN  = { do = "layer", name = "fine", mode = "hold" }
+
+# Hold SHIFT_UP: second page of knobs.
+[lightroom.develop.layer.more.knob]
+Y_LIFT      = { do = "lr.param", id = "Dehaze",                   per_turn = 100 }
+Y_GAMMA     = { do = "lr.param", id = "PostCropVignetteAmount",   per_turn = 100 }
+Y_GAIN      = { do = "lr.param", id = "GrainAmount",              per_turn = 100 }
+CONTRAST    = { do = "lr.param", id = "Sharpness",                per_turn = 150 }
+PIVOT       = { do = "lr.param", id = "LuminanceSmoothing",       per_turn = 100 }
+MID_DETAIL  = { do = "lr.param", id = "ColorNoiseReduction",      per_turn = 100 }
+COLOR_BOOST = { do = "lr.param", id = "ColorGradeBlending",       per_turn = 100 }
+SHADOWS     = { do = "lr.param", id = "SplitToningBalance",       per_turn = 200 }
+HIGHLIGHTS  = { do = "lr.param", id = "ColorGradeGlobalLum",      per_turn = 100 }
+SATURATION  = { do = "lr.param", id = "ColorGradeGlobalSat",      per_turn = 100 }
+HUE         = { do = "lr.param", id = "ColorGradeGlobalHue",      per_turn = 360 }
+LUM_MIX     = { do = "lr.param", id = "LensManualDistortionAmount", per_turn = 100 }
+
+[lightroom.develop.layer.more.ball]
+MIDDLE = { do = "lr.wheel", zone = "global", speed = 1.0 }
+
+# Hold SHIFT_DOWN: the main knobs at one fifth of the speed.
+[lightroom.develop.layer.fine.knob]
+Y_LIFT      = { do = "lr.param", id = "Blacks2012",      per_turn = 20 }
+Y_GAMMA     = { do = "lr.param", id = "Exposure2012",    per_turn = 0.4 }
+Y_GAIN      = { do = "lr.param", id = "Whites2012",      per_turn = 20 }
+CONTRAST    = { do = "lr.param", id = "Contrast2012",    per_turn = 20 }
+PIVOT       = { do = "lr.param", id = "Texture",         per_turn = 20 }
+MID_DETAIL  = { do = "lr.param", id = "Clarity2012",     per_turn = 20 }
+COLOR_BOOST = { do = "lr.param", id = "Vibrance",        per_turn = 20 }
+SHADOWS     = { do = "lr.param", id = "Shadows2012",     per_turn = 20 }
+HIGHLIGHTS  = { do = "lr.param", id = "Highlights2012",  per_turn = 20 }
+SATURATION  = { do = "lr.param", id = "Saturation",      per_turn = 20 }
+HUE         = { do = "lr.param", id = "Temperature",     per_turn = 400 }
+LUM_MIX     = { do = "lr.param", id = "Tint",            per_turn = 10 }
+
+[lightroom.develop.layer.fine.ball]
+LEFT   = { do = "lr.wheel", zone = "shadow",    speed = 0.2 }
+MIDDLE = { do = "lr.wheel", zone = "midtone",   speed = 0.2 }
+RIGHT  = { do = "lr.wheel", zone = "highlight", speed = 0.2 }
+
+[lightroom.develop.layer.fine.ring]
+LEFT   = { do = "lr.param", id = "ColorGradeShadowLum",    per_turn = 20 }
+MIDDLE = { do = "lr.param", id = "ColorGradeMidtoneLum",   per_turn = 20 }
+RIGHT  = { do = "lr.param", id = "ColorGradeHighlightLum", per_turn = 20 }
+
+# A Lightroom dialog in front: keep the pointer, block Lightroom actions (they are skipped anyway).
+[lightroom.dialog.ball]
+RIGHT = { do = "mouse.move", speed = 0.75, accel = 2.0 }

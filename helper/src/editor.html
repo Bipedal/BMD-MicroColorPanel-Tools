@@ -1,0 +1,2724 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Micro Color Panel</title>
+<style>
+:root {
+  --bg: #f4f5f7; --panel: #ffffff; --text: #1d2127; --muted: #6a7380; --border: #d5d9df;
+  --accent: #2563eb; --accent-text: #ffffff; --ok: #15803d; --ok-bg: #e3f5e8;
+  --err: #b91c1c; --err-bg: #fde8e8; --warn: #92400e; --warn-bg: #fdf0d5;
+  --chip: #e8ebf0; --code-bg: #f0f2f5; --gutter: #eef0f3;
+  --key: #ffffff; --key0: #e6e9ee; --hov: #dfe7f7; --faint: #717a87; --body: #dfe3e9; --sel: #d97706; --flash: #16a34a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171b; --panel: #1d2127; --text: #e3e6ea; --muted: #8e98a5; --border: #333a43;
+    --accent: #5b8def; --accent-text: #0b0e12; --ok: #5fd08a; --ok-bg: #15301f;
+    --err: #f28b8b; --err-bg: #3a1c1c; --warn: #f1c27a; --warn-bg: #3a2d14;
+    --chip: #2a3039; --code-bg: #262b33; --gutter: #191d22;
+    --key: #2a2e35; --key0: #1c1f24; --hov: #343b47; --faint: #838c99; --body: #171a1f; --sel: #fbbf24; --flash: #4ade80;
+  }
+}
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; }
+html { font-size: clamp(13px, calc(0.5vw + 6px), 30px); }
+html, body { margin: 0; }
+body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); color: var(--text); font: 1rem/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+code, textarea, .mono { font-family: ui-monospace, Consolas, "Cascadia Mono", Menlo, monospace; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1.143rem; padding: 0 1rem; background: var(--panel); border-bottom: 1px solid var(--border); }
+header .chips { margin-left: auto; padding: 0.286rem 0; }
+header h1 { font-size: 1.143rem; margin: 0; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.429rem; }
+.chip { background: var(--chip); border-radius: 71.357rem; padding: 2px 0.714rem; font-size: 0.857rem; white-space: nowrap; }
+button.chip { border: 0; line-height: inherit; font-weight: inherit; }
+button.chip:hover { text-decoration: underline; }
+.chip.ok { background: var(--ok-bg); color: var(--ok); }
+.chip.warn { background: var(--warn-bg); color: var(--warn); }
+.chip.err { background: var(--err-bg); color: var(--err); }
+.banner { padding: 0.571rem 1rem; font-size: 0.929rem; }
+.banner.err { background: var(--err-bg); color: var(--err); }
+.banner.warn { background: var(--warn-bg); color: var(--warn); }
+.hidden { display: none !important; }
+.tabs { display: flex; gap: 2px; }
+.tab { border: 0; border-bottom: 0.214rem solid transparent; border-radius: 0; background: transparent; padding: 0.571rem 1rem 0.429rem; font-weight: 600; color: var(--muted); }
+.tab:hover:not(:disabled) { color: var(--text); border-color: transparent; border-bottom-color: var(--border); }
+.tab.on { color: var(--text); border-bottom-color: var(--accent); }
+main { display: flex; flex-wrap: wrap; gap: 0.857rem; padding: 0.857rem; align-items: flex-start; }
+.col-main { flex: 3 1 34.286rem; min-width: 0; }
+.col-side { flex: 1 1 21.429rem; min-width: 0; max-width: 100%; display: flex; flex-direction: column; gap: 0.857rem; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 0.571rem; padding: 0.714rem 0.857rem; }
+.card h2 { font-size: 0.929rem; margin: 0 0 0.571rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 0.429rem; align-items: center; margin-bottom: 0.571rem; }
+.toolbar .spacer { flex: 1; }
+button { font: inherit; padding: 0.286rem 0.857rem; border: 1px solid var(--border); border-radius: 0.429rem; background: var(--panel); color: var(--text); cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.dirty { color: var(--warn); font-size: 0.857rem; }
+.editor { display: flex; border: 1px solid var(--border); border-radius: 0.429rem; background: var(--panel); height: 62vh; min-height: 20rem; overflow: hidden; }
+.gutter { flex: none; width: 3.6em; overflow: hidden; background: var(--gutter); color: var(--muted); text-align: right; padding: 0.571rem 0.429rem 0.571rem 0; font-size: 0.929rem; line-height: 1.429rem; user-select: none; border-right: 1px solid var(--border); }
+.gutter div { height: 1.429rem; }
+textarea#ed { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; padding: 0.571rem; font-size: 0.929rem; line-height: 1.429rem; background: transparent; color: var(--text); white-space: pre; overflow: auto; tab-size: 2; }
+#result { margin-top: 0.571rem; padding: 0.429rem 0.714rem; border-radius: 0.429rem; font-size: 0.929rem; min-height: 2.143rem; }
+#result.ok { background: var(--ok-bg); color: var(--ok); }
+#result.err { background: var(--err-bg); color: var(--err); }
+#result.idle { background: var(--chip); color: var(--muted); }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 0.714rem; font-size: 0.929rem; }
+.kv .k { color: var(--muted); }
+.ctl-name { font-size: 1.143rem; font-weight: 600; word-break: break-all; }
+.snippet { display: block; background: var(--code-bg); padding: 0.286rem 0.429rem; border-radius: 0.286rem; font-size: 0.857rem; word-break: break-all; white-space: pre-wrap; margin-top: 0.286rem; }
+input[type=search] { width: 100%; font: inherit; padding: 0.357rem 0.571rem; border: 1px solid var(--border); border-radius: 0.429rem; background: var(--panel); color: var(--text); margin-bottom: 0.571rem; }
+.cat { max-height: 34vh; overflow: auto; }
+.cat h3 { font-size: 0.857rem; margin: 0.571rem 0 0.214rem; color: var(--muted); }
+.item { display: block; width: 100%; text-align: left; border: 0; border-radius: 0.286rem; padding: 2px 0.429rem; background: transparent; }
+.item:hover { background: var(--chip); }
+.item .id { font-family: ui-monospace, Consolas, monospace; font-size: 0.857rem; }
+.item .lbl { color: var(--muted); font-size: 0.857rem; margin-left: 0.429rem; }
+.act { padding: 0.429rem 0; border-top: 1px solid var(--border); font-size: 0.929rem; }
+.act:first-child { border-top: 0; }
+.act .small { color: var(--muted); font-size: 0.857rem; }
+.muted { color: var(--muted); }
+
+/* ---------- mapping tab ---------- */
+body > * { flex: none; }
+#tabMap { padding: 0.429rem 0.857rem; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#tabToml { flex: 1 1 auto; min-height: 0; overflow: auto; }
+select, input[type=text], input[type=number], input:not([type]) {
+  font: inherit; padding: 0.286rem 0.571rem; border: 1px solid var(--border); border-radius: 0.429rem; background: var(--bg); color: var(--text); min-width: 0; }
+select:focus, input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.mapcols { display: flex; gap: 0.857rem; flex: 1; min-height: 0; }
+.mapmain { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.rail { flex: none; width: 5.4rem; display: flex; flex-direction: column; gap: 0.286rem; overflow-y: auto; }
+.rail button { border: 0; background: transparent; padding: 0.429rem 0.143rem; display: flex; flex-direction: column; align-items: center; gap: 0.286rem; font-size: 0.82rem; line-height: 1.2; color: var(--muted); position: relative; overflow-wrap: anywhere; }
+.rail button:hover { background: var(--chip); color: var(--text); }
+.rail button.on { color: var(--text); font-weight: 600; }
+.rail .ico { width: 2.57rem; height: 2.57rem; border-radius: 0.7rem; display: grid; place-items: center; font-weight: 650; font-size: 1rem; background: var(--chip); color: var(--muted); }
+.rail .on .ico { background: var(--text); color: var(--bg); }
+.rail .live { position: absolute; top: 0.2rem; right: 0.85rem; width: 0.8rem; height: 0.8rem; border-radius: 50%; background: var(--ok); border: 2px solid var(--bg); }
+.rail .add { margin-top: auto; }
+.rail .add .ico { background: transparent; font-size: 1.5rem; font-weight: 400; }
+.place { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.143rem 1rem; align-items: center; margin-bottom: 0.429rem; }
+.place > .mid { grid-column: 2; display: flex; flex-direction: column; align-items: center; gap: 0.143rem; }
+.place .line { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1rem; }
+#ptools { border-left: 2px solid var(--border); padding-left: 1rem; }
+.place > .lft { grid-column: 1; grid-row: 1; align-self: start; display: flex; flex-wrap: wrap; gap: 0.143rem; min-width: 0; }
+.pre small { color: var(--faint); margin-right: 0.429rem; font-size: 0.893rem; }
+.pmenu { width: min(27rem, calc(100vw - 3rem)); max-height: 70vh; overflow: auto; }
+.pmenu h3 { margin: 0.429rem 0.857rem 0.143rem; font-size: 0.857rem; font-weight: 600; color: var(--muted); }
+.menu button.pr { border: 0; border-radius: 0.429rem; display: grid; grid-template-columns: 1.4rem minmax(0, 1fr); padding: 0.429rem 0.714rem; }
+.menu button.pr.on { font-weight: 600; }
+.menu button.pr small { display: block; font-weight: 400; font-size: 0.857rem; color: var(--muted); }
+.menu .btns { border-top: 1px solid var(--border); margin-top: 0.286rem; padding: 0.571rem 0.571rem 0.286rem; }
+.menu .btns button { width: auto; padding: 0.286rem 0.786rem; border: 1px solid var(--border) !important; }
+.dlg .old { display: flex; flex-direction: column; gap: 0.143rem; max-height: 14rem; overflow: auto; }
+.dlg .old button { border: 0; background: transparent; text-align: left; }
+.dlg .old button:hover { background: var(--chip); }
+.dlg .old button.on { background: var(--accent); color: var(--accent-text); }
+.place > .rt { grid-column: 3; align-self: start; text-align: right; font-size: 0.929rem; color: var(--muted); }
+.place h2 { margin: 0; font-size: 1.43rem; font-weight: 500; line-height: 1.15; text-align: center; }
+.qrow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
+.qrow button { border: 0; background: transparent; padding: 0.214rem 0.857rem; color: var(--muted); opacity: .8; border-radius: 0.429rem; }
+.qrow button.has { opacity: 1; }
+.qrow button:hover { color: var(--text); opacity: 1; }
+.qrow button.on { color: var(--text); opacity: 1; font-weight: 600; }
+#ptabs > button + button, #ptabs > .pop > button { border-left: 1px solid var(--border); border-radius: 0; }
+#players button.on { background: var(--chip); }
+#players button.bad { color: var(--warn); opacity: 1; }
+.pop { position: relative; display: inline-block; }
+.menu { position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; min-width: 12rem; background: var(--panel); border: 1px solid var(--border); border-radius: 0.571rem; box-shadow: 0 0.571rem 2.143rem rgba(0,0,0,.4); padding: 0.286rem; text-align: left; }
+.menu button { display: block; width: 100%; text-align: left; border-left: 0 !important; opacity: 1; color: var(--text); }
+.menu button:hover { background: var(--chip); }
+.menu p { margin: 0.286rem 0.857rem; font-size: 0.857rem; color: var(--muted); }
+.lostbar { grid-column: 1 / -1; justify-self: center; background: var(--warn-bg); color: var(--warn); border-radius: 0.429rem; padding: 0.286rem 0.857rem; font-size: 0.929rem; }
+.lostbar button { margin-left: 0.571rem; padding: 1px 0.714rem; }
+.dot { display: inline-block; width: 0.64rem; height: 0.64rem; border-radius: 50%; background: var(--ok); margin-right: 0.357rem; }
+button.link { border: 0; background: transparent; padding: 0 0.143rem; color: var(--accent); }
+button.link:hover { text-decoration: underline; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 60; display: grid; place-items: center; padding: 1rem; }
+.dlg { background: var(--panel); border: 1px solid var(--border); border-radius: 0.857rem; padding: 1.143rem; width: min(30rem, 100%); max-height: 100%; overflow: auto; display: flex; flex-direction: column; gap: 0.714rem; }
+.dlg h2 { margin: 0; font-size: 1.214rem; font-weight: 600; }
+.dlg p { margin: 0; }
+.dlg .btns { display: flex; flex-wrap: wrap; gap: 0.429rem; }
+.dlg .derr { color: var(--err); }
+.does { font-size: 1.286rem; font-weight: 500; line-height: 1.25; overflow-wrap: anywhere; }
+.does + .src { color: var(--muted); font-size: 0.929rem; margin: 0.143rem 0 0.571rem; }
+.side .head small { display: block; font-weight: 400; font-size: 0.857rem; color: var(--muted); }
+details.adv summary { cursor: pointer; color: var(--muted); font-size: 0.857rem; }
+.foot { display: flex; flex-wrap: wrap; gap: 0.286rem 1rem; align-items: center; padding-top: 0.429rem; font-size: 0.857rem; color: var(--muted); }
+.foot button { border: 0; background: transparent; padding: 2px 0.143rem; color: inherit; }
+.foot button:hover { color: var(--text); }
+.foot button.on { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.foot .rt { margin-left: auto; display: flex; flex-wrap: wrap; gap: 0.286rem 1rem; align-items: center; }
+button.quiet { border: 0; background: transparent; color: var(--muted); padding: 0.286rem 0.643rem; }
+button.quiet:hover:not(:disabled) { color: var(--text); background: var(--chip); }
+.work { display: flex; flex: 1; min-height: 0; position: relative; container-type: size; }
+/* --zoom: the user's choice; 902 x 388 is the drawing */
+.work > * { --pw: min(100cqw, 100cqh * 902 / 388, max(1400px, 76rem) * var(--zoom, 1)); }
+.pic { flex: 1 1 0; min-width: 0; min-height: 0; position: relative; }
+.pic svg { display: block; width: var(--pw); height: calc(var(--pw) * 388 / 902); margin: calc((100cqh - var(--pw) * 388 / 902) * .25) auto 0; user-select: none; }
+.armbar, .toastbar { position: fixed; z-index: 55; left: 50%; transform: translateX(-50%); max-width: calc(100% - 2rem); display: flex; align-items: center; gap: 1rem; border-radius: 0.643rem; padding: 0.5rem 1.071rem; box-shadow: 0 0.571rem 2.143rem rgba(0,0,0,.4); }
+.armbar { top: 0.286rem; background: var(--warn-bg); color: var(--warn); }
+.armbar button { padding: 1px 0.714rem; }
+.toastbar { bottom: 1.4rem; background: var(--text); color: var(--bg); }
+.toastbar.err { background: var(--err-bg); color: var(--err); }
+.toastbar button { border: 0; background: transparent; padding: 0; color: inherit; font-weight: 700; text-decoration: underline; }
+.side { position: absolute; z-index: 20; top: 0; bottom: 0; right: max(0px, calc((100cqw - var(--pw)) / 2 - 28rem)); width: min(27rem, 100%); background: var(--panel); border: 1px solid var(--border); border-radius: 1rem; box-shadow: 0 1rem 3.5rem rgba(0,0,0,.4); overflow: hidden; display: flex; }
+.side.left { right: auto; left: max(0px, calc((100cqw - var(--pw)) / 2 - 28rem)); }
+#bind { flex: 1; min-width: 0; overflow: auto; padding: 1.143rem; display: flex; flex-direction: column; gap: 0.857rem; }
+#bind > * { flex: none; }
+.ihead { display: flex; gap: 0.571rem; align-items: flex-start; position: sticky; top: -1.143rem; z-index: 5; margin: -1.143rem -1.143rem -0.286rem; padding: 1.143rem 1.143rem 0.571rem; background: var(--panel); }
+.ihead.up { box-shadow: 0 1px 0 var(--border); }
+.ihead h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.286rem; font-weight: 600; line-height: 1.25; text-transform: none; letter-spacing: 0; color: var(--text); }
+.ihead small { display: block; font-weight: 400; font-size: 0.893rem; color: var(--muted); }
+.seg { display: flex; background: var(--chip); border-radius: 0.571rem; padding: 3px; }
+.seg button { flex: 1; min-width: 0; border: 0; background: transparent; border-radius: 0.429rem; padding: 0.286rem 0.429rem; color: var(--muted); }
+.seg button.on { background: var(--panel); color: var(--text); font-weight: 600; }
+.does { font-size: 1.5rem; font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; }
+.src { color: var(--muted); font-size: 0.929rem; margin-top: 0.286rem; }
+.btns { display: flex; flex-wrap: wrap; gap: 0.429rem; }
+.btns button { padding: 0.286rem 0.786rem; font-size: 0.929rem; }
+.fields { display: flex; flex-direction: column; gap: 0.571rem; }
+.mis { background: var(--warn-bg); color: var(--warn); border-radius: 0.571rem; padding: 0.5rem 0.786rem; font-size: 0.929rem; }
+.mis button { margin-top: 0.357rem; display: block; }
+details.adv summary { cursor: pointer; color: var(--muted); font-size: 0.893rem; }
+.row { display: grid; grid-template-columns: 7.2rem minmax(0, 1fr); gap: 0.286rem 0.571rem; align-items: center; }
+.row > label { color: var(--muted); font-size: 0.929rem; }
+.row .in { display: flex; gap: 0.429rem; min-width: 0; align-items: center; }
+.row .in input, .row .in select { flex: 1; min-width: 0; width: 100%; }
+.row .in input[type=checkbox] { flex: none; width: auto; }
+.row .in .u { color: var(--muted); font-size: 0.857rem; white-space: nowrap; }
+.row .in .seg { flex: 1; }
+.row .help { grid-column: 2; font-size: 0.857rem; color: var(--muted); }
+button.rec.on { background: var(--err-bg); color: var(--err); border-color: var(--err); }
+#fmsg.err, #lmsg.err { background: var(--err-bg); color: var(--err); border-radius: 0.429rem; padding: 0.357rem 0.714rem; font-size: 0.929rem; }
+#lmsg.ok { color: var(--ok); }
+.note { font-size: 0.857rem; color: var(--muted); }
+.note.warn { color: var(--warn); }
+.pk { display: flex; flex-direction: column; gap: 0.643rem; border-top: 1px solid var(--border); padding-top: 0.857rem; }
+.pk h3 { margin: 0; font-size: 0.964rem; }
+.pk input[type=search] { margin: 0; }
+.chipsrow { display: flex; flex-wrap: wrap; gap: 0.286rem; }
+.chipsrow button { border: 0; background: var(--chip); color: var(--muted); padding: 0.214rem 0.714rem; font-size: 0.929rem; }
+.chipsrow button.on { background: var(--accent); color: var(--accent-text); }
+.grp summary { cursor: pointer; padding: 0.357rem 0.143rem; color: var(--muted); font-size: 0.964rem; }
+.grp[open] > summary { color: var(--text); font-weight: 600; }
+.cnt { font-weight: 400; font-size: 0.821rem; color: var(--muted); margin-left: 0.357rem; font-variant-numeric: tabular-nums; }
+.cmd { display: flex; gap: 0.571rem; align-items: baseline; width: 100%; text-align: left; border: 0; background: transparent; padding: 0.286rem 0.643rem; border-radius: 0.429rem; font-size: 0.964rem; }
+.cmd:hover { background: var(--chip); }
+.cmd .cl { flex: 1; min-width: 0; }
+.cmd .us { font-size: 0.821rem; color: var(--faint); text-align: right; }
+.cmd.cur { background: var(--chip); font-weight: 600; }
+.cmd.armed { background: var(--accent); color: var(--accent-text); }
+.cmd.armed .us { color: inherit; }
+.sug { font-size: 0.893rem; color: var(--muted); padding: 0 0.643rem; }
+.find { position: relative; flex: 0 1 14rem; min-width: 7rem; }
+.find input { width: 100%; margin: 0; }
+.place > .rt { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 0.143rem; }
+.hits { position: absolute; z-index: 40; top: calc(100% + 4px); right: 0; width: min(26rem, 85vw); max-height: 60vh; overflow: auto; background: var(--panel); border: 1px solid var(--border); border-radius: 0.571rem; box-shadow: 0 0.571rem 2.143rem rgba(0,0,0,.4); padding: 0.286rem; text-align: left; }
+.hits button { display: block; width: 100%; text-align: left; border: 0; background: transparent; color: var(--text); padding: 0.357rem 0.714rem; }
+.hits button:hover, .hits button.on { background: var(--chip); }
+.hits small { display: block; color: var(--muted); font-size: 0.857rem; }
+.hits p { margin: 0.357rem 0.714rem; color: var(--muted); font-size: 0.893rem; }
+.ledsec { display: flex; flex-direction: column; gap: 0.5rem; }
+.ledsec h3 { font-size: 0.964rem; margin: 0 0 4px; display: flex; align-items: center; gap: 6px; }
+.ledpip { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.ledsec .row { margin: 0.357rem 0; }
+.kv .k { white-space: nowrap; }
+.place > .rt button { white-space: nowrap; }
+@media (min-width: 1501px) { .place > .rt { flex-wrap: nowrap; } }
+/* too narrow for one line: places and tools below presets and buttons */
+@media (max-width: 1500px) {
+  .place { grid-template-columns: auto minmax(0, 1fr); }
+  .place > .mid { grid-column: 1 / -1; grid-row: 2; }
+  .place > .rt { grid-column: 2; grid-row: 1; }
+}
+@media (max-width: 700px) {
+  .mapcols { flex-direction: column; }
+  .rail { width: auto; flex-direction: row; overflow-x: auto; }
+  .rail button { min-width: 5rem; }
+  .rail .add { margin-top: 0; }
+  .place { grid-template-columns: minmax(0, 1fr); }
+  .place > .mid, .place > .rt, .place > .lft { grid-column: 1; grid-row: auto; text-align: center; justify-content: center; }
+  #ptools { border-left: 0; padding-left: 0; }
+}
+/* panel drawing: flat keys with one label; brightness carries the state, colour only marks the selection */
+svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-anchor: middle; pointer-events: none; fill: var(--text); }
+.ctl { cursor: pointer; outline: none; }
+.ctl .shape { fill: var(--key); transition: fill .12s; }
+.ctl text.lbl { font-weight: 500; }
+.ctl text.nm { font-size: 5.6px; fill: var(--faint); letter-spacing: .03em; }
+.ctl.un .shape { fill: var(--key0); }
+.ctl.inh text.lbl { fill: var(--muted); font-weight: 400; }
+.ctl.blk text.lbl { fill: var(--err); }
+.ctl:hover .shape, .ctl:focus-visible .shape { fill: var(--hov); }
+.ctl.sel .shape, .ctl.sel:hover .shape { fill: var(--accent); }
+.ctl.sel text.lbl, .ctl.sel text.nm { fill: var(--accent-text); }
+.ctl.sel .push { stroke: var(--accent-text); }
+.ctl.dim { opacity: .22; }
+.ctl.no { opacity: .2; pointer-events: none; }
+.ctl.ok .shape { stroke: var(--sel); stroke-width: 1.6; }
+.ctl.dragover .shape, .ctl.ok:hover .shape { stroke-width: 3; }
+.ctl.flash .shape { animation: flash 1.2s ease-out; }
+@keyframes flash { 0% { stroke: var(--flash); stroke-width: 6; } 100% { stroke-width: 0; } }
+.dial { fill: var(--bg); pointer-events: none; }
+.ctl.sel .dial ~ text.nm { fill: var(--faint); }
+.pip { stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; pointer-events: none; }
+.push { fill: none; stroke: var(--faint); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.led { fill: var(--bg); stroke: var(--lc); stroke-width: 1.2; pointer-events: none; }
+.led.on { fill: var(--lc); }
+.ring-shape { fill-rule: evenodd; }
+.setcard { max-width: 46rem; padding: 1rem 1.25rem; }
+.setcard h2 { font-size: 1.05rem; margin: 0.8rem 0 0.4rem; }
+.setup { display: flex; gap: 0.857rem; align-items: center; flex-wrap: wrap; }
+.setup > span { flex: 1; min-width: 16rem; }
+.srow { display: flex; align-items: center; gap: 0.8rem; margin: 0.5rem 0; flex-wrap: wrap; }
+.srow > span { min-width: 16rem; }
+.srow input[type=range] { flex: 1; min-width: 10rem; }
+#tabSet { padding: 0 0.2rem; overflow: auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Micro Color Panel</h1>
+  <div class="tabs">
+    <button type="button" class="tab on" id="tMap">Mapping</button>
+    <button type="button" class="tab" id="tSet">Settings</button>
+    <button type="button" class="tab" id="tToml">TOML</button>
+  </div>
+  <div class="chips" id="chips"></div>
+</header>
+<div id="offline" class="banner err hidden">Cannot reach the helper at this address. Is it running? Retrying...</div>
+<div id="perr" class="banner warn hidden"></div>
+<!-- ===================== Settings tab ===================== -->
+<main id="tabSet" class="hidden">
+  <div class="card setcard">
+    <div id="sSetup"></div>
+    <h2>Panel</h2>
+    <label class="srow"><span>Backlight</span>
+      <input type="range" id="sBl" min="0" max="100" step="1"> <b id="sBlV" class="mono"></b></label>
+    <label class="srow"><span>Lights off when idle</span>
+      <select id="sOff">
+        <option value="0">Never</option><option value="60">after 1 minute</option><option value="120">after 2 minutes</option>
+        <option value="300">after 5 minutes</option><option value="600">after 10 minutes</option><option value="900">after 15 minutes</option>
+        <option value="1800">after 30 minutes</option><option value="3600">after 1 hour</option>
+      </select></label>
+    <div class="note">Backlight and LEDs go dark after this long without touching the panel; any key, knob, ring or ball brings them back (and does its job as usual).</div>
+    <label class="srow"><span>On battery, let the panel rest</span>
+      <select id="sSl"><option value="0">never</option><option value="15">after 15 minutes</option><option value="30">after 30 minutes</option><option value="60">after 1 hour</option></select></label>
+    <div class="note">Only over Bluetooth, and only when neither the panel nor this PC's mouse and keyboard has been used that long. The panel then switches its lights and reports off. Using the PC or plugging it in wakes it; touching the panel alone does not.</div>
+    <h2>Behaviour</h2>
+    <label class="srow"><span>Pointer smoothing (ms)</span><input type="number" id="sSm" min="0" max="200" step="5"></label>
+    <div class="note">Ball-as-mouse: spreads the panel's ~40 ms movement bursts. 0 = off.</div>
+    <label class="srow"><span>Knobs and rings: ignore the first (degrees)</span><input type="number" id="sSd" min="0" max="30" step="0.5"></label>
+    <label class="srow"><span>Balls: ignore the first (steps)</span><input type="number" id="sSb" min="0" max="100" step="1"></label>
+    <div class="note">So that a bump of the table changes nothing. Counts again after a control has rested for 1.5 seconds. Never for the mouse pointer. 0 = off.</div>
+    <label class="srow"><span>After pressing a knob, ignore small turns for (ms)</span><input type="number" id="sPm" min="0" max="5000" step="100"></label>
+    <div class="note">A press often turns the knob a little. A turn of more than 20° still counts. 0 = off.</div>
+    <div id="sExt"></div>
+    <label class="srow"><span>When DaVinci Resolve runs</span>
+      <select id="sRes"><option value="yield">give the panel to Resolve</option><option value="share">keep using it</option></select></label>
+    <h2>MIDI</h2>
+    <label class="srow"><span>Send to (out)</span><select id="sMo"></select></label>
+    <label class="srow"><span>Listen to (in, for LEDs and absolute knobs)</span><select id="sMi"></select></label>
+    <div class="note" id="sMidiNote"></div>
+    <div id="sMsg" class="note"></div>
+  </div>
+</main>
+
+<!-- ===================== Mapping tab ===================== -->
+<div id="tabMap">
+  <div id="merr" class="banner err hidden" style="border-radius:6px;margin-bottom:10px"></div>
+  <div class="mapcols">
+  <nav class="rail" id="rail" aria-label="Apps"></nav>
+  <div class="mapmain">
+  <div class="place">
+    <div class="lft"><span class="pop" id="pglobal"></span><span class="pop" id="papp"></span></div>
+    <div class="mid"><div class="line"><div class="qrow" id="ptabs"></div><div class="qrow" id="ptools"></div></div><div class="line"><h2 id="ptitle"></h2><div class="qrow" id="players"></div></div></div>
+    <div class="rt"><div class="find"><input type="search" id="find" placeholder="Find" title="Where something is assigned (Ctrl+K)" autocomplete="off" aria-label="Find where something is assigned"><div class="hits hidden" id="hits"></div></div><button type="button" class="quiet" data-nav="lib" data-v="">Actions</button><button type="button" class="quiet" id="bSheet" data-nav="sheet" data-v="" title="A small window with what every control does right now">Cheat sheet</button><button type="button" class="quiet" id="bUndo" data-nav="undo" data-v="" disabled>Undo</button><button type="button" class="quiet" id="bRedo" data-nav="redo" data-v="" disabled>Redo</button></div>
+    <div id="plost" class="lostbar hidden"></div>
+  </div>
+  <div class="work">
+    <div class="pic"><svg id="svg" viewBox="4 4 902 388" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Micro Color Panel"></svg></div>
+    <aside class="side hidden" id="side"><div id="bind"></div></aside>
+  </div>
+  <div class="foot"><span id="legend"></span><span class="rt"><span id="pactive"></span>
+    <span title="Size of the drawing; it never gets larger than the window">Size <button type="button" id="zOut" aria-label="Smaller drawing">−</button><button type="button" id="zVal" title="Back to 100 %">100%</button><button type="button" id="zIn" aria-label="Larger drawing">+</button></span>
+    <label title="Move this view along with the app in front and the layer held on the panel"><input type="checkbox" id="follow"> Follow</label></span></div>
+  </div>
+  </div>
+</div>
+<div id="armbar" class="armbar hidden"></div>
+<div id="toastbar" class="toastbar hidden" role="status"></div>
+<div id="dlg" class="modal hidden"></div>
+
+<!-- ===================== TOML tab ===================== -->
+<main id="tabToml" class="hidden">
+  <div class="col-main">
+    <div class="card">
+      <div class="toolbar">
+        <button id="bCheck" type="button">Check</button>
+        <button id="bSave" type="button" class="primary">Save</button>
+        <button id="bRevert" type="button">Revert</button>
+        <span id="dirty" class="dirty hidden">unsaved changes</span>
+        <span class="spacer"></span>
+        <span class="muted mono" id="path" style="font-size:12px;word-break:break-all"></span>
+      </div>
+      <div class="editor">
+        <div class="gutter" id="gutter"></div>
+        <textarea id="ed" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="off"></textarea>
+      </div>
+      <div id="result" class="idle">Loading...</div>
+    </div>
+  </div>
+
+  <div class="col-side">
+    <div class="card">
+      <h2>Learn</h2>
+      <div id="learn" class="muted">Touch a control on the panel.</div>
+      <div style="margin-top:8px"><button id="bInsert" type="button" disabled>Insert binding for this control</button></div>
+    </div>
+    <div class="card" id="catCard">
+      <h2>Catalogue</h2>
+      <input type="search" id="q" placeholder="Search parameters and commands">
+      <div class="cat" id="cat"><span class="muted">Loading...</span></div>
+    </div>
+    <div class="card">
+      <h2>Actions</h2>
+      <div id="actions"><span class="muted">Loading...</span></div>
+    </div>
+  </div>
+</main>
+
+<datalist id="dlLayers"></datalist>
+<datalist id="dlPresets"></datalist>
+
+<script>
+/* Integrations (INTEGRATIONS.md): each script in /ext.js calls MP.register({...}) before the editor starts. */
+var MP = { ext: [], register: function (x) { MP.ext.push(x); } };
+</script>
+<script src="/ext.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- integrations ---------- */
+  var EXT = MP.ext;
+  function extById(id) { for (var i = 0; i < EXT.length; i++) { if (EXT[i].id === id) { return EXT[i]; } } return null; }
+  // the one an action belongs to: "osc.value" -> the one with prefix osc
+  function extOf(what) {
+    var p = String(what).split(".")[0];
+    for (var i = 0; i < EXT.length; i++) { if ((EXT[i].prefix || EXT[i].id) === p) { return EXT[i]; } }
+    return null;
+  }
+  // ask an integration; a mistake in its script never breaks the editor
+  function hook(x, name) {
+    if (!x || x[name] === undefined) { return undefined; }
+    if (typeof x[name] !== "function") { return x[name]; }
+    try { return x[name].apply(x, [].slice.call(arguments, 2)); } catch (e) { console.error("integration " + x.id + ": " + name, e); return undefined; }
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var ed = $("ed");
+  var serverText = null;     // last text known to be on the server
+  var state = null, build = null;
+  var catalog = null;
+  var checkTimer = null;
+  var checkSeq = 0;
+  var stateFails = 0;
+  var lastCheckOk = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function fetchText(url, opts) {
+    return fetch(url, opts).then(function (r) {
+      if (!r.ok) { throw new Error("HTTP " + r.status); }
+      return r.text();
+    });
+  }
+  function fetchJson(url, opts) {
+    return fetchText(url, opts).then(function (t) { return JSON.parse(t); });
+  }
+  function postText(method, url, body) {
+    return fetchJson(url, { method: method, headers: { "Content-Type": "text/plain; charset=utf-8" }, body: body });
+  }
+
+  function setOffline(off) {
+    $("offline").classList.toggle("hidden", !off);
+  }
+
+  /* =====================================================================
+     TOML editor (unchanged behaviour)
+     ===================================================================== */
+  function isDirty() { return serverText !== null && ed.value !== serverText; }
+  function updateDirty() {
+    $("dirty").classList.toggle("hidden", !isDirty());
+  }
+  var gutterLines = 0;
+  function updateGutter() {
+    var n = ed.value.split("\n").length;
+    if (n !== gutterLines) {
+      var h = [];
+      for (var i = 1; i <= n; i++) { h.push("<div>" + i + "</div>"); }
+      $("gutter").innerHTML = h.join("");
+      gutterLines = n;
+    }
+    $("gutter").scrollTop = ed.scrollTop;
+  }
+  function setResult(kind, text) {
+    var r = $("result");
+    r.className = kind;
+    r.textContent = text;
+  }
+  function showCheck(res, prefix) {
+    if (res && res.ok) {
+      lastCheckOk = true;
+      setResult("ok", (prefix || "") + "OK");
+    } else {
+      lastCheckOk = false;
+      setResult("err", (prefix || "") + ((res && res.error) ? res.error : "invalid"));
+    }
+  }
+  function doCheck() {
+    clearTimeout(checkTimer);
+    var seq = ++checkSeq;
+    var text = ed.value;
+    return postText("POST", "/api/profiles/check", text).then(function (res) {
+      if (seq === checkSeq) { setOffline(false); showCheck(res); }
+      return res;
+    }).catch(function (e) {
+      if (seq === checkSeq) { setResult("err", "Check failed: " + e.message); }
+      return null;
+    });
+  }
+  function doSave() {
+    clearTimeout(checkTimer);
+    ++checkSeq;
+    var text = ed.value;
+    return postText("PUT", "/api/profiles", text).then(function (res) {
+      if (res && res.ok) {
+        serverText = text;
+        updateDirty();
+        showCheck(res, "Saved. ");
+        mapDirtyModel = true;
+        hist = []; fut = []; updateUndo();   // the text edit may have changed anything
+      } else {
+        showCheck(res, "Not saved. ");
+      }
+    }).catch(function (e) {
+      setResult("err", "Save failed: " + e.message);
+    });
+  }
+  function doRevert(force) {
+    if (!force && isDirty() && !window.confirm("Discard unsaved changes?")) { return Promise.resolve(); }
+    return fetchText("/api/profiles").then(function (t) {
+      serverText = t;
+      ed.value = t;
+      updateGutter();
+      updateDirty();
+      setOffline(false);
+      return doCheck();
+    }).catch(function (e) {
+      setResult("err", "Load failed: " + e.message);
+      setOffline(true);
+      if (serverText === null) { setTimeout(function () { doRevert(true); }, 2000); }
+    });
+  }
+
+  ed.addEventListener("input", function () {
+    updateGutter();
+    updateDirty();
+    setResult("idle", "Checking...");
+    clearTimeout(checkTimer);
+    checkTimer = setTimeout(doCheck, 600);
+  });
+  ed.addEventListener("scroll", function () { $("gutter").scrollTop = ed.scrollTop; });
+  ed.addEventListener("keydown", function (e) {
+    if (e.key === "Tab" && !e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) {
+      e.preventDefault();
+      insertAtCursor("  ");
+    } else if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S")) {
+      e.preventDefault();
+      doSave();
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S") && e.target !== ed && tab === "toml") {
+      e.preventDefault();
+      doSave();
+    }
+  });
+  window.addEventListener("beforeunload", function (e) {
+    if (isDirty() || formDirty) { e.preventDefault(); e.returnValue = ""; return ""; }
+  });
+  $("bCheck").addEventListener("click", doCheck);
+  $("bSave").addEventListener("click", doSave);
+  $("bRevert").addEventListener("click", function () { doRevert(false); });
+
+  // Insert text at the selection, keeping undo history where the browser allows it.
+  function insertAtCursor(text) {
+    ed.focus();
+    var done = false;
+    try { done = document.execCommand("insertText", false, text); } catch (e) { done = false; }
+    if (!done) {
+      var s = ed.selectionStart, en = ed.selectionEnd;
+      ed.value = ed.value.slice(0, s) + text + ed.value.slice(en);
+      ed.selectionStart = ed.selectionEnd = s + text.length;
+      ed.dispatchEvent(new Event("input"));
+    }
+  }
+  function insertLines(text) {
+    var s = ed.selectionStart;
+    var before = ed.value.slice(0, s);
+    var prefix = (before.length && before.charAt(before.length - 1) !== "\n") ? "\n" : "";
+    insertAtCursor(prefix + text);
+  }
+
+  /* ---------- chips / learn ---------- */
+  function chip(text, cls, to) {
+    if (to) { return '<button type="button" class="chip go' + (cls ? " " + cls : "") + '" data-tab="' + esc(to) + '">' + esc(text) + "</button>"; }
+    return '<span class="chip' + (cls ? " " + cls : "") + '">' + esc(text) + "</span>";
+  }
+  function renderChips() {
+    var h = [];
+    if (!state) { $("chips").innerHTML = ""; return; }
+    var p = state.panel || {};
+    if (p.link) {
+      var t = "Panel: " + (p.link === "bt" ? "Bluetooth" : p.link === "usb" ? "USB" : p.link);
+      if (typeof p.battery === "number") { t += " " + p.battery + "%" + (p.charging ? " (charging)" : ""); }
+      if (p.resting) { t += ", resting"; }
+      h.push(chip(t, "ok"));
+    } else {
+      h.push(chip("Panel: not connected", "err"));
+    }
+    EXT.forEach(function (x) {
+      var c = hook(x, "chip", (state.ext || {})[x.id] || {});
+      if (c) { h.push(chip(c[0], c[1], c[2])); }
+    });
+    var ctx = state.context || [];
+    if (ctx.length) { h.push(chip("Active: " + liveText())); }
+    var layers = state.layers || [];
+    if (layers.length) { h.push(chip("Layer open: " + layers.map(layName).join(", "), "warn")); }
+    if (state.paused) { h.push(chip("Paused", "warn")); }
+    $("chips").innerHTML = h.join("");
+    renderSetup();
+  }
+
+  function tomlKey(k) { return /^[A-Za-z0-9_-]+$/.test(k) ? k : JSON.stringify(k); }
+  function tomlVal(v) {
+    if (typeof v === "string") { return JSON.stringify(v); }
+    if (typeof v === "number" || typeof v === "boolean") { return String(v); }
+    if (v === null || v === undefined) { return '""'; }
+    if (Array.isArray(v)) { return "[" + v.map(tomlVal).join(", ") + "]"; }
+    return inlineToml(v);
+  }
+  function inlineToml(o) {
+    var parts = [];
+    Object.keys(o).forEach(function (k) { parts.push(tomlKey(k) + " = " + tomlVal(o[k])); });
+    return "{ " + parts.join(", ") + " }";
+  }
+  function ago(at) {
+    var s = Date.now() / 1000 - at;
+    if (!isFinite(s)) { return ""; }
+    if (s < 0) { s = 0; }
+    if (s < 10) { return s.toFixed(1) + " s ago"; }
+    if (s < 90) { return Math.round(s) + " s ago"; }
+    if (s < 5400) { return Math.round(s / 60) + " min ago"; }
+    return Math.round(s / 3600) + " h ago";
+  }
+  function renderLearn() {
+    var el = $("learn");
+    var last = state && state.last;
+    if (!last) {
+      el.innerHTML = '<span class="muted">Touch a control on the panel.</span>';
+      $("bInsert").disabled = true;
+      return;
+    }
+    $("bInsert").disabled = false;
+    var h = '<div class="ctl-name mono">' + esc(last.control) + "</div>";
+    h += '<div class="muted">' + esc(ago(last.at)) + "</div>";
+    var r = last.resolved;
+    if (r && r.binding) {
+      h += '<div class="kv" style="margin-top:6px">';
+      h += '<span class="k">context</span><span class="mono">' + esc(r.ctx || "") + "</span>";
+      h += '<span class="k">layer</span><span class="mono">' + esc(r.layer || "(base)") + "</span></div>";
+      var b = r.binding;
+      h += '<code class="snippet">' + esc(typeof b === "string" ? JSON.stringify(b) : inlineToml(b)) + "</code>";
+    } else {
+      h += '<div style="margin-top:6px"><b>unbound</b></div>';
+    }
+    el.innerHTML = h;
+  }
+
+  function ctxToTable(ctx) { return String(ctx).split("/").join("."); }
+
+  function insertBinding() {
+    var last = state && state.last;
+    if (!last) { return; }
+    var parts = String(last.control).split(".");
+    var kind = parts.shift();
+    var name = parts.join(".");
+    var stack = (state.context && state.context.length) ? state.context : ["default"];
+    var ctx = stack[0];
+    var own = hook(extById(ctx.split("/")[0]), "template", kind);
+    var tpl;
+    if (kind === "button") {
+      tpl = '{ do = "key", keys = "" }';
+    } else if (kind === "knob" || kind === "ring") {
+      tpl = own || '{ do = "mouse.scroll", axis = "v" }';
+    } else if (kind === "ball") {
+      tpl = own || '{ do = "mouse.move", speed = 1.0 }';
+    } else {
+      tpl = '{ do = "none" }';
+    }
+    var layers = state.layers || [];
+    var header = "[" + ctxToTable(ctx) + "." + kind + "]";
+    var line = tomlKey(name) + " = " + tpl;
+    var has = ed.value.split("\n").some(function (l) { return l.trim() === header; });
+    insertLines((has ? "" : header + "\n") + line + "\n");
+    if (layers.length) {
+      setResult("idle", "Inserted into base context; layer \"" + layers[0] + "\" is active but not used in the template.");
+    }
+  }
+  $("bInsert").addEventListener("click", insertBinding);
+
+  /* ---------- catalogue (TOML tab) ---------- */
+  var catLoading = false;
+  function loadCatalog() {
+    if (catLoading) { return; }
+    catLoading = true;
+    fetchJson("/api/catalog").then(function (c) {
+      c.actions = c.actions || [];
+      catalog = c;
+      renderActions();
+      return Promise.all(EXT.map(loadExt));
+    }).catch(function () {
+      // retried from the state poll while catalog is null
+    }).then(function () { catLoading = false; });
+  }
+  // an integration's own list (settings, commands) has to be fetched (again)
+  var extLoading = {};
+  function loadExt(x) {
+    if (extLoading[x.id] || !x.load) { return Promise.resolve(); }
+    extLoading[x.id] = true;
+    return Promise.resolve(hook(x, "load")).catch(function (e) { console.error("integration " + x.id, e); }).then(function () { extLoading[x.id] = false; extChanged(); });
+  }
+  function extChanged() {
+    renderCatalog();
+    buildEntries();
+    renderCmds();
+    renderPicture();
+    if (sel && !formDirty) { renderSide(); }
+  }
+  function groupItems(list, q, out) {
+    list.forEach(function (it) {
+      var hay = ((it.id || "") + " " + (it.label || "") + " " + (it.group || "")).toLowerCase();
+      if (q && hay.indexOf(q) < 0) { return; }
+      var g = it.group || "Other";
+      (out[g] = out[g] || []).push(it);
+    });
+  }
+  function renderSection(title, list, q) {
+    var groups = {};
+    groupItems(list, q, groups);
+    var names = Object.keys(groups).sort();
+    if (!names.length) { return ""; }
+    var h = '<div style="font-weight:600;margin-top:6px">' + esc(title) + "</div>";
+    names.forEach(function (g) {
+      h += "<h3>" + esc(g) + "</h3>";
+      groups[g].forEach(function (it) {
+        h += '<button type="button" class="item" data-id="' + esc(it.id) + '"><span class="id">' + esc(it.id) +
+             '</span><span class="lbl">' + esc(it.label || "") + "</span></button>";
+      });
+    });
+    return h;
+  }
+  function renderCatalog() {
+    var box = $("cat");
+    var q = $("q").value.trim().toLowerCase(), h = "", any = false, notes = [];
+    EXT.forEach(function (x) {
+      (hook(x, "catalogue") || []).forEach(function (c) { any = true; h += renderSection(c.title, c.items, q); });
+      var n = hook(x, "note");
+      if (n) { notes.push(n); }
+    });
+    $("catCard").classList.toggle("hidden", !any);
+    if (!h) { h = '<span class="muted">' + esc(q || !notes.length ? "No matches." : notes.join(" ")) + "</span>"; }
+    box.innerHTML = h;
+  }
+  $("q").addEventListener("input", renderCatalog);
+  $("cat").addEventListener("click", function (e) {
+    var t = e.target;
+    while (t && t !== this && !(t.getAttribute && t.getAttribute("data-id") !== null)) { t = t.parentNode; }
+    if (!t || t === this) { return; }
+    insertAtCursor('"' + t.getAttribute("data-id") + '"');
+  });
+  function renderActions() {
+    var box = $("actions");
+    var acts = (catalog && catalog.actions) || [];
+    if (!acts.length) { box.innerHTML = '<span class="muted">No actions listed.</span>'; return; }
+    box.innerHTML = acts.map(function (a) {
+      var ctl = Array.isArray(a.controls) ? a.controls.join(", ") : (a.controls || "");
+      return '<div class="act"><code>do = "' + esc(a.do) + '"</code> <span class="small">' + esc(ctl) + "</span>" +
+        (a.fields ? '<div class="small mono">' + esc(a.fields) + "</div>" : "") +
+        (a.help ? "<div>" + esc(a.help) + "</div>" : "") + "</div>";
+    }).join("");
+  }
+
+  /* =====================================================================
+     Tabs
+     ===================================================================== */
+  var tab = "map";
+  /* ---------- Settings tab ---------- */
+  function fillSettings() {
+    var s = (model && model.settings) || {};
+    $("sBl").value = s.backlight === undefined ? 60 : s.backlight; $("sBlV").textContent = $("sBl").value + " %";
+    var off = String(s.backlight_off_after_s || 0), so = $("sOff");
+    if (![].some.call(so.options, function (o) { return o.value === off; })) {
+      so.insertAdjacentHTML("beforeend", '<option value="' + esc(off) + '">after ' + esc(off) + " s</option>");
+    }
+    so.value = off;
+    var sl = String(s.sleep_after_min || 0), so2 = $("sSl");
+    if (![].some.call(so2.options, function (o) { return o.value === sl; })) { so2.insertAdjacentHTML("beforeend", '<option value="' + esc(sl) + '">after ' + esc(sl) + " minutes</option>"); }
+    so2.value = sl;
+    $("sSd").value = s.start_deg || 0; $("sSb").value = s.start_ball || 0; $("sPm").value = s.press_ms || 0;
+    $("sSm").value = s.pointer_smoothing_ms === undefined ? 40 : s.pointer_smoothing_ms;
+    var es = s.ext || {}, eh = "", list = extSettings();
+    list.forEach(function (f, i) {
+      var v = es[f.key] === undefined ? f.def : es[f.key];
+      eh += '<label class="srow"><span>' + esc(f.label) + "</span>" + (f.type === "bool" ? '<input type="checkbox" data-x="' + i + '"' + (v ? " checked" : "") + ">"
+        : '<input type="text" data-x="' + i + '" value="' + esc(v === undefined ? "" : v) + '" placeholder="' + esc(f.ph || "") + '" spellcheck="false" autocomplete="off">') + "</label>" +
+        (f.help ? '<div class="note">' + esc(f.help) + "</div>" : "");
+    });
+    $("sExt").innerHTML = eh;
+    $("sRes").value = s.resolve_yield === false ? "share" : "yield";
+    fetch("/api/midi").then(function (r) { return r.json(); }).then(function (m) {
+      function fill(sel, names, cur, isIn) {
+        var o = [["auto", isIn ? "Automatic (the other side of a loopback pair)" : "Automatic (first loopback port)"], ["off", "Off"]];
+        names.forEach(function (n) { o.push([n, n]); });
+        if (cur && !o.some(function (x) { return x[0].toLowerCase() === cur.toLowerCase(); })) { o.push([cur, cur + " (not present)"]); }
+        sel.innerHTML = o.map(function (x) { return '<option value="' + esc(x[0]) + '">' + esc(x[1]) + "</option>"; }).join("");
+        var hit = o.filter(function (x) { return x[0].toLowerCase() === (cur || "auto").toLowerCase(); })[0];
+        sel.value = hit ? hit[0] : "auto";
+      }
+      fill($("sMo"), m.outs || [], s.midi_out, false);
+      fill($("sMi"), m.ins || [], s.midi_in, true);
+      var loop = (m.outs || []).some(function (n) { return /loopback|loopmidi/i.test(n); });
+      $("sMidiNote").textContent = "Now: out " + (m.out || "none") + ", in " + (m["in"] || "none") + ". Sent " + m.sent + ", received " + m.received + "." +
+        (loop ? "" : " No virtual (loopback) port on this PC yet: an app can only hear the helper through one.");
+    }).catch(function () { $("sMidiNote").textContent = "MIDI status not available."; });
+  }
+  // what an integration still needs to be set up, e.g. a plugin for its program
+  var setupHtml = null, setupSaid = {};
+  function renderSetup() {
+    var h = "";
+    EXT.forEach(function (x) {
+      var s = hook(x, "needs", (state && state.ext || {})[x.id] || {});
+      if (!s) { return; }
+      h += "<h2>" + esc(s.title) + '</h2><div class="setup"><span>' + esc(s.text) + "</span>" +
+        (s.button ? '<button type="button"' + (s.primary ? ' class="primary"' : "") + ' data-put="' + esc(x.id + "/" + s.path) + '">' + esc(s.button) + "</button>" : "") +
+        (s.also ? '<button type="button" data-put="' + esc(x.id + "/" + s.also.path) + '" data-ask="' + esc(s.also.confirm || "") + '">' + esc(s.also.button) + "</button>" : "") + "</div>" +
+        (setupSaid[x.id] ? '<div class="note' + (setupSaid[x.id].ok ? "" : " warn") + '">' + esc(setupSaid[x.id].text) + "</div>" : "");
+    });
+    if (h !== setupHtml) { setupHtml = h; $("sSetup").innerHTML = h; }
+  }
+  $("sSetup").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-put]");
+    if (!b) { return; }
+    var path = b.getAttribute("data-put"), id = path.split("/")[0], ask = b.getAttribute("data-ask");
+    if (ask && b.textContent !== ask) {
+      // a second click within five seconds does it
+      var was = b.textContent;
+      b.textContent = ask;
+      setTimeout(function () { if (b.textContent === ask && !b.disabled) { b.textContent = was; } }, 5000);
+      return;
+    }
+    b.disabled = true;
+    fetch("/api/ext/" + path, { method: "PUT", headers: { "Content-Type": "application/json" }, body: "{}" })
+      .then(function (r) { return r.json(); })
+      .then(function (r) { setupSaid[id] = { ok: r.ok, text: r.ok ? r.text : r.error }; })
+      .catch(function (x) { setupSaid[id] = { ok: false, text: String(x) }; })
+      .then(function () { setupHtml = null; renderSetup(); });
+  });
+  $("chips").addEventListener("click", function (e) { var b = e.target.closest("[data-tab]"); if (b) { showTab(b.getAttribute("data-tab")); } });
+  function extSettings() { return EXT.reduce(function (a, x) { return a.concat(hook(x, "settings") || []); }, []); }
+  $("sExt").addEventListener("change", function (e) {
+    var i = e.target.getAttribute("data-x"), f = i === null ? null : extSettings()[+i];
+    if (f) { putSetting(f.key, f.type === "bool" ? e.target.checked : f.type === "num" ? +e.target.value : e.target.value.trim(), true); }
+  });
+  function putSetting(key, value, ext) {
+    $("sMsg").textContent = "Saving…";
+    fetch("/api/setting", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: key, value: value }) })
+      .then(function (r) { return r.json(); }).then(function (r) {
+        $("sMsg").textContent = r.ok ? "Saved." : "Not saved: " + r.error;
+        if (r.ok && model && model.settings && ext) { model.settings.ext = model.settings.ext || {}; model.settings.ext[key] = value; }
+        else if (r.ok && model && model.settings) {
+          model.settings[key === "resolve" ? "resolve_yield" : key] = key === "resolve" ? value === "yield" : value;
+        }
+      }).catch(function (e) { $("sMsg").textContent = "Not saved: " + e; });
+  }
+  var blTimer = null;
+  $("sBl").addEventListener("input", function () {
+    var v = +this.value; $("sBlV").textContent = v + " %";
+    if (blTimer) { return; }
+    blTimer = setTimeout(function () {
+      blTimer = null;
+      fetch("/api/backlight_preview", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ value: +$("sBl").value }) });
+    }, 60);
+  });
+  $("sBl").addEventListener("change", function () { putSetting("backlight", +this.value); });
+  $("sSl").addEventListener("change", function () { putSetting("sleep_after_min", +this.value); });
+  $("sOff").addEventListener("change", function () { putSetting("backlight_off_after_s", +this.value); });
+  [["sSd", "start_deg", 30, 10], ["sSb", "start_ball", 100, 1], ["sPm", "press_ms", 5000, 1]].forEach(function (x) {
+    $(x[0]).addEventListener("change", function () {
+      var v = Math.max(0, Math.min(x[2], Math.round((+this.value || 0) * x[3]) / x[3])); this.value = v; putSetting(x[1], v);
+    });
+  });
+  $("sSm").addEventListener("change", function () {
+    var v = Math.max(0, Math.min(200, Math.round(+this.value || 0))); this.value = v; putSetting("pointer_smoothing_ms", v);
+  });
+  $("sRes").addEventListener("change", function () { putSetting("resolve", this.value); });
+  $("sMo").addEventListener("change", function () { putSetting("midi_out", this.value); setTimeout(fillSettings, 2500); });
+  $("sMi").addEventListener("change", function () { putSetting("midi_in", this.value); setTimeout(fillSettings, 2500); });
+  function showTab(t) {
+    if (t === tab) { return; }
+    if (t === "toml") { formDirty = false; }
+    tab = t;
+    $("tMap").classList.toggle("on", t === "map");
+    $("tToml").classList.toggle("on", t === "toml");
+    $("tSet").classList.toggle("on", t === "set");
+    $("tabMap").classList.toggle("hidden", t !== "map");
+    $("tabToml").classList.toggle("hidden", t !== "toml");
+    $("tabSet").classList.toggle("hidden", t !== "set");
+    if (t === "set") { fillSettings(); }
+    if (t === "toml") {
+      if (mapChanged && !isDirty()) { doRevert(true); }
+      mapChanged = false;
+      updateGutter();
+    } else if (mapDirtyModel) {
+      mapDirtyModel = false;
+      refreshAll();
+    }
+  }
+  $("tMap").addEventListener("click", function () { showTab("map"); });
+  $("tSet").addEventListener("click", function () { showTab("set"); });
+  $("tToml").addEventListener("click", function () { showTab("toml"); });
+  var mapChanged = false;     // the mapping tab saved something, TOML text may be stale
+  var mapDirtyModel = false;  // the TOML tab saved something, model may be stale
+
+  /* =====================================================================
+     Mapping tab
+     ===================================================================== */
+  var KNOBS = ["Y_LIFT", "Y_GAMMA", "Y_GAIN", "CONTRAST", "PIVOT", "MID_DETAIL",
+               "COLOR_BOOST", "SHADOWS", "HIGHLIGHTS", "SATURATION", "HUE", "LUM_MIX"];
+  var KNOB_PX = [216, 288, 357, 427, 518, 588, 658, 727, 818, 888, 958, 1027];
+  var KEYPOS = {
+    AUTO_COLOR: [219, 1], OFFSET: [269, 1], COPY: [219, 2], PASTE: [269, 2],
+    UNDO: [219, 3], REDO: [269, 3], DELETE: [219, 4], RESET: [269, 4],
+    BYPASS: [219, 5], DISABLE: [269, 5], USER: [219, 6], LOOP: [269, 6],
+    SHIFT_UP: [219, 7], SHIFT_DOWN: [269, 7],
+    PLAY_STILL: [358, 1], WIPE_STILL: [408, 1], GRAB_STILL: [458, 1],
+    H_LITE: [547, 1], VIEWER: [597, 1], CURSOR: [647, 1], SELECT: [698, 1],
+    ADD_NODE: [787, 1], ADD_WINDOW: [837, 1], ADD_KEYFRM: [887, 1],
+    RESET_LIFT: [573, 2], RESET_GAMMA: [623, 2], RESET_GAIN: [673, 2],
+    PREV_STILL: [976, 1], NEXT_STILL: [1026, 1], PREV_KEYFRM: [976, 2],
+    NEXT_KEYFRM: [1026, 2], PREV_NODE: [976, 3], NEXT_NODE: [1026, 3],
+    PREV_FRAME: [976, 4], NEXT_FRAME: [1026, 4], PREV_CLIP: [976, 5],
+    NEXT_CLIP: [1026, 5], PLAY_REV: [976, 6], PLAY_FWD: [1026, 6]
+  };
+  var ROWY = { 1: 374, 2: 411, 3: 448, 4: 486, 5: 523, 6: 577, 7: 614 };
+  var SX = 1, SY = 1, OX = 168, OY = 282, PX0 = 14, PY0 = 37;
+  function px(x) { return (x - OX) * SX + PX0; }
+  function py(y) { return (y - OY) * SY + PY0; }
+  var KW = 47, KH = 35;
+  var BALLX = { LEFT: px(408), MIDDLE: px(622), RIGHT: px(836) };
+  var BALLY = py(535);
+  var RING_R = 90, RING_IN = 56, BALL_R = 50;
+  var CTL_RE = /^[a-z0-9_-]+(\/[a-z0-9_-]+)*$/;
+  var SEG_RE = /^[a-z0-9_-]+$/;
+
+  var model = null;             // /api/model
+  var effective = null;         // /api/effective .controls
+  var effLeds = {};             // /api/effective .leds
+  var ledColor = { BYPASS: "red", DISABLE: "red", USER: "green", OFFSET: "green", SHIFT_UP: "green", SHIFT_DOWN: "green",
+                   PLAY_STILL: "green", WIPE_STILL: "green", H_LITE: "green", VIEWER: "green", CURSOR: "green" };
+  var curCtx = "default";
+  var curLayer = "";            // "" = base
+  var follow = false;
+  try { follow = localStorage.getItem("mcp.follow") === "1"; } catch (e) { /* keep the default */ }
+  $("follow").checked = follow;
+  var sel = null;               // {kind, name, key}
+  var formDirty = false;
+  var effSeq = 0;
+  var flashKey = null, flashT = 0;
+  var lastAt = null;
+
+  function num(n) { return String(Math.round(n * 1e6) / 1e6); }
+
+  var KEY_TXT = { rbracket: "]", lbracket: "[", bracketright: "]", bracketleft: "[", backslash: "\\", esc: "Esc", space: "Space", enter: "Enter", comma: ",", period: ".", plus: "+", minus: "-", slash: "/" };
+  function keysTxt(t) {
+    return String(t || "").split(",").map(function (c) {
+      return c.trim().split("+").map(function (x) { return KEY_TXT[x] || cap(x); }).join("+");
+    }).join(", ");
+  }
+  var descApp = "";
+  function describe(b, kind) {
+    if (b === null || b === undefined) { return "Unused"; }
+    if (isOff(b)) { return "Off"; }
+    return ownName(b) || describeAuto(b, kind);
+  }
+  // the name the user gave it
+  function ownName(b) { return b && typeof b === "object" && typeof b.label === "string" ? b.label.trim() : ""; }
+  function describeAuto(b, kind) {
+    var knobLike = kind === "knob" || kind === "ring";
+    switch (b.do) {
+      case "key":
+        var nm = !b.hold && hook(extById(descApp || rootOf(curCtx)), "shortcut", knobLike ? b.cw : b.keys);
+        if (nm) { return nm; }
+        return knobLike ? keysTxt(b.cw || "–") + " / " + keysTxt(b.ccw || "–") : keysTxt(b.keys || "?") + (b.hold ? " (held)" : "");
+      case "mouse.move": return "Mouse pointer";
+      case "mouse.scroll": return (b.mods ? keysTxt(b.mods) + "+ " : "") + "Scroll" + (b.axis === "h" ? " sideways" : "");
+      case "mouse.button": return b.keys ? keysTxt(b.keys) + " + " + (b.button || "left") + " click" : cap(b.button || "left") + " click";
+      case "layer": return "Layer " + (b.name || "?");
+      case "sheet": return "Cheat sheet";
+      case "preset":
+        var what = b.scope === "global" ? "global preset" : "preset";
+        return !b.name || b.name === "next" ? "Next " + what : cap(what) + " " + b.name;
+      case "mcu.fader": return "Fader " + (b.strip || 1);
+      case "mcu.jog": return "Mackie jog";
+      case "mcu.button": return "Mackie " + String(b.button).replace(/_/g, " ") + (b.strip ? " " + b.strip : "");
+      case "midi.cc": return "MIDI CC " + b.cc + (b.channel > 1 ? " ch" + b.channel : "");
+      case "midi.note": return "MIDI note " + b.note + (b.channel > 1 ? " ch" + b.channel : "");
+      case "midi.xy": return "MIDI CC " + [b.x, b.y].filter(function (v) { return v !== undefined; }).join(" / ");
+      default: return hook(extOf(b.do), "describe", b, kind) || String(b.do || "?");
+    }
+  }
+  // the setting a binding changes, if its integration knows: {id, role: "turn" | "reset" | "set", value}
+  function refOf(b, kind) { return b && typeof b === "object" ? hook(extOf(b.do), "settingRef", b, kind) || null : null; }
+  function settingName(b, id) { return hook(extOf(b.do), "settingName", id) || id; }
+  // compact form for the drawing
+  function shortLabel(b, kind) {
+    var t = describe(b, kind), i, v;
+    if (ownName(b)) { return t; }
+    if (b.do === "layer") { return "Layer"; }
+    for (i = 0; i < EXT.length; i++) { if ((v = hook(EXT[i], "shorten", t))) { return cap(v); } }
+    return cap(t);
+  }
+
+  /* ---------- apps, places, layers: names and the lookup rule ---------- */
+  var ctxName = {}, ctxApp = {}, bmap = {}, lmap = {};
+  function cap(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+  function apps() { return (model && model.apps) || [{ ctx: "default", label: "All apps", places: [] }]; }
+  function rootOf(c) { return String(c).split("/")[0]; }
+  function shortOf(c) { return (ctxApp[c] && ctxApp[c].short) || nameOf(c); }
+  function indexModel() {
+    ctxName = {}; ctxApp = {}; bmap = {}; lmap = {};
+    ((model && model.leds) || []).forEach(function (x) { lmap[x.ctx + "|" + x.led] = x.rule; });
+    apps().forEach(function (a) {
+      ctxName[a.ctx] = a.name || a.label; ctxApp[a.ctx] = a;
+      a.places.forEach(function (p) {
+        if (p.ctx !== a.ctx) { ctxName[p.ctx] = p.label; }
+        p.tools.forEach(function (t) { if (t.ctx !== p.ctx) { ctxName[t.ctx] = t.label; } });
+      });
+    });
+    ((model && model.bindings) || []).forEach(function (b) { bmap[b.ctx + "|" + (b.layer || "") + "|" + b.kind + "." + b.name] = b.binding; });
+  }
+  function nameOf(c) { return ctxName[c] || cap(String(c).split("/").pop().replace(/[-_]/g, " ")); }
+  function stackOf(c) {
+    var o = [], p = (!c || c === "default") ? [] : c.split("/");
+    while (p.length) { o.push(p.join("/")); p.pop(); }
+    o.push("default");
+    return o;
+  }
+  // Same rule as the helper: layer first, then most specific place. skipHere = what would apply without the one set here.
+  function lookAt(c, layer, key, skipHere) {
+    var ls = layer ? [layer, ""] : [""], st = stackOf(c);
+    for (var i = 0; i < ls.length; i++) {
+      for (var j = 0; j < st.length; j++) {
+        if (skipHere && st[j] === c && ls[i] === layer) { continue; }
+        var v = bmap[st[j] + "|" + ls[i] + "|" + key];
+        if (v !== undefined) { return { binding: v, ctx: st[j], layer: ls[i] }; }
+      }
+    }
+    return null;
+  }
+  function isOff(b) { return b === "none" || (!!b && b.do === "none"); }
+  // Keys that open layer l in the app being edited. A key that something more specific overrides here doesn't count.
+  function openers(l) {
+    var app = rootOf(curCtx), st = stackOf(curCtx);
+    return ((model && model.layer_openers) || []).filter(function (o) {
+      if (o.layer !== l || (o.ctx !== "default" && rootOf(o.ctx) !== app)) { return false; }
+      if (o.in_layer || st.indexOf(o.ctx) < 0) { return true; }   // inside a layer, or elsewhere in this app
+      var e = lookAt(curCtx, "", o.kind + "." + o.name);
+      return !!e && e.ctx === o.ctx;
+    });
+  }
+  function keyNm(n) { return n.replace(/_/g, " "); }
+  function layName(l) { var o = openers(l)[0]; return o ? keyNm(o.name) : l; }
+  function appLayers() {
+    var app = rootOf(curCtx), set = {};
+    ((model && model.bindings) || []).forEach(function (b) { if (b.layer && rootOf(b.ctx) === app) { set[b.layer] = 1; } });
+    ((model && model.layer_openers) || []).forEach(function (o) { if (openers(o.layer).length) { set[o.layer] = 1; } });
+    if (curLayer) { set[curLayer] = 1; }
+    return Object.keys(set).sort();
+  }
+  function layerCount(l) {
+    var app = rootOf(curCtx);
+    return ((model && model.bindings) || []).filter(function (b) { return b.layer === l && rootOf(b.ctx) === app; }).length;
+  }
+  function placeText(c, l) {
+    if (c === undefined) { c = curCtx; l = curLayer; }
+    return nameOf(c) + (l ? ", " + layName(l) : "");
+  }
+  function pathText() {
+    var st = stackOf(curCtx).reverse();
+    if (st.length > 1) { st.shift(); }
+    return st.map(nameOf).join(" › ") + (curLayer ? ", with " + layName(curLayer) : "");
+  }
+
+  // Fit `t` into `lines` lines of `max` characters, shrinking the text before cutting it.
+  function fitWords(t, max, lines) {
+    var o = [], n = lines, k;
+    for (k = 1; k >= 0.6; k -= 0.08) {
+      var m = Math.floor(max / k), c = "";
+      n = Math.floor(lines / k + 0.01); o = [];
+      String(t).split(/\s+/).forEach(function (w) {
+        if ((c ? c + " " + w : w).length <= m) { c = c ? c + " " + w : w; } else { if (c) { o.push(c); } c = w; }
+      });
+      if (c) { o.push(c); }
+      if (o.length <= n && o.every(function (l) { return l.length <= m; })) { return { o: o, k: k }; }
+    }
+    return { o: o.slice(0, n).map(function (l, i) { return i === n - 1 && o.length > n ? l + "…" : l; }), k: 0.6 };
+  }
+  function txt(t, cx, cy, max, lines, fs) {
+    if (!t) { return ""; }
+    var w = fitWords(t, max, lines), st = fs * 1.1 * w.k, y = cy - (w.o.length - 1) * st / 2 + fs * w.k * 0.35;
+    return w.o.map(function (l, i) {
+      return '<text class="lbl" style="font-size:' + (fs * w.k).toFixed(1) + 'px" x="' + f1(cx) + '" y="' + f1(y + i * st) + '">' + esc(l) + "</text>";
+    }).join("");
+  }
+
+  // While a layer is being pointed at, the drawing shows that layer (worked out here, same rule as the helper).
+  var preview = "", hl = "";
+  function effOf(key) {
+    if (preview) {
+      var p = lookAt(curCtx, preview, key);
+      if (p) { p.here = p.ctx === curCtx && p.layer === preview; p.layer = p.layer || null; }
+      return p;
+    }
+    return effective ? effective[key] : undefined;
+  }
+  function tagOf(e) {
+    if (!e || e.here) { return ""; }
+    return nameOf(e.ctx || "default") + (e.layer ? " (" + layName(e.layer) + ")" : "");
+  }
+  function panelName(key) {
+    var p = key.split("."), k = p.shift(), raw = p.join("."), n = raw.replace(/_/g, " ");
+    if (k === "button") { return n + (KNOBS.indexOf(raw) >= 0 ? " knob press" : " key"); }
+    if (k === "knob") { return n + " knob"; }
+    return cap(n.toLowerCase()) + " " + k;
+  }
+  function ledKeyName(key) {
+    var p = key.split(".");
+    return (p[0] === "button" && ledColor[p.slice(1).join(".")]) ? p.slice(1).join(".") : "";
+  }
+  function ledTitle(key) {
+    var n = ledKeyName(key);
+    if (!n) { return ""; }
+    var l = effLeds[n];
+    return "\nLED (" + ledColor[n] + "): " + (l ? l.rule + "  (" + (l.here ? "set here" : "from " + nameOf(l.ctx)) + ")" : "no rule");
+  }
+  function ledDot(name, cx, y) {
+    var c = ledColor[name];
+    if (!c) { return ""; }
+    return '<circle class="led' + (effLeds[name] ? " on" : "") + '" cx="' + f1(cx) + '" cy="' + f1(y) + '" r="2.7" style="--lc:' + (c === "red" ? "#ff4d4d" : "#3ddc6a") + '"/>';
+  }
+  function titleOf(key) {
+    var kind = key.split(".")[0], e = effOf(key), t = panelName(key) + "\n";
+    t += e ? describe(e.binding, kind) + "\n" + (e.here ? "set for " + placeText() : "comes from " + tagOf(e)) : "unused";
+    return "<title>" + esc(t + ledTitle(key)) + "</title>";
+  }
+  function compatible(key) { return !armed || armed.fits.indexOf(key.split(".")[0]) >= 0; }
+  function cls(key) {
+    var e = effOf(key), c = "ctl " + (!e ? "un" : e.here ? "here" : "inh") + (e && isOff(e.binding) ? " blk" : "");
+    if (sel && sel.key === key) { c += " sel"; }
+    if (flashKey === key && Date.now() - flashT < 1300) { c += " flash"; }
+    if (armed) { c += compatible(key) ? " ok" : " no"; }
+    else if (hl) {
+      var ok = hl === "here" ? e && e.here : hl === "off" ? e && isOff(e.binding) : hl === "un" ? !e : e && !e.here && tagOf(e) === hl;
+      if (!ok) { c += " dim"; }
+    }
+    return c;
+  }
+  function labelOf(key) { var e = effOf(key); return e ? shortLabel(e.binding, key.split(".")[0]) : ""; }
+  // a press that resets what the knob turns just says so
+  function pressLabel(name) {
+    var t = effOf("knob." + name), b = effOf("button." + name);
+    var rt = t && refOf(t.binding, "knob"), rb = b && refOf(b.binding, "button");
+    if (rt && rb && !ownName(b.binding) && extOf(t.binding.do) === extOf(b.binding.do) && rt.id === rb.id) { return rb.role === "reset" ? "Reset" : rb.role === "set" ? "= " + num(rb.value) : labelOf("button." + name); }
+    return labelOf("button." + name);
+  }
+  function f1(n) { return n.toFixed(1); }
+  function ctlG(key, inner) {
+    var e = effOf(key);
+    return '<g class="' + cls(key) + '" data-key="' + key + '" tabindex="0" role="button" aria-label="' + esc(panelName(key) + ", " + (e ? describe(e.binding, key.split(".")[0]) : "unused")) + '">' + titleOf(key) + inner + "</g>";
+  }
+  function nmT(x, y, t, fs) { return '<text class="nm"' + (fs ? ' style="font-size:' + fs + 'px"' : "") + ' x="' + f1(x) + '" y="' + f1(y) + '">' + esc(t) + "</text>"; }
+  function keyHtml(name, x, y, w) {
+    var key = "button." + name, a = labelOf(key), nm = keyNm(name), h = 34.5;
+    return ctlG(key, '<rect class="shape" x="' + f1(x) + '" y="' + f1(y) + '" width="' + f1(w) + '" height="' + h + '" rx="5"/>' +
+      (a ? nmT(x + w / 2, y + 9, nm) + txt(a, x + w / 2, y + 22, w > 80 ? 17 : 8.6, 2, 9.5) : nmT(x + w / 2, y + 19.5, nm)) + ledDot(name, x + w / 2, y + 0.5));
+  }
+  function knobHtml(name, cx) {
+    var key = "knob." + name, pkey = "button." + name, x = f1(cx - 33), parts = name.split("_");
+    return ctlG(key, '<path class="shape" d="M' + x + ' 77.5V19a12 12 0 0 1 12-12h42a12 12 0 0 1 12 12v58.5Z"/><circle class="dial" cx="' + f1(cx) + '" cy="28" r="16"/>' +
+      '<line class="pip" x1="' + f1(cx) + '" y1="14.5" x2="' + f1(cx) + '" y2="18"/>' +
+      parts.map(function (t, j) { return nmT(cx, 30 + (j - (parts.length - 1) / 2) * 6.4, t, t.length > 8 ? 4.4 : 5.6); }).join("") + txt(labelOf(key), cx, 61.5, 11, 2, 11)) +
+      ctlG(pkey, '<path class="shape" d="M' + x + ' 79h66v16a11 11 0 0 1 -11 11h-44a11 11 0 0 1 -11 -11Z"/>' +
+        '<path class="push" d="M' + f1(cx - 23) + ' 86.5v7m-2.6-2.6 2.6 2.6 2.6-2.6M' + f1(cx - 26.3) + ' 97h6.6"/>' + (effOf(pkey) ? txt(pressLabel(name), cx + 6, 92, 10, 2, 9) : ""));
+  }
+  function ringBallHtml(side) {
+    var cx = BALLX[side], cy = BALLY, rk = "ring." + side, bk = "ball." + side;
+    function circ(r) { return "M" + f1(cx - r) + " " + f1(cy) + "a" + r + " " + r + " 0 1 0 " + (2 * r) + " 0a" + r + " " + r + " 0 1 0 " + (-2 * r) + " 0Z"; }
+    return ctlG(rk, '<path class="shape ring-shape" d="' + circ(90) + circ(57) + '"/>' + (effOf(rk) ? txt(labelOf(rk), cx, cy + 73, 12, 2, 11) : nmT(cx, cy + 75, side + " RING"))) +
+      ctlG(bk, '<circle class="shape" cx="' + f1(cx) + '" cy="' + f1(cy) + '" r="54"/>' + (effOf(bk) ? txt(labelOf(bk), cx, cy, 11, 3, 12.5) : nmT(cx, cy + 2, side + " BALL")));
+  }
+  var picCache = "";
+  function renderPicture() {
+    var h = [];
+    KNOBS.forEach(function (n, i) { h.push(knobHtml(n, px(KNOB_PX[i]))); });
+    Object.keys(KEYPOS).forEach(function (n) { var p = KEYPOS[n]; h.push(keyHtml(n, px(p[0]) - 23.6, py(ROWY[p[1]]) - 16.5, 47.2)); });
+    h.push(keyHtml("STOP", px(1001) - 48.6, py(614) - 16.5, 97.2));
+    ["LEFT", "MIDDLE", "RIGHT"].forEach(function (x) { h.push(ringBallHtml(x)); });
+    var t = h.join("");
+    if (t !== picCache) {
+      var ae = document.activeElement, fk = ae && ae.getAttribute && $("svg").contains(ae) ? ae.getAttribute("data-key") : null;
+      $("svg").innerHTML = t; picCache = t;
+      if (fk) { var n = $("svg").querySelector('[data-key="' + fk + '"]'); if (n) { n.focus(); } }
+    }
+    renderLegend();
+  }
+  function allKeys() {
+    var o = [];
+    KNOBS.forEach(function (n) { o.push("knob." + n, "button." + n); });
+    Object.keys(KEYPOS).concat("STOP").forEach(function (n) { o.push("button." + n); });
+    ["LEFT", "MIDDLE", "RIGHT"].forEach(function (n) { o.push("ring." + n, "ball." + n); });
+    return o;
+  }
+  var legCache = "";
+  function renderLegend() {
+    if (!effective) { return; }
+    var here = 0, off = 0, un = 0, from = {};
+    allKeys().forEach(function (k) {
+      var e = effOf(k);
+      if (!e) { un++; return; }
+      if (e.here) { here++; } else { var t = tagOf(e); from[t] = (from[t] || 0) + 1; }
+      if (isOff(e.binding)) { off++; }
+    });
+    var h = nb("hl", "here", "Set here " + here, hl === "here" ? "on" : "") + " " + Object.keys(from).map(function (t) { return nb("hl", t, "From " + esc(t) + " " + from[t], hl === t ? "on" : ""); }).join(" ") + " " +
+      (off ? nb("hl", "off", "Off " + off, hl === "off" ? "on" : "") + " " : "") + nb("hl", "un", "Unused " + un, hl === "un" ? "on" : "");
+    if (h !== legCache) { $("legend").innerHTML = h; legCache = h; }
+  }
+  function ctlX(key) {
+    var p = key.split("."), i = KNOBS.indexOf(p[1]);
+    if (p[0] === "ring" || p[0] === "ball") { return BALLX[p[1]]; }
+    if (i >= 0) { return px(KNOB_PX[i]); }
+    return KEYPOS[p[1]] ? px(KEYPOS[p[1]][0]) : 850;
+  }
+  function closestAttr(t, attr, root) {
+    while (t && t !== root && !(t.getAttribute && t.getAttribute(attr))) { t = t.parentNode; }
+    return (t && t !== root) ? t.getAttribute(attr) : null;
+  }
+  $("svg").addEventListener("click", function (e) {
+    var k = closestAttr(e.target, "data-key", this);
+    if (!k) { if (!armed && (sel || lib)) { closeSide(); } return; }
+    if (armed) { assignTo(k); return; }
+    selectControl(k);
+  });
+  $("svg").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") { return; }
+    var k = closestAttr(e.target, "data-key", this);
+    if (!k) { return; }
+    e.preventDefault(); e.stopPropagation();
+    if (armed) { assignTo(k); } else { selectControl(k); }
+  });
+  // pointing at a layer, or at the key that opens it, shows that layer
+  document.addEventListener("mouseover", function (e) {
+    if (tab !== "map") { return; }
+    var l = "", t = closestAttr(e.target, "data-nav", document) === "layer" ? closestAttr(e.target, "data-v", document) : "", k = closestAttr(e.target, "data-key", $("svg"));
+    if (t) { l = t; }
+    else if (k && $("svg").contains(e.target) && !sel && !lib && !armed) { var x = lookAt(curCtx, curLayer, k); if (x && x.binding.do === "layer") { l = x.binding.name; } }
+    if (l === curLayer) { l = ""; }
+    if (l !== preview) { preview = l; renderPicture(); }
+  });
+  // drag and drop from the command list
+  function clearDrag() {
+    var l = $("svg").querySelectorAll(".dragover");
+    for (var i = 0; i < l.length; i++) { l[i].classList.remove("dragover"); }
+  }
+  $("svg").addEventListener("dragover", function (e) {
+    var k = closestAttr(e.target, "data-key", this);
+    if (!armed || !k || !compatible(k)) { return; }
+    e.preventDefault();
+    clearDrag();
+    var g = e.target;
+    while (g && g !== this && !(g.getAttribute && g.getAttribute("data-key"))) { g = g.parentNode; }
+    if (g && g.classList) { g.classList.add("dragover"); }
+  });
+  $("svg").addEventListener("dragleave", function (e) { if (e.target === this) { clearDrag(); } });
+  $("svg").addEventListener("drop", function (e) {
+    var k = closestAttr(e.target, "data-key", this);
+    clearDrag();
+    if (!k) { return; }
+    e.preventDefault();
+    assignTo(k);
+  });
+
+  /* ---------- pickers ---------- */
+  function uniq(a) { var o = {}; return a.filter(function (x) { if (o[x]) { return false; } o[x] = 1; return true; }); }
+  function layerList() {
+    var l = ((model && model.layers) || []).concat(curLayer ? [curLayer] : []);
+    return uniq(l).sort();
+  }
+  var openMenu = "";
+  function nb(act, v, html, cls, extra) {
+    return '<button type="button" data-nav="' + act + '" data-v="' + esc(v) + '"' + (cls ? ' class="' + cls + '"' : "") + (extra ? " " + extra : "") + ">" + html + "</button>";
+  }
+  function icon(a) { return a.ctx === "default" ? "∗" : hook(extById(a.ctx), "icon") || a.label.replace(/^File /, "").slice(0, 2); }
+  // the place in the tree for what is in front now
+  function livePlace() {
+    var fc = state && ((state.follow_context && state.follow_context.length) ? state.follow_context : state.context);
+    var c = (fc && fc[0]) || "default";
+    while (!ctxName[c]) { var i = c.lastIndexOf("/"); if (i < 0) { return "default"; } c = c.slice(0, i); }
+    return c;
+  }
+  function liveText() {
+    var fc = state && ((state.follow_context && state.follow_context.length) ? state.follow_context : state.context);
+    var c = fc && fc[0];
+    if (!c || c === "default") { return "no app"; }
+    var p = livePlace(), app = rootOf(c);
+    if (p === "default") { return cap(app.replace(/[-_]/g, " ")) + " (uses All apps)"; }
+    return nameOf(app) + (p !== app ? ", " + nameOf(p) : "");
+  }
+  function renderPickers() {
+    indexModel();
+    var app = rootOf(curCtx), a = ctxApp[app] || { ctx: app, label: nameOf(app), places: [] }, live = livePlace();
+    var list = apps().slice();
+    if (!ctxApp[app]) { list.push(a); }
+    $("rail").innerHTML = list.map(function (x) {
+      return nb("app", x.ctx, (state && rootOf(live) === x.ctx && live !== "default" ? '<span class="live" title="Active app"></span>' : "") +
+        '<span class="ico">' + esc(icon(x)) + "</span>" + esc(x.short || x.label), x.ctx === app ? "on" : "", 'title="' + esc(x.label) + '"' + (x.ctx === app ? ' aria-current="page"' : ""));
+    }).join("") + nb("addapp", "", '<span class="ico">+</span>Add app', "add");
+    var tabs = "", tools = "", more = a.places.filter(function (p) { return p.more; });
+    a.places.forEach(function (p) {
+      if (p.tools.length && (curCtx === p.ctx || curCtx.indexOf(p.ctx + "/") === 0)) {
+        tools = p.tools.map(function (t) { return nb("go", t.ctx, esc(t.label), (t.ctx === curCtx ? "on " : "") + (t.used ? "has" : "")); }).join("");
+      }
+      if (p.more) { return; }
+      var on = p.ctx === a.ctx ? curCtx === p.ctx : (curCtx === p.ctx || curCtx.indexOf(p.ctx + "/") === 0);
+      tabs += nb("go", p.ctx, esc(p.label), (on ? "on " : "") + (p.used ? "has" : ""), 'title="' + p.used + ' set here"');
+    });
+    if (more.length) {
+      var cur = more.filter(function (p) { return p.ctx === curCtx; })[0];
+      tabs += '<span class="pop">' + nb("menu", "more", cur ? esc(cur.label) : "More", cur ? "on" : "", 'aria-expanded="' + (openMenu === "more") + '"') +
+        (openMenu === "more" ? '<span class="menu">' + more.map(function (p) { return nb("go", p.ctx, esc(p.label) + (p.used ? " (" + p.used + ")" : "")); }).join("") + "</span>" : "") + "</span>";
+    }
+    $("ptabs").innerHTML = tabs; $("ptabs").classList.toggle("hidden", !tabs);
+    $("ptools").innerHTML = tools; $("ptools").classList.toggle("hidden", !tools);
+    $("ptitle").textContent = curCtx === "default" ? "All apps" : (curCtx === app && a.places.length) ? "Everywhere in " + (a.short || a.label) : curCtx === app ? a.label : nameOf(curCtx);
+    var all = appLayers(), ok = [], lost = [];
+    all.forEach(function (l) { (openers(l).length ? ok : lost).push(l); });
+    $("players").innerHTML = nb("layer", "", "Normal", curLayer === "" ? "on" : "has") + ok.map(function (l) {
+      var o = openers(l)[0];
+      return nb("layer", l, esc(keyNm(o.name)), l === curLayer ? "on" : "has", 'title="' + esc((o.mode === "hold" ? "While holding " : "Opened with ") + keyNm(o.name) + " (layer " + l + ")") + '"');
+    }).join("") + (lost.length ? '<span class="pop">' + nb("menu", "lost", "⚠ " + lost.length + " without a key", "bad" + (lost.indexOf(curLayer) >= 0 ? " on" : ""), 'aria-expanded="' + (openMenu === "lost") + '"') +
+      (openMenu === "lost" ? '<span class="menu"><p>No key opens these layers here, so their assignments never run.</p>' + lost.map(function (l) { return nb("layer", l, esc(l) + " (" + layerCount(l) + ")"); }).join("") + "</span>" : "") + "</span>" : "") +
+      nb("newlayer", "", "+", "has", 'title="New layer" aria-label="New layer"') + (curLayer ? nb("dellayer", curLayer, "Delete layer", "has") : "");
+    var isLost = curLayer && lost.indexOf(curLayer) >= 0;
+    $("plost").classList.toggle("hidden", !isLost);
+    if (isLost) { $("plost").innerHTML = "No key opens <b>" + esc(curLayer) + "</b> here (" + layerCount(curLayer) + " assignments in this app)." + nb("fixlayer", curLayer, "Choose a key…"); }
+    renderActive();
+    renderPresets();
+    $("dlLayers").innerHTML = layerList().map(function (c) { return '<option value="' + esc(c) + '">'; }).join("");
+  }
+  var activeCache = "";
+  function renderActive() {
+    $("bSheet").textContent = state && state.sheet && state.sheet.open ? "Hide cheat sheet" : "Cheat sheet";
+    var p = livePlace(), here = p === curCtx, a = ctxApp[rootOf(curCtx)];
+    var h = state ? '<i class="dot"></i>Active: ' + esc(liveText()) + (here ? "" : " " + nb("go", p, "Show", "link")) : "";
+    if (a && a.removable) { h += "<div>" + nb("rmapp", a.ctx, "Remove " + esc(a.label), "link") + "</div>"; }
+    if (h !== activeCache || !$("pactive").innerHTML) { $("pactive").innerHTML = h; activeCache = h; }
+  }
+  function goTo(c, l) {
+    if (!guardDirty()) { return; }
+    follow = false; $("follow").checked = false;
+    curCtx = c;
+    curLayer = l;
+    S = {}; hl = ""; preview = "";
+    openMenu = "";
+    renderPickers();
+    refreshEffective();
+  }
+  function keepLayer(c) {     // stay in the layer when the new place is in the same app
+    return rootOf(c) === rootOf(curCtx) ? curLayer : "";
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    while (t && t !== document && !(t.getAttribute && t.getAttribute("data-nav"))) { t = t.parentNode; }
+    if (!t || t === document) {
+      if (openMenu && !(e.target.closest && e.target.closest(".menu"))) { openMenu = ""; renderPickers(); }
+      return;
+    }
+    var act = t.getAttribute("data-nav"), v = t.getAttribute("data-v");
+    if (act === "app") { if (rootOf(curCtx) !== v || curCtx !== v) { goTo(v, keepLayer(v)); } }
+    else if (act === "go") { goTo(v, keepLayer(v)); }
+    else if (act === "layer") { goTo(curCtx, v); }
+    else if (act === "menu") {
+      openMenu = openMenu === v ? "" : v;
+      renderPickers();
+      if (openMenu === "papp" || openMenu === "pglobal") { loadPresets(); }   // counts as of now
+    }
+    else if (act === "addapp") { dlgAddApp(); }
+    else if (act === "rmapp") { removeApp(v); }
+    else if (act === "newlayer") { dlgLayer(""); }
+    else if (act === "fixlayer") { dlgLayer(v); }
+    else if (act === "dellayer") { dlgDelLayer(v); }
+    else if (act === "dellayergo") { delLayer(v); }
+    else if (act === "hit") { openHit(v); }
+    else if (act === "dlgclose") { closeDlg(); }
+    else if (act === "pickapp") { var x = dlgApps[+v]; addApp(x.ctx, x.exe); }
+    else if (act === "typeapp") { var f = $("dExe").value.trim().toLowerCase().split(/[\\/]/).pop(); addApp(slug(f), f); }
+    else if (act === "saveLayer") { saveLayer(); }
+    else if (presetAct(act, v) === false) { sideAct(act, v, e); }
+  });
+
+  /* ---------- presets ---------- */
+  var presets = null, presetRev = -1;
+  function loadPresets() {
+    return fetchJson("/api/presets").then(function (p) {
+      presets = p && !p.error ? p : null;
+      if (p && p.error) { toast("Presets: " + p.error, "err"); }
+      if (presets) {
+        presetRev = presets.rev;
+        var ns = {};
+        Object.keys(presets.apps).forEach(function (k) { presets.apps[k].list.forEach(function (x) { ns[x.name] = 1; }); });
+        presets.globals.forEach(function (x) { ns[x.name] = 1; });
+        $("dlPresets").innerHTML = ["next"].concat(Object.keys(ns)).map(function (n) { return '<option value="' + esc(n) + '">'; }).join("");
+      }
+      renderPresets();
+    }).catch(function () { presets = null; renderPresets(); });
+  }
+  function putPreset(body) {
+    return fetchJson("/api/presets", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(function (r) {
+      if (!r || !r.ok) { throw new Error((r && r.error) || "not saved"); }
+      return r.result;
+    });
+  }
+  function presetRow(act, x, sub) {
+    return nb(act, x.id, "<span>" + (x.active ? "✓" : "") + "</span><span>" + esc(x.name) + "<small>" + esc(sub) + "</small></span>", "pr" + (x.active ? " on" : ""));
+  }
+  function renderPresets() {
+    var app = rootOf(curCtx), p = presets && presets.apps[app], g = $("pglobal"), a = $("papp");
+    g.innerHTML = a.innerHTML = "";
+    if (!presets) { return; }
+    var label = shortOf(app);
+    var h = nb("menu", "pglobal", "<small>Global</small>" + esc(presets.global_name), "quiet pre", 'aria-expanded="' + (openMenu === "pglobal") + '"');
+    if (openMenu === "pglobal") {
+      h += '<span class="menu pmenu"><h3>One preset for every app</h3>' + presets.globals.map(function (x) {
+        var parts = Object.keys(x.pick).filter(function (k) { return ctxName[k]; }).map(function (k) { return shortOf(k) + ": " + x.pick[k]; });
+        return presetRow("useglobal", x, x.builtin ? "The helper’s own start layout" : parts.join(", "));
+      }).join("") + "<p>It remembers which preset each app uses. Switching an app’s preset updates the one in use.</p>" +
+        '<div class="btns">' + nb("gsave", "", "Save as new…") + (presets.global && presets.global.indexOf("builtin:") ? nb("gren", "", "Rename…") : "") +
+        (presets.globals.filter(function (x) { return !x.builtin && !x.active; }).length ? nb("gdel", "", "Delete…") : "") + "</div></span>";
+    }
+    g.innerHTML = h;
+    if (!p) { return; }
+    h = nb("menu", "papp", "<small>" + esc(label) + "</small>" + esc(p.name), "quiet pre", 'aria-expanded="' + (openMenu === "papp") + '"');
+    if (openMenu === "papp") {
+      var row = function (x) {
+        var t = x.error ? "Can’t be used: " + x.error : x.count + " assignments" + (x.active ? (x.builtin && x.differ ? ", " + x.differ + " changed" : "") : x.differ ? ", " + x.differ + " differ from now" : ", same as now");
+        if (x.note) { t += ". " + x.note; }
+        if (x.globals.length > 1) { t += ". Used by " + x.globals.join(" and "); }
+        return presetRow("usepreset", x, t);
+      };
+      var mine = p.list.filter(function (x) { return !x.builtin; }), bi = p.list.filter(function (x) { return x.builtin; });
+      h += '<span class="menu pmenu"><h3>Presets for ' + esc(label) + "</h3>" + mine.map(row).join("") + "<h3>Built in</h3>" + bi.map(row).join("") +
+        "<p>Changes go into the preset in use. A built-in one stays as it is: your changes become a preset of their own when you switch.</p>" +
+        '<div class="btns">' + nb("psave", "", "Save as new…") + (p.active.indexOf("builtin:") ? nb("pren", "", "Rename…") : "") + (mine.filter(function (x) { return !x.active; }).length ? nb("pdel", "", "Delete…") : "") +
+        nb("pimp", "", "Import…") + nb("pexp", "", "Export") + "</div></span>";
+    }
+    a.innerHTML = h;
+  }
+  // A switch is one step in the undo history.
+  function presetSwitch(body, label) {
+    queue = queue.then(function () {
+      return putPreset(body).then(function (r) {
+        openMenu = "";
+        hist.push({ label: label, preset: r, t: Date.now(), merge: "" });
+        fut = [];
+        return afterSwitch(label);
+      });
+    }).catch(function (er) { openMenu = ""; renderPresets(); toast("Not switched: " + er.message, "err"); });
+  }
+  function afterSwitch(label) {
+    mapChanged = true; S = {}; hl = "";
+    return refreshModel().then(function () {
+      if (curLayer && appLayers().indexOf(curLayer) < 0) { curLayer = ""; }
+      return Promise.all([refreshEffective(), loadPresets()]);
+    }).then(function () { updateUndo(); if (label) { toast(label + ".", "ok", true); } });
+  }
+  function nameDlg(kind, title, value, btn) {
+    showDlg("name", "<h2>" + esc(title) + '</h2><div class="row"><label for="dPn">Name</label><div class="in"><input type="text" id="dPn" maxlength="40" value="' + esc(value) + '" autocomplete="off"></div></div>' +
+      '<p class="derr" id="dErr"></p><div class="btns">' + nb("pname", kind, btn, "primary") + nb("dlgclose", "", "Cancel") + "</div>");
+    $("dPn").select();
+  }
+  function presetJob(body, done) {
+    return putPreset(body).then(function (r) { closeDlg(); openMenu = ""; return loadPresets().then(function () { toast(done, "ok"); return r; }); })
+      .catch(function (er) { if (dlgKind) { dlgErr(cap(er.message) + "."); } else { toast("Not done: " + er.message, "err"); } });
+  }
+  var impFile = "", impText = "";
+  function presetAct(act, v) {
+    var app = rootOf(curCtx), p = presets && presets.apps[app], label = shortOf(app), x;
+    if (act === "usepreset") {
+      x = p.list.filter(function (y) { return y.id === v; })[0];
+      if (x.active) { openMenu = ""; renderPresets(); return; }
+      presetSwitch({ op: "use", app: app, id: v }, label + " preset: " + x.name);
+    }
+    else if (act === "useglobal") {
+      x = presets.globals.filter(function (y) { return y.id === v; })[0];
+      if (x.active) { openMenu = ""; renderPresets(); return; }
+      presetSwitch({ op: "use_global", id: v }, "Global preset: " + x.name);
+    }
+    else if (act === "psave") { nameDlg("save_as", "New preset for " + label, "", "Save"); }
+    else if (act === "pren") { nameDlg("rename", "Rename preset", p.name, "Rename"); }
+    else if (act === "gsave") { nameDlg("global_save_as", "New global preset", "", "Save"); }
+    else if (act === "gren") { nameDlg("global_rename", "Rename global preset", presets.global_name, "Rename"); }
+    else if (act === "pname") {
+      var n = $("dPn").value.trim();
+      if (!n) { dlgErr("Give it a name."); return; }
+      var body = { op: v, name: n };
+      if (v === "save_as" || v === "rename") { body.app = app; }
+      if (v === "rename") { body.id = p.active; }
+      if (v === "global_rename") { body.id = presets.global; }
+      presetJob(body, v.indexOf("rename") >= 0 ? "Renamed." : "Saved as “" + n + "”. Further changes go there.");
+    }
+    else if (act === "pdel" || act === "gdel") {
+      var list = act === "pdel" ? p.list.filter(function (y) { return !y.builtin && !y.active; }) : presets.globals.filter(function (y) { return !y.builtin && !y.active; });
+      showDlg("del", "<h2>Delete a " + (act === "pdel" ? "preset for " + esc(label) : "global preset") + '</h2><div class="old">' + list.map(function (y) { return nb(act === "pdel" ? "delpick" : "gdelpick", y.id, esc(y.name)); }).join("") + "</div>" +
+        '<p class="muted">' + (act === "pdel" ? "The one in use is not listed. The file moves to presets/_deleted in the config folder." : "The one in use is not listed. The apps’ presets stay.") + '</p><p class="derr" id="dErr"></p><div class="btns">' + nb("dlgclose", "", "Cancel") + "</div>");
+    }
+    else if (act === "delpick") { x = p.list.filter(function (y) { return y.id === v; })[0]; presetJob({ op: "delete", app: app, id: v }, "Deleted “" + x.name + "”."); }
+    else if (act === "gdelpick") { x = presets.globals.filter(function (y) { return y.id === v; })[0]; presetJob({ op: "global_delete", id: v }, "Deleted “" + x.name + "”."); }
+    else if (act === "pexp") {
+      fetchText("/api/preset?app=" + encodeURIComponent(app) + "&id=" + encodeURIComponent(p.active)).then(function (t) {
+        var l = document.createElement("a");
+        l.href = URL.createObjectURL(new Blob([t], { type: "application/toml" }));
+        l.download = app + " - " + p.name.replace(/[\\/:*?"<>|]/g, "-") + ".toml";
+        document.body.appendChild(l); l.click(); l.remove();
+        setTimeout(function () { URL.revokeObjectURL(l.href); }, 10000);
+        openMenu = ""; renderPresets();
+      }).catch(function (er) { toast("Not exported: " + er.message, "err"); });
+    }
+    else if (act === "pimp") {
+      impFile = impText = "";
+      showDlg("imp", "<h2>Import a preset for " + esc(label) + '</h2><p class="muted">A preset file, or a whole profiles.toml</p><input type="file" id="dFile" accept=".toml,.txt"><p class="muted" id="dOldH">Looking for older copies of your profile…</p><div class="old" id="dOld"></div>' +
+        '<div class="row"><label for="dPn">Name</label><div class="in"><input type="text" id="dPn" maxlength="40" autocomplete="off"></div></div><p class="derr" id="dErr"></p><div class="btns">' + nb("pimpgo", "", "Import", "primary") + nb("dlgclose", "", "Cancel") + "</div>");
+      $("dFile").addEventListener("change", function () {
+        var f = this.files[0];
+        if (!f) { return; }
+        f.text().then(function (t) { impText = t; impFile = ""; markOld(); if (!$("dPn").value) { $("dPn").value = f.name.replace(/\.[^.]*$/, "").slice(0, 40); } }).catch(function (er) { dlgErr("Can’t read the file: " + er.message); });
+      });
+      fetchJson("/api/old_profiles?app=" + encodeURIComponent(app)).then(function (l) {
+        if (dlgKind !== "imp") { return; }
+        $("dOldH").textContent = l.length ? "Or an older copy from your config folder" : "";
+        $("dOld").innerHTML = l.map(function (o) { return nb("oldpick", o.file, esc(o.file) + ' <span class="cnt">' + o.count + "</span>"); }).join("");
+      }).catch(function (er) { if ($("dOldH")) { $("dOldH").textContent = "Couldn’t list older copies: " + er.message; } });
+    }
+    else if (act === "oldpick") { impFile = v; impText = ""; $("dFile").value = ""; markOld(); $("dPn").value = cap(v.replace(/^profiles\./, "").replace(/\.toml$/, "").replace(/[-_]+/g, " ")).slice(0, 40); }
+    else if (act === "pimpgo") {
+      var nm = $("dPn").value.trim();
+      if (!impFile && !impText) { dlgErr("Choose a file or an older copy."); return; }
+      if (!nm) { dlgErr("Give it a name."); return; }
+      presetJob(impFile ? { op: "import_old", app: app, file: impFile, name: nm } : { op: "import", app: app, text: impText, name: nm }, "Imported “" + nm + "”. Pick it in the menu to use it.");
+    }
+    else { return false; }
+    return true;
+  }
+  function markOld() {
+    var l = document.querySelectorAll("#dOld button");
+    for (var i = 0; i < l.length; i++) { l[i].classList.toggle("on", l[i].getAttribute("data-v") === impFile); }
+  }
+
+  /* ---------- dialogs: add an app, choose the key that opens a layer ---------- */
+  var dlgKind = "", dlgApps = [], dlgFixed = "";
+  function showDlg(kind, html) {
+    dlgKind = kind;
+    if (openMenu) { openMenu = ""; renderPickers(); }
+    $("dlg").innerHTML = '<div class="dlg" role="dialog" aria-modal="true">' + html + "</div>";
+    $("dlg").classList.remove("hidden");
+    var f = $("dlg").querySelector("input, select, button");
+    if (f) { f.focus(); }
+  }
+  function closeDlg() { dlgKind = ""; $("dlg").classList.add("hidden"); $("dlg").innerHTML = ""; }
+  function dlgErr(t) { var d = $("dErr"); if (d) { d.textContent = t; } }
+  function slug(exe) { return exe.replace(/\.exe$/, "").replace(/[^a-z0-9_-]+/g, "-").replace(/^-+|-+$/g, ""); }
+  function putApp(name, exe) {
+    return fetchJson("/api/app", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name, exe: exe }) });
+  }
+  function dlgAddApp() {
+    var html = '<h2>Add an app</h2><p class="muted">Open now</p><div class="btns" id="dList"><span class="muted">Looking…</span></div>' +
+      '<p class="muted">Or type its program file</p><div class="btns"><input type="text" id="dExe" placeholder="photoshop.exe" spellcheck="false" style="flex:1">' + nb("typeapp", "", "Add") + "</div>" +
+      '<p class="muted">Apps you haven’t added use All apps.</p><p class="derr" id="dErr"></p><div class="btns">' + nb("dlgclose", "", "Cancel") + "</div>";
+    showDlg("app", html);
+    fetchJson("/api/apps").then(function (r) {
+      if (dlgKind !== "app") { return; }
+      dlgApps = ((r && r.apps) || []).filter(function (x) { return !x.known; });
+      $("dList").innerHTML = dlgApps.length ? dlgApps.map(function (x, i) { return nb("pickapp", i, esc(x.label), "", 'title="' + esc(x.exe) + '"'); }).join("") : '<span class="muted">Nothing new is open.</span>';
+    }).catch(function (e) { if ($("dList")) { $("dList").textContent = "Couldn’t list the open apps: " + e.message; } });
+  }
+  function addApp(name, exe) {
+    if (!name) { dlgErr("Type a program file, e.g. photoshop.exe."); return; }
+    putApp(name, exe).then(function (r) {
+      if (!r || !r.ok) { dlgErr((r && r.error) || "Not added."); return; }
+      closeDlg();
+      mapChanged = true;
+      return refreshModel().then(function () { goTo(name, ""); toast("Added " + nameOf(name) + ".", "ok"); });
+    }).catch(function (e) { dlgErr("Request failed: " + e.message); });
+  }
+  function removeApp(name) {
+    var label = nameOf(name);
+    putApp(name, null).then(function (r) {
+      if (!r || !r.ok) { toast((r && r.error) || "Not removed.", "err"); return; }
+      mapChanged = true;
+      curCtx = "default"; curLayer = ""; S = {};
+      return refreshAll().then(function () { toast("Removed " + label + ".", "ok"); });
+    }).catch(function (e) { toast("Request failed: " + e.message, "err"); });
+  }
+  function dlgLayer(fixed, key) {
+    dlgFixed = fixed;
+    var opts = Object.keys(KEYPOS).concat("STOP").concat(key && KEYPOS[key] === undefined && key !== "STOP" ? [key] : []).sort().map(function (n) {
+      return '<option value="' + n + '"' + (n === key ? " selected" : "") + ">" + keyNm(n) + (ledColor[n] ? "  (has a light)" : "") + "</option>";
+    }).join("");
+    showDlg("layer", "<h2>" + (fixed ? "Which key opens “" + esc(fixed) + "”?" : key ? "Open a layer with " + esc(keyNm(key)) : "New layer") + "</h2>" +
+      (fixed ? "" : '<div class="row"><label for="dName">Layer</label><div class="in"><input type="text" id="dName" list="dlLayers" placeholder="' + (key ? "pick one or type a new name" : "e.g. colour") + '" spellcheck="false" autocomplete="off"></div></div>') +
+      '<div class="row"><label for="dKey">Key</label><div class="in"><select id="dKey"><option value="">Press it on the panel, or choose…</option>' + opts + "</select></div></div>" +
+      '<div class="row"><label for="dMode">Stays open</label><div class="in"><select id="dMode"><option value="auto">Tap to keep, or hold</option><option value="hold">While held</option><option value="toggle">Until the next tap</option></select></div></div>' +
+      '<p class="muted" id="dNow"></p><p class="derr" id="dErr"></p><div class="btns">' + nb("saveLayer", "", fixed ? "Use this key" : "Save", "primary") + nb("dlgclose", "", "Cancel") + "</div>");
+    $("dKey").addEventListener("change", layerKeyInfo);
+    if (key) { layerKeyInfo(); }
+  }
+  function layerKeyInfo() {
+    var n = $("dKey").value, app = rootOf(curCtx), t = "";
+    if (n) {
+      var here = lookAt(curCtx, "", "button." + n), own = bmap[app + "||button." + n];
+      if (own !== undefined) { t = "Replaces “" + describe(own, "button") + "” in " + nameOf(app) + "."; }
+      else if (here) { t = "It is now “" + describe(here.binding, "button") + "”, from " + nameOf(here.ctx) + "."; }
+      else { t = "This key is unused here."; }
+      if (here && here.ctx !== app && stackOf(here.ctx).indexOf(app) > 0) { t += " " + nameOf(here.ctx) + " sets this key itself, so it won’t open the layer there."; }
+    }
+    $("dNow").textContent = t;
+    dlgErr("");
+  }
+  // everything that goes with a layer in this app: its assignments, the keys that open it, lights that follow it
+  function layerParts(l) {
+    var app = rootOf(curCtx), p = { sets: [], keys: [], lights: [] };
+    ((model && model.bindings) || []).forEach(function (b) {
+      if (rootOf(b.ctx) !== app) { return; }
+      if (b.layer === l) { p.sets.push({ ctx: b.ctx, layer: l, kind: b.kind, name: b.name, binding: null }); return; }
+      var x = b.binding;
+      if (x && x.do === "layer" && x.name === l) { p.keys.push({ ctx: b.ctx, layer: b.layer || "", kind: b.kind, name: b.name, binding: null }); }
+      else if (x && x.do !== "layer" && x.layer === l) { var c = JSON.parse(JSON.stringify(x)); delete c.layer; p.keys.push({ ctx: b.ctx, layer: b.layer || "", kind: b.kind, name: b.name, binding: c }); }
+    });
+    ((model && model.leds) || []).forEach(function (x) { if (rootOf(x.ctx) === app && normRule(x.rule) === "layer." + l) { p.lights.push({ led: x.led, ctx: x.ctx, binding: null }); } });
+    return p;
+  }
+  function dlgDelLayer(l) {
+    var app = rootOf(curCtx), p = layerParts(l), t = [], others = {};
+    var nm = openers(l).length ? layName(l) : l;
+    if (p.sets.length) { t.push(p.sets.length + (p.sets.length === 1 ? " assignment in " + nameOf(app) + " goes away." : " assignments in " + nameOf(app) + " go away.")); }
+    else { t.push("It has no assignments in " + nameOf(app) + "."); }
+    p.keys.forEach(function (k) { t.push(keyNm(k.name) + (k.binding ? " no longer opens it." : " becomes free" + (k.ctx === app ? "" : " in " + nameOf(k.ctx)) + ".")); });
+    if (p.lights.length) { t.push(p.lights.map(function (x) { return keyNm(x.led); }).join(", ") + ": the light no longer follows it."); }
+    if (app === "default") {
+      ((model && model.bindings) || []).forEach(function (b) { if (b.layer === l && rootOf(b.ctx) !== "default") { others[rootOf(b.ctx)] = (others[rootOf(b.ctx)] || 0) + 1; } });
+      var o = Object.keys(others).map(function (k) { return nameOf(k) + " (" + others[k] + ")"; });
+      if (o.length && p.keys.length) { t.push("Other apps have assignments in it, which no key will open: " + o.join(", ") + "."); }
+    } else if (((model && model.layer_openers) || []).some(function (x) { return x.layer === l && x.ctx === "default"; })) { t.push("The key in All apps still opens it, for other apps."); }
+    showDlg("dellayer", "<h2>Delete the layer “" + esc(nm) + "”" + (app === "default" ? "" : " in " + esc(nameOf(app))) + "?</h2>" + t.map(function (x) { return "<p>" + esc(x) + "</p>"; }).join("") +
+      '<p class="muted">You can undo this.</p><div class="btns">' + nb("dellayergo", l, "Delete layer", "primary") + nb("dlgclose", "", "Cancel") + "</div>");
+  }
+  function delLayer(l) {
+    var p = layerParts(l), all = p.sets.concat(p.keys, p.lights);
+    closeDlg();
+    if (!all.length) { goTo(curCtx, ""); return; }
+    change(all, "Deleted layer " + (openers(l).length ? layName(l) : l) + " (" + p.sets.length + " assignments)").then(function (ok) { if (ok) { goTo(curCtx, ""); } });
+  }
+
+  /* ---------- find: where something is assigned ---------- */
+  var hitList = [], hitAt = -1;
+  function findHits(q) {
+    var toks = q.toLowerCase().split(/\s+/).filter(Boolean), used = [], free = [];
+    if (!toks.length) { return []; }
+    function all(hay) { return toks.every(function (t) { return hay.indexOf(t) >= 0; }); }
+    ((model && model.bindings) || []).forEach(function (b) {
+      var x = b.binding, key = b.kind + "." + b.name, app = rootOf(b.ctx);
+      descApp = app;
+      var d = describe(x, b.kind);
+      descApp = "";
+      // a layer goes by the key that opens it in that app
+      var op = b.layer && ((model && model.layer_openers) || []).filter(function (z) { return z.layer === b.layer && (z.ctx === "default" || rootOf(z.ctx) === app); })[0];
+      var lay = b.layer ? ", layer " + (op ? keyNm(op.name) : b.layer) : "", ids = x && typeof x === "object" ? [x.id, x.x, x.y, x.cw, x.ccw, x.keys].filter(Boolean).join(" ") : "";
+      var place = (b.ctx === app ? nameOf(app) : nameOf(app) + ", " + nameOf(b.ctx)) + lay;
+      if (all((d + " " + panelName(key) + " " + place + " " + ids + " " + (b.layer || "")).toLowerCase())) {
+        used.push({ key: key, ctx: b.ctx, layer: b.layer || "", title: d, sub: panelName(key) + " in " + place, rank: all(d.toLowerCase()) ? 0 : 1 });
+      }
+    });
+    used.sort(function (a, b) { return a.rank - b.rank || (a.title < b.title ? -1 : 1); });
+    entries.forEach(function (e) {
+      if (free.length >= 6 || e.rec || e.layer || !all(e.hay) || used.some(function (u) { return u.entry === e.i; })) { return; }
+      var isUsed = ((model && model.bindings) || []).some(function (b) { return b.binding && typeof b.binding === "object" && e.fits.indexOf(b.kind) >= 0 && e.match(b.binding, b.kind); });
+      if (!isUsed) { free.push({ add: e, title: e.label, sub: "Not assigned. " + SRC[e.app] + ", " + e.g }); }
+    });
+    return used.slice(0, 40).concat(free);
+  }
+  function renderHits() {
+    var box = $("hits"), q = $("find").value.trim();
+    box.classList.toggle("hidden", !q);
+    if (!q) { hitList = []; return; }
+    hitList = findHits(q);
+    hitAt = hitList.length ? Math.max(0, Math.min(hitAt, hitList.length - 1)) : -1;
+    box.innerHTML = hitList.map(function (x, i) { return nb("hit", i, esc(x.title) + "<small>" + esc(x.sub) + "</small>", i === hitAt ? "on" : ""); }).join("") || "<p>Nothing is called that.</p>";
+    var on = box.querySelector("button.on");
+    if (on) { on.scrollIntoView({ block: "nearest" }); }
+  }
+  function openHit(i) {
+    var x = hitList[+i];
+    $("find").value = ""; renderHits();
+    if (!x) { return; }
+    if (x.add) { sel = null; lib = true; source = x.add.app; pq = x.add.label; renderPicture(); renderSide(); if (sources().indexOf(x.add.app) < 0) { toast(SRC[x.add.app] + " actions belong in that app: pick it on the left.", "ok"); } return; }
+    goTo(x.ctx, x.layer);
+    selectControl(x.key);
+  }
+  $("find").addEventListener("input", function () { hitAt = 0; renderHits(); });
+  $("find").addEventListener("focus", renderHits);
+  $("find").addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); hitAt += e.key === "ArrowDown" ? 1 : -1; renderHits(); }
+    else if (e.key === "Enter" && hitAt >= 0) { e.preventDefault(); openHit(hitAt); this.blur(); }
+    else if (e.key === "Escape") { e.stopPropagation(); this.value = ""; renderHits(); this.blur(); }
+  });
+  document.addEventListener("mousedown", function (e) { if (!(e.target.closest && e.target.closest(".find"))) { $("hits").classList.add("hidden"); } });
+
+  function saveLayer() {
+    var name = dlgFixed || $("dName").value.trim().toLowerCase(), n = $("dKey").value, mode = $("dMode").value, app = rootOf(curCtx);
+    if (!SEG_RE.test(name)) { dlgErr("Give the layer a name: lower-case letters, digits, _ or -."); return; }
+    if (!n) { dlgErr("Press a key on the panel, or choose one."); return; }
+    closeDlg();
+    change([{ ctx: app, layer: "", kind: "button", name: n, binding: { do: "layer", name: name, mode: mode } }], keyNm(n) + " opens " + name + (app === "default" ? "" : " in " + nameOf(app)))
+      .then(function (ok) { if (ok) { goTo(curCtx, name); } });
+  }
+  // Edits save when a field is left; nothing is pending once the click that moves on arrives.
+  function guardDirty() { formDirty = false; return true; }
+  var ZOOMS = [60, 70, 80, 90, 100, 115, 130, 150, 175, 200, 250], zoom = 100;
+  function setZoom(z, keep) {
+    zoom = ZOOMS.indexOf(z) >= 0 ? z : 100;
+    document.documentElement.style.setProperty("--zoom", zoom / 100);
+    $("zVal").textContent = zoom + "%";
+    if (keep) { try { localStorage.setItem("mcp.zoom", String(zoom)); } catch (e) { /* per-viewer convenience only */ } }
+  }
+  function stepZoom(d) { var i = ZOOMS.indexOf(zoom) + d; if (i >= 0 && i < ZOOMS.length) { setZoom(ZOOMS[i], true); } }
+  try { setZoom(+localStorage.getItem("mcp.zoom") || 100); } catch (e) { setZoom(100); }
+  $("zOut").addEventListener("click", function () { stepZoom(-1); });
+  $("zIn").addEventListener("click", function () { stepZoom(1); });
+  $("zVal").addEventListener("click", function () { setZoom(100, true); });
+  $("bind").addEventListener("scroll", function () { var i = this.querySelector(".ihead"); if (i) { i.classList.toggle("up", this.scrollTop > 2); } });
+  $("follow").addEventListener("change", function () {
+    follow = this.checked;
+    try { localStorage.setItem("mcp.follow", follow ? "1" : ""); } catch (e) { /* per-viewer convenience only */ }
+    if (follow) { applyFollow(true); }
+  });
+
+  /* ---------- data ---------- */
+  function refreshModel() {
+    return fetchJson("/api/model").then(function (m) {
+      model = m;
+      if (m && Array.isArray(m.led_keys) && m.led_keys.length) {
+        ledColor = {};
+        m.led_keys.forEach(function (k) { ledColor[k.name] = k.color; });
+      }
+      var me = $("merr");
+      if (m && m.error) {
+        me.innerHTML = "profiles.toml does not load: " + esc(m.error) + " — fix it in the <b>TOML</b> tab.";
+        me.classList.remove("hidden");
+        model = { contexts: [], layers: [], bindings: [], settings: {}, error: m.error };
+      } else {
+        me.classList.add("hidden");
+      }
+      renderPickers();
+    }).catch(function (e) { if (window.console) { console.error("model", e); } /* the offline banner comes from the state poll */ });
+  }
+  function refreshEffective() {
+    var seq = ++effSeq;
+    var url = "/api/effective?ctx=" + encodeURIComponent(curCtx) + "&layers=" + encodeURIComponent(curLayer);
+    return fetchJson(url).then(function (r) {
+      if (seq !== effSeq) { return; }
+      effective = (r && r.controls) || {};
+      effLeds = (r && r.leds) || {};
+      renderPicture();
+      if ((sel || lib) && !formDirty) { renderSide(); }
+    }).catch(function () { /* retried by caller / next change */ });
+  }
+  function refreshAll() { return refreshModel().then(refreshEffective).then(function () { if (!presets) { return loadPresets(); } }); }
+
+  function applyFollow(force) {
+    if ((!follow && !force) || !state || !model) { return; }
+    if (formDirty && !force) { return; }
+    var c = livePlace();
+    var l = (state.layers && state.layers[0]) || "";
+    if (c === curCtx && l === curLayer) { return; }
+    if (formDirty && !guardDirty()) { return; }
+    curCtx = c; curLayer = l; S = {}; hl = ""; preview = "";
+    renderPickers();
+    refreshEffective();
+  }
+
+  function onState(s) {
+    var last = s.last;
+    if (last && last.control) {
+      if (lastAt !== null && last.at !== lastAt) {
+        flashKey = last.control; flashT = Date.now();
+        if (dlgKind === "layer") {
+          var lk = /^button\.(.+)$/.exec(last.control);
+          if (lk && $("dKey").querySelector('option[value="' + lk[1] + '"]')) { $("dKey").value = lk[1]; layerKeyInfo(); }
+        }
+        else if (armed) { renderPicture(); assignTo(last.control); }
+        else if (!formDirty && !recKey && !rec) { selectControl(last.control); }
+        else { renderPicture(); }
+      }
+      lastAt = last.at;
+    }
+    if (presets && s.preset_rev !== undefined && s.preset_rev !== presetRev) {
+      // switched from the panel (our own switches update presetRev themselves)
+      presetRev = s.preset_rev;
+      queue.then(function () { if (presets && presets.rev !== s.preset_rev) { hist = []; fut = []; return afterSwitch(""); } });
+    }
+    applyFollow(false);
+    var lk2 = livePlace() + "|" + liveText() + "|" + !!(s.sheet && s.sheet.open);
+    if (lk2 !== liveKey) { liveKey = lk2; if (!openMenu) { renderPickers(); } }
+  }
+  var liveKey = "";
+  setInterval(function () {      // clear the flash class once the animation is over
+    if (flashKey && Date.now() - flashT > 1400) { flashKey = null; renderPicture(); }
+  }, 500);
+
+  /* ---------- selection / side panel ---------- */
+  var lib = false, S = {}, advOpen = false;
+  function selectControl(key) {
+    var parts = key.split("."), kind = parts.shift(), fresh = !sel || sel.key !== key;
+    sel = { kind: kind, name: parts.join("."), key: key };
+    if (fresh) { stopRec(); formDirty = false; S = {}; pq = ""; source = ""; }
+    renderPicture();
+    renderSide(fresh);
+  }
+  function closeSide() {
+    stopRec(); formDirty = false; sel = null; lib = false; S = {}; pq = "";
+    renderPicture();
+    renderSide(true);
+  }
+
+  // ---- action / field definitions
+  var MCU_BTNS = ["play","stop","record","rewind","ffwd","cycle","marker","nudge","drop","replace","click","solo_global","bank_left","bank_right","channel_left","channel_right","flip","read","write","trim","touch","latch","group","save","undo","cancel","enter","up","down","left","right","mute","solo","arm","select"];
+  // fields behind "More settings"
+  var ADV = { "mouse.move": ["accel", "lock"], "mouse.scroll": ["h_mods", "notch"], "key": ["per"],
+    "midi.cc": ["channel", "on", "off"], "midi.note": ["channel", "velocity"], "midi.xy": ["channel", "per_unit"], "mcu.fader": ["touch_ms"], "mcu.button": ["button"] };
+  function fieldSpecs(d, kind) {
+    var knobLike = kind === "knob" || kind === "ring";
+    switch (d) {
+      case "key":
+        return knobLike
+          ? [{ n: "cw", t: "keys", l: "Clockwise" }, { n: "ccw", t: "keys", l: "Anticlockwise" },
+             { n: "per", t: "num", l: "Per tap", ph: "default 1/48 turn", help: "Raw counts of rotation per key tap (optional)." }]
+          : [{ n: "keys", t: "keys", l: "Shortcut", req: 1, help: "One combination, or several tapped in order separated by commas, e.g. shift+3, ctrl+z." }, { n: "hold", t: "bool", l: "Hold it down", help: "The key stays down while the panel key is held (one combination only)." }];
+      case "mouse.move":
+        return [{ n: "speed", t: "num", l: "Speed", ph: "1" }, { n: "accel", t: "num", l: "Accel", ph: "1", min: 1, help: "1 = linear; higher speeds up fast rolls." },
+                { n: "lock", t: "num", l: "Axis lock", ph: "0 (off)", min: 0, max: 0.5, help: "0 to 0.5; ignores the weaker axis below this ratio." }];
+      case "mouse.scroll":
+        return [{ n: "axis", t: "sel", l: "Direction", opts: kind === "ball" ? [["both", "Both ways"], ["v", "Up / down"], ["h", "Sideways"]] : [["v", "Up / down"], ["h", "Sideways"]], def: kind === "ball" ? "both" : "v" },
+                { n: "speed", t: "num", l: "Speed", ph: "1", help: "Negative = reversed." },
+                { n: "mods", t: "keys", l: kind === "ball" ? "Hold keys (vertical)" : "Hold keys", help: "Modifier keys held while scrolling, e.g. alt (many programs zoom with alt or ctrl + wheel)." }]
+          .concat(kind === "ball" ? [{ n: "h_mods", t: "keys", l: "Hold keys (horizontal)", help: "Modifiers for the horizontal axis; empty = same as vertical." }] : [])
+          .concat([{ n: "notch", t: "bool", l: "Whole notches", help: "Only send full wheel notches, for apps that treat every wheel message as a whole notch." }]);
+      case "mouse.button":
+        return [{ n: "button", t: "sel", l: "Button", opts: [["left", "Left"], ["right", "Right"], ["middle", "Middle"]], def: "left" },
+                { n: "keys", t: "keys", l: "Hold keys", help: "Held together with the mouse button, e.g. space to pan." }];
+      case "layer":
+        return [{ n: "name", t: "text", l: "Layer", list: "dlLayers", req: 1, ph: "e.g. fine" },
+                { n: "mode", t: "sel", l: "Stays open", opts: [["auto", "Tap to keep, or hold"], ["hold", "While held"], ["toggle", "Until the next tap"]], def: "auto" }];
+      case "midi.cc":
+        return knobLike
+          ? [{ n: "cc", t: "num", l: "CC number", req: 1, help: "0-127" }, { n: "channel", t: "num", l: "Channel", ph: "1" },
+             { n: "mode", t: "sel", l: "Mode", opts: ["relative", "offset", "signbit", "absolute"], def: "relative",
+               help: "relative = two's complement (1 up, 127 down), the usual endless-encoder mode; offset = 65 up / 63 down; signbit = 1 up / 65 down; absolute = a 0-127 value." },
+             { n: "per_turn", t: "num", l: "Per turn", ph: "48 / 127", help: "Relative: ticks per turn (48). Absolute: values per turn (127)." }]
+          : [{ n: "cc", t: "num", l: "CC number", req: 1 }, { n: "channel", t: "num", l: "Channel", ph: "1" },
+             { n: "on", t: "num", l: "Value on", ph: "127" }, { n: "off", t: "num", l: "Value off", ph: "0" },
+             { n: "toggle", t: "bool", l: "Toggle", help: "Alternate on / off with each press instead of on while held." }];
+      case "preset":
+        return [{ n: "scope", t: "sel", l: "Switches", opts: [["app", "The app in front"], ["global", "The global preset"]], def: "app" },
+                { n: "name", t: "text", l: "To", ph: "next", list: "dlPresets", help: "next, or a preset’s name. Put this key in All apps: a key inside a preset goes away with it." }];
+      case "sheet":
+        return [{ n: "mode", t: "sel", l: "Shows it", opts: [["toggle", "Until the next press"], ["hold", "While held"]], def: "toggle" }];
+      case "mcu.fader":
+        return [{ n: "strip", t: "num", l: "Strip", ph: "1", min: 1, max: 9, help: "Mixer strip 1-8 (as banked on the surface); 9 = master." },
+                { n: "per_turn", t: "num", l: "Travel per turn", ph: "0.5", help: "Share of the whole fader travel per full turn. Negative = reversed." },
+                { n: "touch_ms", t: "num", l: "Let go after (ms)", ph: "400", help: "The fader counts as touched until it has been still this long." }];
+      case "mcu.jog":
+        return [{ n: "per_turn", t: "num", l: "Ticks per turn", ph: "48", help: "Negative = reversed." }];
+      case "mcu.button":
+        return [{ n: "button", t: "sel", l: "Button", opts: MCU_BTNS, def: "play" },
+                { n: "strip", t: "num", l: "Strip", ph: "1", min: 1, max: 8, help: "For mute, solo, arm, select." }];
+      case "midi.note":
+        return [{ n: "note", t: "num", l: "Note", req: 1, help: "0-127 (60 = middle C)" }, { n: "channel", t: "num", l: "Channel", ph: "1" },
+                { n: "velocity", t: "num", l: "Velocity", ph: "127" }];
+      case "midi.xy":
+        return [{ n: "x", t: "num", l: "X CC" }, { n: "y", t: "num", l: "Y CC", help: "At least one of X / Y." },
+                { n: "channel", t: "num", l: "Channel", ph: "1" },
+                { n: "mode", t: "sel", l: "Mode", opts: ["relative", "offset", "signbit", "absolute"], def: "relative" },
+                { n: "per_unit", t: "num", l: "Per ball step", ph: "0.5" }];
+      default: return hook(extOf(d), "fields", kind, d) || [];
+    }
+  }
+
+  function ownBinding(key) { var v = bmap[curCtx + "|" + curLayer + "|" + key]; return v === undefined ? null : v; }
+  function renderSide() {
+    var side = $("side"), box = $("bind"), show = !!sel || lib;
+    side.classList.toggle("hidden", !show);
+    if (!show) { box.innerHTML = ""; return; }
+    side.classList.toggle("left", !!sel && ctlX(sel.key) > 455);
+    var ae = document.activeElement, fid = ae && ae.id && box.contains(ae) ? ae.id : "", top = box.scrollTop;
+    if (!sel) {
+      box.innerHTML = '<div class="ihead"><h2>Actions<small>Click one, then click or touch a control. Or drag it there. Shift-click keeps it for several controls.</small></h2>' + nb("close", "", "Close", "quiet") + "</div>" + pickerHtml("");
+    } else {
+      var kind = sel.kind, name = sel.name, key = sel.key, e = effOf(key), here = !!(e && e.here), below = lookAt(curCtx, curLayer, key, true), place = placeText(), parent = stackOf(curCtx)[1];
+      var h = '<div class="ihead"><h2>' + esc(panelName(key).replace(/ press$/, "")) + "<small>" + esc(pathText()) + "</small></h2>" + nb("close", "", "Close", "quiet") + "</div>";
+      if (KNOBS.indexOf(name) >= 0) { h += '<div class="seg">' + nb("slot", "knob." + name, "Turn", kind === "knob" ? "on" : "") + nb("slot", "button." + name, "Press", kind === "button" ? "on" : "") + "</div>"; }
+      if (kind === "ring" || kind === "ball") { h += '<div class="seg">' + nb("slot", "ball." + name, "Ball", kind === "ball" ? "on" : "") + nb("slot", "ring." + name, "Ring", kind === "ring" ? "on" : "") + "</div>"; }
+      h += '<div><div class="does">' + esc(e ? describe(e.binding, kind) : "Unused") + '</div><div class="src">';
+      if (e && ownName(e.binding)) { h += esc(describeAuto(e.binding, kind)) + ". "; }
+      if (!e) { h += "Nothing is assigned" + (curCtx === "default" ? "." : ", here or in " + esc(stackOf(curCtx).slice(1).map(nameOf).join(" or ")) + "."); }
+      else if (here) { h += "Set for " + esc(place) + "." + (below ? " Without this it would be " + esc(describe(below.binding, kind)) + ", from " + esc(tagOf(below)) + "." : ""); }
+      else { h += "Comes from " + esc(tagOf(e)) + ". A change here applies to " + esc(place) + " only."; }
+      h += "</div></div>" + mismatchHtml();
+      if (here && typeof e.binding === "object" && !isOff(e.binding)) { h += fieldsHtml(e.binding, kind); }
+      h += '<div id="fmsg" class="hidden"></div>';
+      var b = "";
+      if (e && !here) { b += nb("editsrc", e.ctx + "|" + (e.layer || ""), "Edit in " + esc(tagOf(e))); }
+      if (here) { b += nb("clear", "", below ? "Use " + esc(tagOf(below)) + "’s instead" : "Clear"); }
+      if (e && !isOff(e.binding) && (!here || below)) { b += nb("off", "", "Turn off here"); }
+      if (here && !isOff(e.binding) && parent) {
+        var old = bmap[parent + "|" + curLayer + "|" + key];
+        b += nb("up", parent, "Use in " + (parent === "default" ? "all apps" : "all of " + esc(nameOf(parent))), "", old !== undefined ? 'title="Replaces ' + esc(describe(old, kind)) + '"' : "");
+      }
+      if (b) { h += '<div class="btns">' + b + "</div>"; }
+      b = (e ? nb("copy", "", "Copy", "quiet", 'title="Ctrl+C"') : "") + (here ? nb("cut", "", "Cut", "quiet", 'title="Ctrl+X"') : "") + (clip ? nb("paste", "", "Paste", "quiet", 'title="' + esc("Paste " + clip.label + " (from " + clip.from + "), Ctrl+V") + '"') : "");
+      if (b) { h += '<div class="btns">' + b + "</div>"; }
+      if (e) {
+        h += '<details class="adv"><summary>As text</summary><code class="snippet">' + esc(e.ctx + (e.layer ? ", layer " + e.layer : "")) + "\n" +
+          esc(typeof e.binding === "string" ? JSON.stringify(e.binding) : inlineToml(e.binding)) + "</code></details>";
+      }
+      var lname = ledKeyName(key);
+      if (lname) { h += ledSectionHtml(lname); }
+      h += pickerHtml(kind);
+      box.innerHTML = h;
+      if (lname) { bindLedSection(lname); }
+      bindFields();
+      if (S.msg) { fmsg("err", S.msg); S.msg = ""; }
+    }
+    bindPicker();
+    box.scrollTop = top;
+    if (fid && $(fid)) { $(fid).focus(); if (fid === "pq") { $("pq").setSelectionRange(pq.length, pq.length); } }
+  }
+  // "turning changes Dehaze, but pressing resets Blacks"
+  function mismatch() {
+    if (!sel || KNOBS.indexOf(sel.name) < 0) { return null; }
+    var t = effOf("knob." + sel.name), b = effOf("button." + sel.name);
+    var rt = t && refOf(t.binding, "knob"), rb = b && refOf(b.binding, "button");
+    if (!rt || !rb || extOf(t.binding.do) !== extOf(b.binding.do) || rt.id === rb.id) { return null; }
+    var reset = hook(extOf(t.binding.do), "resetOf", rt.id);
+    return reset ? { name: settingName(t.binding, rt.id), press: b.binding, reset: reset } : null;
+  }
+  function mismatchHtml() {
+    var m = mismatch();
+    if (!m) { return ""; }
+    return '<div class="mis">Turning changes ' + esc(m.name) + ", but pressing does “" + esc(describe(m.press, "button")) + "”." + nb("matchpress", "", "Make the press reset " + esc(m.name)) + "</div>";
+  }
+  function one(binding, key) {
+    var p = (key || sel.key).split(".");
+    return { ctx: curCtx, layer: curLayer, kind: p[0], name: p[1], binding: binding };
+  }
+  function sideAct(act, v, e) {
+    var key = sel && sel.key, ef = key && effOf(key), kind = sel && sel.kind, t;
+    if (act === "close") { closeSide(); }
+    else if (act === "lib") { var open = lib && !sel; sel = null; lib = !open; pq = ""; renderPicture(); renderSide(); }
+    else if (act === "sheet") {
+      var on = !(state && state.sheet && state.sheet.open);
+      fetchJson("/api/sheet", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ open: on }) })
+        .then(function (r) { if (!r || !r.ok) { toast((r && r.error) || "The cheat sheet did not open.", "err"); } })
+        .catch(function (er) { toast("Request failed: " + er.message, "err"); });
+    }
+    else if (act === "slot") { selectControl(v); }
+    else if (act === "hl") { hl = hl === v ? "" : v; legCache = ""; renderPicture(); }
+    else if (act === "undo") { undo(); }
+    else if (act === "redo") { redo(); }
+    else if (act === "disarm") { disarm(); }
+    else if (act === "src") { source = v; pq = ""; renderSide(); }
+    else if (act === "pick") { pick(entries[+v], e && e.shiftKey); }
+    else if (act === "editsrc") { t = v.split("|"); goTo(t[0], t[1]); }
+    else if (act === "clear") { doClear(key); }
+    else if (act === "off") { change([one("none")], panelName(key) + ": off in " + placeText()); }
+    else if (act === "up") {
+      t = one(null);
+      var old = bmap[v + "|" + curLayer + "|" + key];
+      change([t, { ctx: v, layer: curLayer, kind: t.kind, name: t.name, binding: ef.binding }], panelName(key) + ": now used in " + (v === "default" ? "all apps" : "all of " + nameOf(v)) + (old !== undefined ? ", replacing " + describe(old, kind) : ""));
+    }
+    else if (act === "matchpress") { t = mismatch(); if (t) { change([one(t.reset, "button." + sel.name)], keyNm(sel.name) + " knob press: resets " + t.name); } }
+    else if (act === "copy") { copyBinding(key, false); }
+    else if (act === "cut") { copyBinding(key, true); }
+    else if (act === "paste") { pasteBinding(key); }
+    else if (act === "speed") { $("f_per_turn").value = v; saveFields(); }
+  }
+
+  /* ---------- lights ---------- */
+  // integrations whose values can drive a light here
+  function lightExts() { var app = rootOf(curCtx); return EXT.filter(function (x) { return app === "default" || !x.app || x.id === app; }); }
+  function lightAsk(v) { var o = null; EXT.forEach(function (x) { (hook(x, "asks") || []).forEach(function (a) { if (a.v === v) { o = a; } }); }); return o; }
+  // the rule's words: [value, label] in groups; the value is the rule itself, or "?…" for one that needs more
+  function ledChoices(name) {
+    var e = effOf("button." + name), b = e && e.binding, g = [];
+    var auto = b && b.do === "layer" ? "While its layer is open" : b && b.do === "sheet" ? "While the cheat sheet is open" : "Never";
+    g.push(["", [["", auto]]]);
+    lightExts().forEach(function (x) { (hook(x, "lights") || []).forEach(function (y) { g.push(y); }); });
+    g.push(["The panel", layerList().map(function (l) { return ["layer." + l, "Layer " + (openers(l).length ? layName(l) : l) + " is open"]; }).concat([["sheet", "The cheat sheet is open"], ["?midi", "A MIDI value is on…"]])]);
+    // "Never" as a rule of its own only says more than no rule when something would light it
+    var lit = auto !== "Never" || stackOf(curCtx).some(function (x) { return lmap[x + "|" + name] !== undefined; });
+    g.push(["", [["true", "Always"]].concat(lit ? [["false", auto === "Never" ? "Never here" : "Never"]] : [], [["?own", "A rule of your own…"]])]);
+    return g;
+  }
+  function normRule(t) { return String(t).trim().replace(/\s+/g, " "); }
+  // which choice a rule is: {v, arg}
+  function ledChoice(name, rule) {
+    if (!rule) { return { v: "" }; }
+    var n = normRule(rule), m;
+    var plain = ledChoices(name).some(function (g) { return g[1].some(function (o) { return o[0] === n; }); });
+    if (plain) { return { v: n }; }
+    var hit = null;
+    EXT.forEach(function (x) { (hook(x, "asks") || []).forEach(function (a) { if (!hit && (m = a.match.exec(n))) { hit = { v: a.v, arg: m[1] }; } }); });
+    if (hit) { return hit; }
+    if ((m = /^midi\.((?:ch\d+\.)?(?:cc|note)\.\d+)$/.exec(n))) { return { v: "?midi", arg: m[1] }; }
+    return { v: "?own", arg: n };
+  }
+  function ledWords(name, rule) {
+    if (!rule) { return ledChoices(name)[0][1][0][1]; }
+    var c = ledChoice(name, rule), w = "";
+    var a = lightAsk(c.v);
+    if (a) { return a.words(c.arg); }
+    if (c.v === "?midi") { return "MIDI " + c.arg.replace(/\./g, " ") + " is on"; }
+    if (c.v === "?own") { return rule; }
+    ledChoices(name).forEach(function (g) { g[1].forEach(function (o) { if (o[0] === c.v) { w = o[2] || o[1]; } }); });
+    return w;
+  }
+  function ledSectionHtml(name) {
+    var l = effLeds[name], own = lmap[curCtx + "|" + name], c = ledChoice(name, l && l.rule), below = null;
+    if (S.ledPick) { c = { v: S.ledPick, arg: "" }; }
+    stackOf(curCtx).slice(1).some(function (x) { if (lmap[x + "|" + name] !== undefined) { below = { ctx: x, rule: lmap[x + "|" + name] }; return true; } return false; });
+    var h = '<div class="ledsec"><h3><span class="ledpip" style="background:' + (ledColor[name] === "red" ? "#ff4d4d" : "#3ddc6a") + '"></span>Light <span class="muted" style="font-weight:400">' + esc(ledColor[name]) +
+      (l && own === undefined ? ", from " + esc(nameOf(l.ctx)) : "") + "</span></h3>";
+    h += '<div class="row"><label for="lSel">Turns on</label><div class="in"><select id="lSel">' + ledChoices(name).map(function (g) {
+      var o = g[1].map(function (x) {
+        // "as usual" can't be chosen over a broader place's light: that needs its own rule
+        if (x[0] === "" && below && own === undefined) { return ""; }
+        return '<option value="' + esc(x[0]) + '"' + (x[0] === c.v ? " selected" : "") + ">" + esc(x[0] === "" && below ? "As in " + nameOf(below.ctx) + ": " + ledWords(name, below.rule) : x[1]) + "</option>";
+      }).join("");
+      return g[0] ? '<optgroup label="' + esc(g[0]) + '">' + o + "</optgroup>" : o;
+    }).join("") + "</select></div></div>";
+    var ask = lightAsk(c.v);
+    if (ask) {
+      var items = ask.items ? ask.items() : [];
+      h += '<div class="row"><label for="lArg">' + esc(ask.label) + '</label><div class="in">' + (items.length ? catSelect("lArg", items, c.arg, c.arg ? "" : "Choose…") : '<input type="text" id="lArg" value="' + esc(c.arg || "") + '" placeholder="' + esc(ask.ph || "") + '" spellcheck="false">') + "</div></div>";
+    } else if (c.v === "?midi") {
+      h += '<div class="row"><label for="lArg">MIDI value</label><div class="in"><input type="text" id="lArg" value="' + esc(c.arg || "") + '" placeholder="cc.20" spellcheck="false" autocomplete="off"></div><div class="help">cc.20, note.60, or ch2.cc.20 for another channel. On = not 0.</div></div>';
+    } else if (c.v === "?own") {
+      h += '<div class="row"><label for="lArg">Rule</label><div class="in"><input type="text" id="lArg" value="' + esc(c.arg || (l ? l.rule : "")) + '" placeholder="' + esc(lightExts().map(function (x) { return x.ruleExample; }).filter(Boolean)[0] || "layer.more or midi.cc.20") + '" spellcheck="false" autocomplete="off"></div>' +
+        '<div class="help">' + esc(lightExts().map(function (x) { return x.operands ? x.operands + ", " : ""; }).join("")) + 'layer.&lt;name&gt;, sheet, midi.cc.20; == != &gt; &gt;= &lt; &lt;=, and, or, not, ( ).</div></div>';
+    }
+    return h + '<div id="lmsg" class="hidden"></div></div>';
+  }
+  function bindLedSection(name) {
+    function save(rule) { S.ledPick = ""; change([{ led: name, ctx: curCtx, binding: rule }], keyNm(name) + " light: " + (rule ? ledWords(name, rule) : "as usual")); }
+    function err(t) { var m = $("lmsg"); m.className = "err"; m.textContent = t; }
+    $("lSel").addEventListener("change", function () {
+      var v = this.value;
+      if (v.charAt(0) === "?") { S.ledPick = v; renderSide(); var a = $("lArg"); if (a) { a.focus(); } return; }
+      save(v || null);
+    });
+    var arg = $("lArg");
+    if (arg) {
+      arg.addEventListener("input", function () { formDirty = true; });
+      arg.addEventListener("change", function () {
+        formDirty = false;
+        var v = this.value.trim(), k = $("lSel").value;
+        if (!v) { err("Fill this in, or choose something else above."); return; }
+        var a = lightAsk(k);
+        if (a) { var t = a.rule(v); if (!t) { err("That is not a " + a.label.toLowerCase() + "."); return; } save(t); }
+        else if (k === "?midi") { if (!/^(ch\d+\.)?(cc|note)\.\d+$/i.test(v)) { err("Write it as cc.20, note.60 or ch2.cc.20."); return; } save("midi." + v.toLowerCase()); }
+        else { save(v); }
+      });
+    }
+  }
+  function optHtml(list, val) {
+    return list.map(function (o) { var p = Array.isArray(o) ? o : [o, o]; return '<option value="' + esc(p[0]) + '"' + (String(val) === String(p[0]) ? " selected" : "") + ">" + esc(p[1]) + "</option>"; }).join("");
+  }
+  function catSelect(id, items, val, none) {
+    var order = [], g = {}, known = items.some(function (p) { return p.id === val; });
+    items.forEach(function (p) { var k = p.group || "Other"; if (!g[k]) { g[k] = []; order.push(k); } g[k].push([p.id, p.label || p.id]); });
+    return '<select id="' + id + '">' + (none ? '<option value="">' + none + "</option>" : "") + (val && !known ? '<option value="' + esc(val) + '" selected>' + esc(val) + "</option>" : "") +
+      order.map(function (k) { return '<optgroup label="' + esc(k) + '">' + optHtml(g[k], val) + "</optgroup>"; }).join("") + "</select>";
+  }
+  function speedBase(b) {
+    return hook(extOf(b.do), "speed", b) || 0;
+  }
+  function unitOf(f, b) {
+    if (f.unit) { return f.unit; }
+    return f.speed ? hook(extOf(b.do), "unit", b) || "" : "";
+  }
+  function fieldRow(f, v, b) {
+    var id = "f_" + f.n, inner = "", val = (v === undefined || v === null) ? (f.def !== undefined && f.t !== "bool" ? f.def : "") : v, pre = "";
+    if (f.t === "keys") {
+      inner = '<input type="text" id="' + id + '" value="' + esc(val) + '" placeholder="ctrl+shift+c" spellcheck="false" autocomplete="off"><button type="button" class="rec" data-rec="' + id + '">Record</button>';
+    } else if (f.t === "num") {
+      inner = '<input type="number" step="any" id="' + id + '" value="' + esc(val) + '"' + (f.ph ? ' placeholder="' + esc(f.ph) + '"' : "") + (f.min !== undefined ? ' min="' + f.min + '"' : "") + (f.max !== undefined ? ' max="' + f.max + '"' : "") + ">" +
+        (unitOf(f, b) ? '<span class="u">' + esc(unitOf(f, b)) + "</span>" : "");
+      var base = f.speed ? speedBase(b) : 0;
+      if (base) {
+        var cur = val === "" ? base : Number(val), sg = cur < 0 ? -1 : 1;
+        pre = '<div class="row"><label>Speed</label><div class="in"><span class="seg">' + [["Fine", 0.2], ["Normal", 1], ["Fast", 2]].map(function (x) {
+          var t = Math.round(base * x[1] * sg * 1e6) / 1e6;
+          return nb("speed", t, x[0], Math.abs(cur - t) < 1e-9 ? "on" : "");
+        }).join("") + "</span></div></div>";
+      }
+    } else if (f.t === "bool") {
+      inner = '<input type="checkbox" id="' + id + '"' + (v ? " checked" : "") + ">";
+    } else if (f.t === "sel") {
+      inner = '<select id="' + id + '">' + optHtml(f.opts, val) + "</select>";
+    } else if (f.t === "pick" && f.items.length) {
+      inner = catSelect(id, f.items, val, f.req ? "" : "Nothing");
+    } else {
+      var list = f.list;
+      inner = '<input type="text" id="' + id + '" value="' + esc(val) + '"' + (list ? ' list="' + list + '"' : "") + (f.ph ? ' placeholder="' + esc(f.ph) + '"' : "") + ' spellcheck="false" autocomplete="off">';
+    }
+    return pre + '<div class="row"><label for="' + id + '">' + esc(f.l) + '</label><div class="in">' + inner + "</div>" + (f.help ? '<div class="help">' + esc(f.help) + "</div>" : "") + "</div>";
+  }
+  function fieldsHtml(b, kind) {
+    var specs = fieldSpecs(b.do, kind), adv = ADV[b.do] || [], main = "", more = "";
+    // a command on a key, or a plain reset, has nothing to set
+    specs.forEach(function (f) {
+      var hide = f.adv || adv.indexOf(f.n) >= 0;
+      var row = fieldRow(f, b[f.n], b);
+      if (hide) { more += row; } else { main += row; }
+    });
+    main += '<div class="row"><label for="f_label">Name</label><div class="in"><input type="text" id="f_label" maxlength="60" value="' + esc(ownName(b)) + '" placeholder="' + esc(describeAuto(b, kind)) + '" spellcheck="false" autocomplete="off"></div></div>';
+    return '<div class="fields" id="fields">' + main + (more ? '<details class="adv" id="advDet"' + (advOpen ? " open" : "") + "><summary>More settings</summary><div class=\"fields\" style=\"margin-top:0.571rem\">" + more + "</div></details>" : "") + "</div>";
+  }
+  function bindFields() {
+    var box = $("fields");
+    if (!box) { return; }
+    S.act = effOf(sel.key).binding.do;
+    if ($("advDet")) { $("advDet").addEventListener("toggle", function () { advOpen = this.open; }); }
+    box.addEventListener("input", function () { formDirty = true; });
+    box.addEventListener("change", function (e) {
+      if (e.target.id === "f_value" && e.target.value.trim() !== "" && $("f_reset")) { $("f_reset").checked = false; }
+      saveFields();
+    });
+    box.addEventListener("click", function (e) {
+      var t = e.target.getAttribute && e.target.getAttribute("data-rec");
+      if (t) { toggleRecord($(t), e.target); }
+    });
+  }
+  function saveFields() {
+    if (!sel || !$("fields")) { return; }
+    formDirty = false;
+    var c = collect();
+    if (c.error) { fmsg("err", c.error); return; }
+    fmsg("hidden", "");
+    var b = c.binding;
+    change([one(b)], panelName(sel.key) + ": " + describe(b, sel.kind), "fields");
+  }
+
+  /* ---------- key recording ---------- */
+  var rec = null;
+  var CODE_NAMES = {
+    Space: "space", Enter: "enter", NumpadEnter: "enter", Tab: "tab", Escape: "esc", Backspace: "backspace", Delete: "delete",
+    Insert: "insert", Home: "home", End: "end", PageUp: "pageup", PageDown: "pagedown",
+    ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down",
+    Comma: "comma", Period: "period", Minus: "minus", Equal: "plus", NumpadAdd: "plus", NumpadSubtract: "minus",
+    Slash: "slash", Backslash: "backslash", Semicolon: "semicolon", Quote: "quote",
+    BracketLeft: "bracketleft", BracketRight: "bracketright", Backquote: "backquote"
+  };
+  function codeName(e) {
+    var c = e.code || "", m;
+    if ((m = /^Key([A-Z])$/.exec(c))) { return m[1].toLowerCase(); }
+    if ((m = /^Digit([0-9])$/.exec(c)) || (m = /^Numpad([0-9])$/.exec(c))) { return m[1]; }
+    if ((m = /^F([0-9]{1,2})$/.exec(c)) && +m[1] >= 1 && +m[1] <= 24) { return "f" + m[1]; }
+    if (CODE_NAMES[c]) { return CODE_NAMES[c]; }
+    var k = e.key || "";
+    if (/^[a-zA-Z0-9]$/.test(k)) { return k.toLowerCase(); }
+    if (k === "+") { return "plus"; }
+    return "";
+  }
+  // The helper records the key system-wide (a page never sees Ctrl+W, Alt, Win...). The page's own
+  // key listener below stays as a fallback when the helper can't.
+  function helperRec(token) {
+    fetch("/api/keyrec", { method: "PUT" }).then(function () {
+      var t0 = Date.now();
+      (function poll() {
+        if (rec !== token) { return; }
+        fetch("/api/keyrec").then(function (r) { return r.json(); }).then(function (s) {
+          if (rec !== token) { return; }
+          if (s.state === "done") { recordDone(s.combo); return; }
+          if (s.state === "error") { if (rec.btn) { rec.btn.textContent = s.error + ", try again"; } fetch("/api/keyrec", { method: "PUT" }); setTimeout(poll, 100); return; }
+          if (s.state === "timeout" || Date.now() - t0 > 16000) { stopRec("Timed out, click to retry"); return; }
+          setTimeout(poll, 100);
+        }).catch(function () { setTimeout(poll, 300); });
+      })();
+    }).catch(function () { /* helper unreachable: the page listener still works for ordinary keys */ });
+  }
+  function stopRec(msg) {
+    if (!rec) { return; }
+    fetch("/api/keyrec", { method: "DELETE" }).catch(function () {});
+    if (rec.cb) { recKey = ""; renderArmed(); }
+    if (rec.btn) {
+      rec.btn.textContent = msg || "Record";
+      rec.btn.classList.remove("on");
+    }
+    rec = null;
+  }
+  function toggleRecord(inp, btn) {
+    if (rec && rec.btn === btn) { stopRec(); return; }
+    stopRec();
+    rec = { inp: inp, btn: btn };
+    btn.textContent = "Press keys… (click to cancel)";
+    btn.classList.add("on");
+    helperRec(rec);
+  }
+  var MOD_NAME = { Control: "ctrl", Shift: "shift", Alt: "alt", Meta: "win", OS: "win" };
+  function modsOf(e) {
+    var p = [];
+    if (e.ctrlKey) { p.push("ctrl"); }
+    if (e.shiftKey) { p.push("shift"); }
+    if (e.altKey) { p.push("alt"); }
+    if (e.metaKey) { p.push("win"); }
+    return p;
+  }
+  function recordDone(combo) {
+    if (rec.cb) { var cb = rec.cb; rec = null; recKey = ""; renderArmed(); cb(combo); return; }
+    rec.inp.value = combo;
+    stopRec();
+    saveFields();
+  }
+  // Modifiers alone ("alt", "ctrl+shift") record on release if no other key came in between.
+  // Swallowing the release also stops the browser opening its menu bar on Alt.
+  window.addEventListener("keyup", function (e) {
+    if (!rec) { return; }
+    e.preventDefault(); e.stopPropagation();
+    var m = MOD_NAME[e.key];
+    if (m && rec.mods && rec.mods.length) {
+      var combo = rec.mods.join("+");
+      rec.mods = null;
+      recordDone(combo);
+    }
+  }, true);
+  window.addEventListener("keydown", function (e) {
+    if (!rec) { return; }
+    e.preventDefault(); e.stopPropagation();
+    if (MOD_NAME[e.key]) {
+      var held = modsOf(e), mine = MOD_NAME[e.key];
+      if (held.indexOf(mine) < 0) { held.push(mine); }
+      rec.mods = held;
+      if (rec.btn) { rec.btn.textContent = held.join("+") + "… (release, or add a key)"; }
+      return;
+    }
+    rec.mods = null;
+    if (rec.cb && e.key === "Escape") { disarm(); return; }
+    var n = codeName(e);
+    if (!n) { if (rec.btn) { rec.btn.textContent = "Unsupported key, try again"; } return; }
+    var parts = modsOf(e);
+    parts.push(n);
+    recordDone(parts.join("+"));
+  }, true);
+
+  /* ---------- apply ---------- */
+  function fmsg(kind, text) {
+    var m = $("fmsg");
+    if (!m) { return; }
+    m.className = kind; m.textContent = text;
+  }
+  function collect() {
+    var specs = fieldSpecs(S.act, sel.kind), b = { do: S.act };
+    for (var i = 0; i < specs.length; i++) {
+      var f = specs[i], el = $("f_" + f.n);
+      if (!el) { continue; }
+      var v;
+      if (f.t === "bool") {
+        if (el.checked) { b[f.n] = true; }
+        continue;
+      }
+      v = el.value.trim();
+      if (v === "") {
+        if (f.req) { return { error: "“" + f.l + "” is required." }; }
+        continue;
+      }
+      if (f.t === "num") {
+        var x = Number(v);
+        if (!isFinite(x)) { return { error: "“" + f.l + "” must be a number." }; }
+        if (f.min !== undefined && x < f.min) { return { error: "“" + f.l + "” must be at least " + f.min + "." }; }
+        if (f.max !== undefined && x > f.max) { return { error: "“" + f.l + "” must be at most " + f.max + "." }; }
+        b[f.n] = x;
+      } else if (f.n === "axis" && v === "both") {
+        continue;     // the default for a ball
+      } else {
+        b[f.n] = v;
+      }
+    }
+    var bad = hook(extOf(S.act), "check", b, sel.kind);
+    if (bad) { return { error: bad }; }
+    if (S.act === "key" && (sel.kind === "knob" || sel.kind === "ring") && !b.cw && !b.ccw) {
+      return { error: "Give at least one of Clockwise and Anticlockwise." };
+    }
+    var nm = $("f_label") ? $("f_label").value.trim() : "";
+    if (nm) { b.label = nm; }
+    return { binding: b };
+  }
+  document.addEventListener("keydown", function (e) {
+    if (tab !== "map" || rec) { return; }
+    if (dlgKind) {
+      if (e.key === "Escape") { closeDlg(); }
+      else if (e.key === "Enter" && e.target.tagName !== "BUTTON") {
+        if (dlgKind === "layer") { saveLayer(); } else { var pb = $("dlg").querySelector("button.primary"); if (pb) { pb.click(); } }
+      }
+      return;
+    }
+    if (e.key === "Escape") {
+      if (openMenu) { openMenu = ""; renderPickers(); } else if (armed) { disarm(); } else if (sel || lib) { closeSide(); }
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k") { e.preventDefault(); $("find").focus(); $("find").select(); return; }
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || "")) { return; }
+    if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+      var k = e.key.toLowerCase();
+      if (k === "z" && !e.shiftKey) { e.preventDefault(); undo(); }
+      else if (k === "y" || (k === "z" && e.shiftKey)) { e.preventDefault(); redo(); }
+      else if (sel && k === "c") { e.preventDefault(); copyBinding(sel.key, false); }
+      else if (sel && k === "x") { e.preventDefault(); copyBinding(sel.key, true); }
+      else if (sel && k === "v") { e.preventDefault(); pasteBinding(sel.key); }
+    }
+    else if (e.key === "Delete" && sel && ownBinding(sel.key) !== null) { doClear(sel.key); }
+  });
+
+  /* ---------- saving: every change goes through here and can be undone ---------- */
+  var hist = [], fut = [], queue = Promise.resolve();
+  function canon(v) {
+    if (v === undefined || v === null) { return "null"; }
+    if (typeof v !== "object") { return JSON.stringify(v); }
+    return JSON.stringify(Object.keys(v).sort().map(function (k) { return [k, v[k]]; }));
+  }
+  function ownAt(x) {
+    var v = x.led ? lmap[x.ctx + "|" + x.led] : bmap[x.ctx + "|" + x.layer + "|" + x.kind + "." + x.name];
+    return v === undefined ? null : v;
+  }
+  // One request, all or nothing. Resolves to the step's id.
+  function putAll(list, field) {
+    var items = list.map(function (x) { return x.led ? { ctx: x.ctx, led: x.led, rule: x[field] } : { ctx: x.ctx, layer: x.layer, kind: x.kind, name: x.name, binding: x[field] }; });
+    return fetchJson("/api/edit", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: items }) }).then(function (r) {
+      if (!r || !r.ok) { throw new Error((r && r.error) || "not saved"); }
+      return r.id;
+    });
+  }
+  function updateUndo() {
+    $("bUndo").disabled = !hist.length; $("bRedo").disabled = !fut.length;
+    $("bUndo").title = hist.length ? hist[hist.length - 1].label : ""; $("bRedo").title = fut.length ? fut[fut.length - 1].label : "";
+  }
+  // list: [{ctx, layer, kind, name, binding (null = clear)}]. Resolves to true when saved.
+  function change(list, label, merge) {
+    var job = queue.then(function () {
+      var items = list.map(function (x) { return { ctx: x.ctx, layer: x.layer, kind: x.kind, name: x.name, led: x.led, before: ownAt(x), after: x.binding }; })
+        .filter(function (x) { return canon(x.before) !== canon(x.after); });
+      if (!items.length) { return false; }
+      return putAll(items, "after").then(function (id) {
+        var top = hist[hist.length - 1], x = items[0];
+        var mk = merge ? merge + "|" + x.ctx + "|" + x.layer + "|" + x.kind + "." + x.name : "";
+        // one step for a run of changes to the same control's settings
+        if (mk && top && top.items && top.merge === mk && Date.now() - top.t < 3000) { top.items[0].after = x.after; top.ids.push(id); top.t = Date.now(); top.label = label; }
+        else { hist.push({ label: label, items: items, ids: [id], merge: mk, t: Date.now() }); if (hist.length > 200) { hist.shift(); } }
+        fut = [];
+        return afterChange();
+      }).then(function () { updateUndo(); toast(label + ".", "ok", true); return true; });
+    }).catch(function (er) {
+      var why = er.message.replace(/^[a-z0-9_.-]+\.(button|knob|ring|ball)\.[A-Z_]+: (`\w+`: )?|^[a-z0-9_\/-]+ LED [A-Z_]+: /, "");   // the path is already in view
+      S.msg = "Not saved: " + why;
+      toast("Not saved: " + why, "err");
+      return refreshAll().then(function () { return false; });
+    });
+    queue = job.then(function () {}, function () {});
+    return job;
+  }
+  function travel(from, to, want, put) {
+    queue = queue.then(function () {
+      var rec0 = from[from.length - 1];
+      if (!rec0) { return; }
+      if (rec0.preset) {
+        var back = put === "before", x = rec0.preset;
+        return putPreset({ op: "restore", picks: back ? x.before : x.after, global: back ? x.before_global : x.after_global }).then(function (r) {
+          from.pop();
+          // leaving a changed built-in preset gave it a name: go back to that one next time
+          if (back) { x.after = r.before; } else { x.before = r.before; }
+          to.push(rec0);
+          return afterSwitch("");
+        }).then(function () { updateUndo(); toast((back ? "Undone: " : "Redone: ") + rec0.label + ".", "ok"); });
+      }
+      var said = function () { toast((put === "before" ? "Undone: " : "Redone: ") + rec0.label + ".", "ok"); };
+      // first choice: put back the very text of the file, comments and all
+      return fetchJson("/api/edit_undo", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids: rec0.ids, dir: put === "before" ? "undo" : "redo" }) }).then(function (r) {
+        if (r && r.ok) { from.pop(); to.push(rec0); rec0.merge = ""; return afterChange().then(said); }
+        return undoValues();
+      }).then(updateUndo);
+      // otherwise (the file was edited in between) the assignments alone, if they are still as this step left them
+      function undoValues() { return refreshModel().then(function () {
+        var same = rec0.items.every(function (x) { return canon(ownAt(x)) === canon(x[want]); });
+        from.pop();
+        if (!same) { toast("“" + rec0.label + "” was changed elsewhere since, so it can’t be " + (put === "before" ? "undone." : "redone."), "err"); return; }
+        return putAll(rec0.items.slice().reverse(), put).then(function () {
+          to.push(rec0); rec0.merge = "";
+          return afterChange();
+        }).then(said);
+      }); }
+    }).catch(function (er) { toast("Not saved: " + er.message, "err"); return refreshAll(); });
+  }
+  function undo() { travel(hist, fut, "after", "before"); }
+  function redo() { travel(fut, hist, "before", "after"); }
+
+  /* =====================================================================
+     Commands list, armed command, assign, unbind
+     ===================================================================== */
+  function afterChange() { mapChanged = true; return refreshModel().then(refreshEffective); }
+
+  var toastTimer = null;
+  function toast(text, kind, canUndo) {
+    var t = $("toastbar");
+    t.className = "toastbar" + (kind === "err" ? " err" : "");
+    t.innerHTML = "<span>" + esc(text) + "</span>" + (canUndo ? nb("undo", "", "Undo") : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.add("hidden"); }, kind === "err" ? 9000 : 6000);
+  }
+
+  /* ---------- copy / cut / paste of bindings ---------- */
+  var clip = null;   // {binding, kind, label, from}
+  function copyBinding(key, cut) {
+    var e = effOf(key), kind = key.split(".")[0];
+    if (!e || e.binding === undefined || e.binding === null) { toast(panelName(key) + " has nothing to copy.", "err"); return; }
+    if (cut && !e.here) { toast(panelName(key) + " is not set here, so there is nothing to cut. Use Copy.", "err"); return; }
+    clip = { binding: JSON.parse(JSON.stringify(e.binding)), kind: kind, label: describe(e.binding, kind), from: panelName(key) + ", " + placeText() };
+    if (cut) { change([one(null, key)], "Cut " + clip.label); return; }
+    renderSide();
+    toast("Copied " + clip.label + ". Pick a control in any app, place or layer and paste (Ctrl+V).", "ok");
+  }
+  function pasteBinding(key) {
+    if (!clip) { toast("Nothing copied yet.", "err"); return; }
+    var kind = key.split(".")[0], b = clip.binding;
+    // knob <-> ring share their actions; anything else must match the control type
+    var same = clip.kind === kind || (KR.indexOf(clip.kind) >= 0 && KR.indexOf(kind) >= 0) || b === "none";
+    if (!same) { toast("Can't paste a " + KIND_TXT[clip.kind] + " action onto a " + KIND_TXT[kind] + ".", "err"); return; }
+    change([one(b, key)], panelName(key) + ": " + clip.label);
+  }
+  function doClear(key) {
+    var kind = key.split(".")[0], b = lookAt(curCtx, curLayer, key, true);
+    change([one(null, key)], panelName(key) + ": " + (b ? describe(b.binding, kind) + ", from " + tagOf(b) : "cleared"));
+  }
+
+  function perStep(kind) { return kind === "knob" ? 256 : 25; }
+  var KIND_TXT = { knob: "knob", ring: "ring", ball: "ball", button: "key", led: "LED" };
+  var ALL4 = ["knob", "ring", "ball", "button"], KR = ["knob", "ring"];
+
+  var entries = [], armed = null, lastAssigned = { key: "", t: 0 }, assigning = false, source = "", pq = "", openG = {}, recKey = "";
+  var SRC = { input: "Keyboard & mouse", midi: "MIDI", panel: "Panel" };
+  EXT.forEach(function (x) { SRC[x.id] = x.name || x.id; });
+  function buildEntries() {
+    entries = [];
+    var B = ["button"], BA = ["ball"];
+    function add(app, g, label, fits, make, match, more) {
+      var e = { app: app, g: g, label: label, fits: fits, make: make, match: match, i: entries.length };
+      if (more) { Object.keys(more).forEach(function (k) { e[k] = more[k]; }); }
+      entries.push(e);
+    }
+    function fix(b) { return function () { return JSON.parse(JSON.stringify(b)); }; }
+    // MIDI: each assignment takes the next free number, so an armed entry gives every control its own CC / note.
+    function nextFree(what) {
+      var u = {};
+      ((model && model.bindings) || []).forEach(function (x) {
+        var b = x.binding;
+        if (!b || typeof b !== "object") { return; }
+        if (what === "cc" && b.do === "midi.cc") { u[(b.channel || 1) + "." + b.cc] = 1; }
+        if (what === "cc" && b.do === "midi.xy") { [b.x, b.y].forEach(function (v) { if (v !== undefined) { u[(b.channel || 1) + "." + v] = 1; } }); }
+        if (what === "note" && b.do === "midi.note") { u[(b.channel || 1) + "." + b.note] = 1; }
+      });
+      var start = what === "cc" ? 20 : 36;
+      for (var n = start; n < 128; n++) {
+        if (what === "cc" && n >= 64 && n <= 69) { continue; }  // pedals and the like
+        if (!u["1." + n]) { return n; }
+      }
+      return start;
+    }
+    EXT.forEach(function (x) { hook(x, "entries", function (g, label, fits, make, match, more) { add(x.id, g, label, fits, make, match, more); }); });
+    add("input", "Mouse", "Move pointer", BA, fix({ do: "mouse.move", speed: 0.75, accel: 2 }), function (b) { return b.do === "mouse.move"; });
+    add("input", "Mouse", "Scroll both ways", BA, fix({ do: "mouse.scroll" }), function (b) { return b.do === "mouse.scroll" && (!b.axis || b.axis === "both"); });
+    add("input", "Mouse", "Scroll up / down", ["ring", "knob", "ball"], fix({ do: "mouse.scroll", axis: "v" }), function (b, kind) { return b.do === "mouse.scroll" && (b.axis === "v" || (!b.axis && kind !== "ball")); });
+    add("input", "Mouse", "Scroll sideways", ["ring", "knob", "ball"], fix({ do: "mouse.scroll", axis: "h" }), function (b) { return b.do === "mouse.scroll" && b.axis === "h"; });
+    ["left", "right", "middle"].forEach(function (x) { add("input", "Mouse", cap(x) + " click", B, fix({ do: "mouse.button", button: x }), function (b) { return b.do === "mouse.button" && !b.keys && (b.button || "left") === x; }); });
+    add("input", "Mouse", "Pan (space + left button)", B, fix({ do: "mouse.button", button: "left", keys: "space" }), function (b) { return b.do === "mouse.button" && !!b.keys; });
+    add("input", "Keyboard", "Keyboard shortcut…", ["button", "knob", "ring"], null, function (b) { return b.do === "key" && !b.hold; }, { rec: true });
+    [["Undo", "ctrl+z"], ["Redo", "ctrl+y"], ["Escape", "esc"], ["Enter", "enter"], ["Space", "space"]].forEach(function (x) {
+      add("input", "Keyboard", x[0], B, fix({ do: "key", keys: x[1] }), function (b) { return b.do === "key" && !b.hold && b.keys === x[1]; });
+    });
+    ["alt", "ctrl", "shift", "space"].forEach(function (x) { add("input", "Keyboard", "Hold " + cap(x), B, fix({ do: "key", keys: x, hold: true }), function (b) { return b.do === "key" && b.hold && b.keys === x; }); });
+    add("midi", "MIDI learn", "Control change, endless", KR, function () { return { do: "midi.cc", cc: nextFree("cc") }; }, function (b) { return b.do === "midi.cc" && b.mode !== "absolute"; });
+    add("midi", "MIDI learn", "Control change, 0 to 127", KR, function () { return { do: "midi.cc", cc: nextFree("cc"), mode: "absolute" }; }, function (b) { return b.do === "midi.cc" && b.mode === "absolute"; });
+    add("midi", "MIDI learn", "Control change, on while held", B, function () { return { do: "midi.cc", cc: nextFree("cc") }; }, function (b) { return b.do === "midi.cc" && !b.toggle; });
+    add("midi", "MIDI learn", "Control change, on / off", B, function () { return { do: "midi.cc", cc: nextFree("cc"), toggle: true }; }, function (b) { return b.do === "midi.cc" && b.toggle; });
+    add("midi", "MIDI learn", "Note", B, function () { return { do: "midi.note", note: nextFree("note") }; }, function (b) { return b.do === "midi.note"; });
+    add("midi", "MIDI learn", "Two control changes", BA, function () { var x = nextFree("cc"); return { do: "midi.xy", x: x, y: x + 1 }; }, function (b) { return b.do === "midi.xy"; });
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach(function (n) { add("midi", "Mackie Control", "Fader " + n, KR, fix({ do: "mcu.fader", strip: n }), function (b) { return b.do === "mcu.fader" && (b.strip || 1) === n; }); });
+    add("midi", "Mackie Control", "Jog wheel", KR, fix({ do: "mcu.jog" }), function (b) { return b.do === "mcu.jog"; });
+    ["play", "stop", "record", "bank_left", "bank_right", "channel_left", "channel_right", "touch", "latch", "write", "read"].forEach(function (n) { add("midi", "Mackie Control", cap(n.replace(/_/g, " ")), B, fix({ do: "mcu.button", button: n }), function (b) { return b.do === "mcu.button" && b.button === n; }); });
+    add("panel", "Presets", "Next preset of the app in front", B, fix({ do: "preset" }), function (b) { return b.do === "preset" && b.scope !== "global"; });
+    add("panel", "Presets", "Next global preset", B, fix({ do: "preset", scope: "global" }), function (b) { return b.do === "preset" && b.scope === "global"; });
+    add("panel", "Cheat sheet", "Show or hide the cheat sheet", B, fix({ do: "sheet" }), function (b) { return b.do === "sheet" && b.mode !== "hold"; });
+    add("panel", "Cheat sheet", "Cheat sheet while held", B, fix({ do: "sheet", mode: "hold" }), function (b) { return b.do === "sheet" && b.mode === "hold"; });
+    add("panel", "Layers", "Open a layer…", B, null, function (b) { return b.do === "layer"; }, { layer: true });
+    entries.forEach(function (e) { e.hay = (e.label + " " + e.g + " " + SRC[e.app] + (e.sid ? (e.resets ? " reset " : " ") + e.sid : "")).toLowerCase(); });
+  }
+  function entryLabel(e, kind) { return e.resets && kind === "button" ? "Reset " + e.label.replace(/^[A-Z](?=[a-z])/, function (c) { return c.toLowerCase(); }) : e.label; }
+  function sources() {
+    var a = rootOf(curCtx), kind = sel && sel.kind;
+    var ids = function (app) { return EXT.filter(function (x) { return !!x.app === app; }).map(function (x) { return x.id; }); };
+    var base = ["input", "midi"].concat(ids(false), ["panel"]), mine = ids(true);
+    var l = a === "default" ? base.concat(mine) : (mine.indexOf(a) >= 0 ? [a] : []).concat(base);
+    return l.filter(function (x) { return (!kind && extById(x)) || entries.some(function (e) { return e.app === x && (!kind || e.fits.indexOf(kind) >= 0); }); });
+  }
+  function curSource() { var l = sources(); return l.indexOf(source) >= 0 ? source : l[0]; }
+  // where it is already used, in the places that apply here
+  function usesOf(e) {
+    var o = [], st = stackOf(curCtx);
+    ((model && model.bindings) || []).forEach(function (x) {
+      var b = x.binding, key = x.kind + "." + x.name;
+      if (b && typeof b === "object" && st.indexOf(x.ctx) >= 0 && e.fits.indexOf(x.kind) >= 0 && e.match(b, x.kind) && !(sel && key === sel.key)) { if (o.indexOf(key) < 0) { o.push(key); } }
+    });
+    return o;
+  }
+  function placeGroup() { return (hook(extById(rootOf(curCtx)), "placeGroups") || {})[curCtx.split("/").pop()]; }
+  // a group that is only about its own place (a tool's settings) isn't suggested anywhere else
+  function elsewhere(e, pg) { return e.g !== pg && (hook(extById(e.app), "ownPlaceGroups") || []).indexOf(e.g) >= 0; }
+  function suggest(kind) {
+    var n = keyNm(sel.name).toLowerCase(), src = sources()[0], o = [], pg = placeGroup();
+    if (kind === "button" && KNOBS.indexOf(sel.name) >= 0) {
+      var t = effOf("knob." + sel.name);
+      var rt = t && refOf(t.binding, "knob");
+      if (rt) { o = entries.filter(function (e) { return e.sid === rt.id && e.app === extOf(t.binding.do).id; }); }
+    }
+    if (!o.length) {
+      o = entries.filter(function (e) { return e.app === src && e.fits.indexOf(kind) >= 0 && !(e.resets && kind === "button") && e.label.toLowerCase() === n && !elsewhere(e, pg); });
+      if (pg && o.some(function (e) { return e.g === pg; })) { o = o.filter(function (e) { return e.g === pg; }); }
+    }
+    return o.slice(0, 2);
+  }
+  function itemHtml(e, kind, cur) {
+    var u = cur ? [] : usesOf(e);
+    return '<button type="button" class="cmd' + (cur ? " cur" : "") + (armed === e ? " armed" : "") + '" data-nav="pick" data-v="' + e.i + '" data-i="' + e.i + '" draggable="' + (e.rec || e.layer ? "false" : "true") + '"><span class="cl">' + esc(entryLabel(e, kind)) +
+      '</span><span class="us">' + (cur ? "current" : u.length ? "on " + esc(panelName(u[0]).replace(/ (key|knob press)$/, "").toLowerCase()) + (u.length > 1 ? " +" + (u.length - 1) : "") : "") + "</span></button>";
+  }
+  function listHtml(kind) {
+    var src = curSource(), srcs = sources(), toks = pq.toLowerCase().split(/\s+/).filter(Boolean), ef = sel && effOf(sel.key), cur = ef && typeof ef.binding === "object" ? ef.binding : null, pg = placeGroup();
+    function isCur(e) { return !!cur && e.match(cur, kind); }
+    var list = entries.filter(function (e) {
+      if (kind && e.fits.indexOf(kind) < 0) { return false; }
+      return toks.length ? srcs.indexOf(e.app) >= 0 && toks.every(function (t) { return e.hay.indexOf(t) >= 0; }) : e.app === src;
+    });
+    var gs = {}, ord = [];
+    list.forEach(function (e) { var n = (toks.length && e.app !== src ? SRC[e.app] + ": " : "") + e.g; if (!gs[n]) { gs[n] = []; ord.push(n); } gs[n].push(e); });
+    var sx = extById(src), go = hook(sx, "groups");
+    function rank(n) { return n === pg ? -1 : (go.indexOf(n) + 1 || 99); }
+    if (go) { ord.sort(function (a, b) { return rank(a) - rank(b); }); }
+    var h = "", sg = kind && !toks.length ? suggest(kind).filter(function (e) { return !isCur(e); }) : [];
+    if (sg.length) { h += '<div class="sug">Suggested for this control</div>' + sg.map(function (e) { return itemHtml(e, kind, false); }).join(""); }
+    h += ord.map(function (n) {
+      var k = src + "/" + n, has = gs[n].some(isCur), op = toks.length || (openG[k] !== undefined ? openG[k] : (ord.length < 4 || has || n === pg));
+      return '<details class="grp" data-g="' + esc(k) + '"' + (op ? " open" : "") + "><summary>" + esc(n) + '<span class="cnt">' + gs[n].length + "</span></summary>" + gs[n].map(function (e) { return itemHtml(e, kind, isCur(e)); }).join("") + "</details>";
+    }).join("");
+    if (!ord.length) { h += '<div class="note">' + (toks.length ? "Nothing matches “" + esc(pq) + "”" + (kind ? " for a " + KIND_TXT[kind] : "") + "." : "Nothing here" + (kind ? " for a " + KIND_TXT[kind] : "") + ".") + "</div>"; }
+    var nt = hook(sx, "note");
+    if (nt) { h += '<div class="note warn">' + esc(nt) + "</div>"; }
+    return h;
+  }
+  function pickerHtml(kind) {
+    var toks = pq.trim(), src = curSource(), ef = sel && effOf(sel.key);
+    return '<div class="pk">' + (kind ? "<h3>" + (ef ? "Change to" : "Choose what it does") + "</h3>" : "") + '<input type="search" id="pq" placeholder="Search" value="' + esc(pq) + '" autocomplete="off" aria-label="Search actions">' +
+      '<div class="chipsrow">' + sources().map(function (x) { return nb("src", x, esc(SRC[x]), x === src && !toks ? "on" : ""); }).join("") + '</div><div id="plist">' + listHtml(kind) + "</div></div>";
+  }
+  function bindPicker() {
+    $("pq").addEventListener("input", function () { pq = this.value; $("plist").innerHTML = listHtml(sel ? sel.kind : ""); });
+    $("plist").addEventListener("click", function (e) {
+      var t = e.target;
+      while (t && t !== this && t.tagName !== "SUMMARY") { t = t.parentNode; }
+      if (t && t !== this && !pq.trim()) { openG[t.parentNode.getAttribute("data-g")] = !t.parentNode.open; }
+    });
+    $("plist").addEventListener("dragstart", function (e) {
+      var i = closestAttr(e.target, "data-i", this);
+      if (i === null) { return; }
+      var en = entries[+i];
+      try { e.dataTransfer.setData("text/plain", en.label); e.dataTransfer.effectAllowed = "copy"; } catch (er) { /* drag still works through `armed` */ }
+      setTimeout(function () { arm(en, false); }, 0);
+    });
+  }
+  function renderCmds() { if (sel || lib) { renderSide(); } }
+  document.addEventListener("dragend", function () { if (armed) { disarm(); } });
+
+  function pick(en, sticky) {
+    if (!en) { return; }
+    if (sel) { place(sel.key, en); return; }
+    if (en.layer) { dlgLayer(""); return; }
+    if (armed === en) { disarm(); return; }
+    arm(en, sticky);
+  }
+  // put an action on a control
+  function place(key, en) {
+    var p = key.split("."), kind = p[0], name = p[1];
+    if (en.fits.indexOf(kind) < 0) { toast(en.label + " does not fit a " + KIND_TXT[kind] + ".", "err"); return Promise.resolve(false); }
+    if (en.layer) { dlgLayer("", name); return Promise.resolve(false); }
+    if (en.rec) {
+      stopRec();
+      var c = curCtx, l = curLayer;
+      recKey = key;
+      rec = { cb: function (combo) {
+        var b = kind === "button" ? { do: "key", keys: combo } : { do: "key", cw: combo, per: perStep(kind) };
+        change([{ ctx: c, layer: l, kind: kind, name: name, binding: b }], panelName(key) + ": " + describe(b, kind));
+      } };
+      renderArmed();
+      helperRec(rec);
+      return Promise.resolve(false);
+    }
+    var b = en.make(kind, name);
+    return change([one(b, key)], panelName(key) + ": " + describe(b, kind));
+  }
+  var sticky = false;
+  function arm(en, keep) { stopRec(); armed = en; sticky = !!keep; renderArmed(); renderPicture(); markArmed(); }
+  function disarm() { armed = null; sticky = false; stopRec(); renderArmed(); renderPicture(); markArmed(); }
+  function markArmed() {
+    var l = document.querySelectorAll("#plist .cmd");
+    for (var i = 0; i < l.length; i++) { l[i].classList.toggle("armed", !!armed && entries[+l[i].getAttribute("data-i")] === armed); }
+  }
+  function renderArmed() {
+    var b = $("armbar");
+    b.classList.toggle("hidden", !armed && !recKey);
+    if (recKey) { b.innerHTML = "<span>Press the keys for " + esc(panelName(recKey)) + " now…" + (recKey.indexOf("button") === 0 ? "" : " (clockwise; set the other direction afterwards)") + "</span>" + nb("disarm", "", "Cancel"); }
+    else if (armed) { b.innerHTML = "<span>Click or touch a highlighted control for <b>" + esc(armed.label) + "</b>" + (sticky ? " (stays until Esc)" : "") + "</span>" + nb("disarm", "", "Cancel"); }
+  }
+  function assignTo(key) {
+    if (!armed || assigning) { return; }
+    if (!compatible(key)) { toast(armed.label + " does not fit a " + KIND_TXT[key.split(".")[0]] + ".", "err"); return; }
+    if (lastAssigned.key === key && Date.now() - lastAssigned.t < 2000) { return; }   // a turning knob sends many events
+    var en = armed;
+    lastAssigned = { key: key, t: Date.now() };
+    assigning = true;
+    if (!sticky) { armed = null; renderArmed(); }
+    place(key, en).then(function (ok) {
+      assigning = false;
+      if (ok && !sticky) { selectControl(key); } else { renderPicture(); markArmed(); }
+    });
+  }
+
+  /* =====================================================================
+     State poll and start
+     ===================================================================== */
+  function pollState() {
+    fetchJson("/api/state").then(function (s) {
+      if (build === null) { build = s.build; }
+      // the helper was updated while this page was open; every edit is saved already, text in the TOML tab isn't
+      else if (s.build !== build && !isDirty() && $("dlg").classList.contains("hidden")) { location.reload(); return; }
+      state = s;
+      stateFails = 0;
+      setOffline(false);
+      renderChips();
+      renderLearn();
+      $("path").textContent = s.profile_path || "";
+      var pe = $("perr");
+      if (s.profile_error) {
+        pe.textContent = "The profile file on disk failed to load (previous profiles stay active): " + s.profile_error;
+        pe.classList.remove("hidden");
+      } else {
+        pe.classList.add("hidden");
+      }
+      if (!catalog) { loadCatalog(); }
+      else { EXT.forEach(function (x) { if (hook(x, "stale", (s.ext || {})[x.id] || {})) { loadExt(x); } }); }
+      if (serverText === null) { doRevert(true); }
+      if (!model) { refreshAll(); }
+      onState(s);
+    }).catch(function () {
+      stateFails++;
+      if (stateFails >= 2) { setOffline(true); }
+    }).then(function () {
+      setTimeout(pollState, stateFails ? 1000 : 250);
+    });
+  }
+
+  // what an integration's script may use
+  var api = { fetchJson: fetchJson, cap: cap, num: num, perStep: perStep, knobAndRing: KR, all: ALL4,
+    copy: function (b) { return JSON.parse(JSON.stringify(b)); },
+    fixed: function (b) { return function () { return JSON.parse(JSON.stringify(b)); }; },
+    own: function (key) { return ownBinding(key); },              // what is set for a control in the place being edited
+    place: function () { return curCtx; },
+    bindings: function () { return (model && model.bindings) || []; } };
+  EXT.forEach(function (x) { hook(x, "setup", api); });
+  updateGutter();
+  buildEntries();
+  renderArmed();
+  updateUndo();
+  renderPickers();
+  renderPicture();
+  doRevert(true);
+  loadCatalog();
+  // Deep link: #ctx=app/module&layer=fine&sel=knob.Y_GAMMA (turns "Follow live context" off)
+  var hp = {};
+  location.hash.replace(/^#/, "").split("&").forEach(function (kv) {
+    var i = kv.indexOf("=");
+    if (i > 0) { try { hp[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); } catch (e) { /* ignore */ } }
+  });
+  if (hp.ctx || hp.layer !== undefined || hp.sel) {
+    follow = false; $("follow").checked = false; hp.any = true;
+    if (hp.ctx && CTL_RE.test(hp.ctx)) { curCtx = hp.ctx; }
+    if (hp.layer && SEG_RE.test(hp.layer)) { curLayer = hp.layer; }
+  }
+  refreshAll().then(function () {
+    if (hp.sel && /^(button|knob|ring|ball)\./.test(hp.sel)) { selectControl(hp.sel); }
+    if (!hp.any) { startAt(0); }
+  });
+  // open on the app in front, then stay put (unless Follow is on)
+  function startAt(n) {
+    if (state && model) { if (!sel && !formDirty) { applyFollow(true); } return; }
+    if (n < 20) { setTimeout(function () { startAt(n + 1); }, 150); }
+  }
+  pollState();
+  setInterval(function () { if (state && state.last && tab === "toml") { renderLearn(); } }, 1000);
+})();
+</script>
+</body>
+</html>

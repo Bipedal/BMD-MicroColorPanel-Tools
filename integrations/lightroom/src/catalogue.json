@@ -1,0 +1,1191 @@
+{
+"params": [
+{
+"id": "Temperature",
+"label": "Temperature",
+"group": "Basic"
+},
+{
+"id": "Tint",
+"label": "Tint",
+"group": "Basic"
+},
+{
+"id": "Exposure2012",
+"label": "Exposure",
+"group": "Basic"
+},
+{
+"id": "Contrast2012",
+"label": "Contrast",
+"group": "Basic"
+},
+{
+"id": "Highlights2012",
+"label": "Highlights",
+"group": "Basic"
+},
+{
+"id": "Shadows2012",
+"label": "Shadows",
+"group": "Basic"
+},
+{
+"id": "Whites2012",
+"label": "Whites",
+"group": "Basic"
+},
+{
+"id": "Blacks2012",
+"label": "Blacks",
+"group": "Basic"
+},
+{
+"id": "Texture",
+"label": "Texture",
+"group": "Basic"
+},
+{
+"id": "Clarity2012",
+"label": "Clarity",
+"group": "Basic"
+},
+{
+"id": "Dehaze",
+"label": "Dehaze",
+"group": "Basic"
+},
+{
+"id": "Vibrance",
+"label": "Vibrance",
+"group": "Basic"
+},
+{
+"id": "Saturation",
+"label": "Saturation",
+"group": "Basic"
+},
+{
+"id": "ParametricShadows",
+"label": "Curve shadows",
+"group": "Tone Curve"
+},
+{
+"id": "ParametricDarks",
+"label": "Curve darks",
+"group": "Tone Curve"
+},
+{
+"id": "ParametricLights",
+"label": "Curve lights",
+"group": "Tone Curve"
+},
+{
+"id": "ParametricHighlights",
+"label": "Curve highlights",
+"group": "Tone Curve"
+},
+{
+"id": "ParametricShadowSplit",
+"label": "Curve split shadows/darks",
+"group": "Tone Curve"
+},
+{
+"id": "ParametricMidtoneSplit",
+"label": "Curve split darks/lights",
+"group": "Tone Curve"
+},
+{
+"id": "ParametricHighlightSplit",
+"label": "Curve split lights/highlights",
+"group": "Tone Curve"
+},
+{
+"id": "HueAdjustmentRed",
+"label": "Red hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentRed",
+"label": "Red saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentRed",
+"label": "Red luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentOrange",
+"label": "Orange hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentOrange",
+"label": "Orange saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentOrange",
+"label": "Orange luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentYellow",
+"label": "Yellow hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentYellow",
+"label": "Yellow saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentYellow",
+"label": "Yellow luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentGreen",
+"label": "Green hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentGreen",
+"label": "Green saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentGreen",
+"label": "Green luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentAqua",
+"label": "Aqua hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentAqua",
+"label": "Aqua saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentAqua",
+"label": "Aqua luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentBlue",
+"label": "Blue hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentBlue",
+"label": "Blue saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentBlue",
+"label": "Blue luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentPurple",
+"label": "Purple hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentPurple",
+"label": "Purple saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentPurple",
+"label": "Purple luminance",
+"group": "HSL"
+},
+{
+"id": "HueAdjustmentMagenta",
+"label": "Magenta hue",
+"group": "HSL"
+},
+{
+"id": "SaturationAdjustmentMagenta",
+"label": "Magenta saturation",
+"group": "HSL"
+},
+{
+"id": "LuminanceAdjustmentMagenta",
+"label": "Magenta luminance",
+"group": "HSL"
+},
+{
+"id": "SplitToningShadowHue",
+"label": "Shadows hue",
+"group": "Color Grading"
+},
+{
+"id": "SplitToningShadowSaturation",
+"label": "Shadows saturation",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeShadowLum",
+"label": "Shadows luminance",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeMidtoneHue",
+"label": "Midtones hue",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeMidtoneSat",
+"label": "Midtones saturation",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeMidtoneLum",
+"label": "Midtones luminance",
+"group": "Color Grading"
+},
+{
+"id": "SplitToningHighlightHue",
+"label": "Highlights hue",
+"group": "Color Grading"
+},
+{
+"id": "SplitToningHighlightSaturation",
+"label": "Highlights saturation",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeHighlightLum",
+"label": "Highlights luminance",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeGlobalHue",
+"label": "Global hue",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeGlobalSat",
+"label": "Global saturation",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeGlobalLum",
+"label": "Global luminance",
+"group": "Color Grading"
+},
+{
+"id": "ColorGradeBlending",
+"label": "Blending",
+"group": "Color Grading"
+},
+{
+"id": "SplitToningBalance",
+"label": "Balance",
+"group": "Color Grading"
+},
+{
+"id": "Sharpness",
+"label": "Sharpening amount",
+"group": "Detail"
+},
+{
+"id": "SharpenRadius",
+"label": "Sharpening radius",
+"group": "Detail"
+},
+{
+"id": "SharpenDetail",
+"label": "Sharpening detail",
+"group": "Detail"
+},
+{
+"id": "SharpenEdgeMasking",
+"label": "Sharpening masking",
+"group": "Detail"
+},
+{
+"id": "LuminanceSmoothing",
+"label": "Noise luminance",
+"group": "Detail"
+},
+{
+"id": "LuminanceNoiseReductionDetail",
+"label": "Noise luminance detail",
+"group": "Detail"
+},
+{
+"id": "LuminanceNoiseReductionContrast",
+"label": "Noise luminance contrast",
+"group": "Detail"
+},
+{
+"id": "ColorNoiseReduction",
+"label": "Noise colour",
+"group": "Detail"
+},
+{
+"id": "ColorNoiseReductionDetail",
+"label": "Noise colour detail",
+"group": "Detail"
+},
+{
+"id": "ColorNoiseReductionSmoothness",
+"label": "Noise colour smoothness",
+"group": "Detail"
+},
+{
+"id": "PostCropVignetteAmount",
+"label": "Post-crop vignette amount",
+"group": "Effects"
+},
+{
+"id": "PostCropVignetteMidpoint",
+"label": "Post-crop vignette midpoint",
+"group": "Effects"
+},
+{
+"id": "PostCropVignetteRoundness",
+"label": "Post-crop vignette roundness",
+"group": "Effects"
+},
+{
+"id": "PostCropVignetteFeather",
+"label": "Post-crop vignette feather",
+"group": "Effects"
+},
+{
+"id": "PostCropVignetteHighlightContrast",
+"label": "Post-crop vignette highlights",
+"group": "Effects"
+},
+{
+"id": "GrainAmount",
+"label": "Grain amount",
+"group": "Effects"
+},
+{
+"id": "GrainSize",
+"label": "Grain size",
+"group": "Effects"
+},
+{
+"id": "GrainFrequency",
+"label": "Grain roughness",
+"group": "Effects"
+},
+{
+"id": "ShadowTint",
+"label": "Calibration shadow tint",
+"group": "Calibration"
+},
+{
+"id": "RedHue",
+"label": "Calibration red hue",
+"group": "Calibration"
+},
+{
+"id": "RedSaturation",
+"label": "Calibration red saturation",
+"group": "Calibration"
+},
+{
+"id": "GreenHue",
+"label": "Calibration green hue",
+"group": "Calibration"
+},
+{
+"id": "GreenSaturation",
+"label": "Calibration green saturation",
+"group": "Calibration"
+},
+{
+"id": "BlueHue",
+"label": "Calibration blue hue",
+"group": "Calibration"
+},
+{
+"id": "BlueSaturation",
+"label": "Calibration blue saturation",
+"group": "Calibration"
+},
+{
+"id": "PerspectiveVertical",
+"label": "Vertical",
+"group": "Transform"
+},
+{
+"id": "PerspectiveHorizontal",
+"label": "Horizontal",
+"group": "Transform"
+},
+{
+"id": "PerspectiveRotate",
+"label": "Rotate",
+"group": "Transform"
+},
+{
+"id": "PerspectiveScale",
+"label": "Scale",
+"group": "Transform"
+},
+{
+"id": "PerspectiveAspect",
+"label": "Aspect",
+"group": "Transform"
+},
+{
+"id": "PerspectiveX",
+"label": "Offset X",
+"group": "Transform"
+},
+{
+"id": "PerspectiveY",
+"label": "Offset Y",
+"group": "Transform"
+},
+{
+"id": "LensManualDistortionAmount",
+"label": "Distortion",
+"group": "Lens"
+},
+{
+"id": "DefringePurpleAmount",
+"label": "Defringe purple",
+"group": "Lens"
+},
+{
+"id": "DefringeGreenAmount",
+"label": "Defringe green",
+"group": "Lens"
+},
+{
+"id": "VignetteAmount",
+"label": "Lens vignette amount",
+"group": "Lens"
+},
+{
+"id": "VignetteMidpoint",
+"label": "Lens vignette midpoint",
+"group": "Lens"
+},
+{
+"id": "LensProfileDistortionScale",
+"label": "Profile distortion",
+"group": "Lens"
+},
+{
+"id": "LensProfileVignettingScale",
+"label": "Profile vignetting",
+"group": "Lens"
+},
+{
+"id": "LensProfileChromaticAberrationScale",
+"label": "Profile chromatic aberration",
+"group": "Lens"
+},
+{
+"id": "Glow",
+"label": "Glow amount",
+"group": "Effects"
+},
+{
+"id": "GlowRange",
+"label": "Glow range",
+"group": "Effects"
+},
+{
+"id": "GlowSpread",
+"label": "Glow spread",
+"group": "Effects"
+},
+{
+"id": "GlowWarmth",
+"label": "Glow warmth",
+"group": "Effects"
+},
+{
+"id": "GlowDirection",
+"label": "Glow direction",
+"group": "Effects"
+},
+{
+"id": "GlowDirectionalSoftness",
+"label": "Glow softness",
+"group": "Effects"
+},
+{
+"id": "denoise.amount",
+"label": "Denoise amount",
+"group": "Detail"
+},
+{
+"id": "remove.size",
+"label": "Remove brush size",
+"group": "Remove"
+},
+{
+"id": "remove.feather",
+"label": "Remove brush feather",
+"group": "Remove"
+},
+{
+"id": "straightenAngle",
+"label": "Crop angle",
+"group": "Crop"
+},
+{
+"id": "crop.x",
+"label": "Crop move left/right",
+"group": "Crop"
+},
+{
+"id": "crop.y",
+"label": "Crop move up/down",
+"group": "Crop"
+},
+{
+"id": "crop.size",
+"label": "Crop size",
+"group": "Crop"
+},
+{
+"id": "local_Exposure",
+"label": "Mask exposure",
+"group": "Mask"
+},
+{
+"id": "local_Contrast",
+"label": "Mask contrast",
+"group": "Mask"
+},
+{
+"id": "local_Highlights",
+"label": "Mask highlights",
+"group": "Mask"
+},
+{
+"id": "local_Shadows",
+"label": "Mask shadows",
+"group": "Mask"
+},
+{
+"id": "local_Whites",
+"label": "Mask whites",
+"group": "Mask"
+},
+{
+"id": "local_Blacks",
+"label": "Mask blacks",
+"group": "Mask"
+},
+{
+"id": "local_Temperature",
+"label": "Mask temperature",
+"group": "Mask"
+},
+{
+"id": "local_Tint",
+"label": "Mask tint",
+"group": "Mask"
+},
+{
+"id": "local_Texture",
+"label": "Mask texture",
+"group": "Mask"
+},
+{
+"id": "local_Clarity",
+"label": "Mask clarity",
+"group": "Mask"
+},
+{
+"id": "local_Dehaze",
+"label": "Mask dehaze",
+"group": "Mask"
+},
+{
+"id": "local_Hue",
+"label": "Mask hue",
+"group": "Mask"
+},
+{
+"id": "local_Saturation",
+"label": "Mask saturation",
+"group": "Mask"
+},
+{
+"id": "local_Sharpness",
+"label": "Mask sharpness",
+"group": "Mask"
+},
+{
+"id": "local_LuminanceNoise",
+"label": "Mask noise",
+"group": "Mask"
+},
+{
+"id": "local_Moire",
+"label": "Mask moire",
+"group": "Mask"
+},
+{
+"id": "local_Defringe",
+"label": "Mask defringe",
+"group": "Mask"
+},
+{
+"id": "local_Grain",
+"label": "Mask grain",
+"group": "Mask"
+},
+{
+"id": "local_Amount",
+"label": "Mask amount",
+"group": "Mask"
+}
+],
+"cmds": [
+{
+"id": "nextPhoto",
+"label": "Next photo",
+"group": "Navigation"
+},
+{
+"id": "previousPhoto",
+"label": "Previous photo",
+"group": "Navigation"
+},
+{
+"id": "pick",
+"label": "Flag as pick",
+"group": "Flags"
+},
+{
+"id": "reject",
+"label": "Flag as reject",
+"group": "Flags"
+},
+{
+"id": "unflag",
+"label": "Remove flag",
+"group": "Flags"
+},
+{
+"id": "rating0",
+"label": "Rating 0",
+"group": "Rating"
+},
+{
+"id": "rating1",
+"label": "Rating 1",
+"group": "Rating"
+},
+{
+"id": "rating2",
+"label": "Rating 2",
+"group": "Rating"
+},
+{
+"id": "rating3",
+"label": "Rating 3",
+"group": "Rating"
+},
+{
+"id": "rating4",
+"label": "Rating 4",
+"group": "Rating"
+},
+{
+"id": "rating5",
+"label": "Rating 5",
+"group": "Rating"
+},
+{
+"id": "increaseRating",
+"label": "Increase rating",
+"group": "Rating"
+},
+{
+"id": "decreaseRating",
+"label": "Decrease rating",
+"group": "Rating"
+},
+{
+"id": "toggleRedLabel",
+"label": "Toggle red label",
+"group": "Labels"
+},
+{
+"id": "toggleYellowLabel",
+"label": "Toggle yellow label",
+"group": "Labels"
+},
+{
+"id": "toggleGreenLabel",
+"label": "Toggle green label",
+"group": "Labels"
+},
+{
+"id": "toggleBlueLabel",
+"label": "Toggle blue label",
+"group": "Labels"
+},
+{
+"id": "togglePurpleLabel",
+"label": "Toggle purple label",
+"group": "Labels"
+},
+{
+"id": "undo",
+"label": "Undo",
+"group": "Edit"
+},
+{
+"id": "redo",
+"label": "Redo",
+"group": "Edit"
+},
+{
+"id": "moduleLibrary",
+"label": "Go to Library",
+"group": "Modules"
+},
+{
+"id": "moduleDevelop",
+"label": "Go to Develop",
+"group": "Modules"
+},
+{
+"id": "moduleMap",
+"label": "Go to Map",
+"group": "Modules"
+},
+{
+"id": "moduleBook",
+"label": "Go to Book",
+"group": "Modules"
+},
+{
+"id": "moduleSlideshow",
+"label": "Go to Slideshow",
+"group": "Modules"
+},
+{
+"id": "modulePrint",
+"label": "Go to Print",
+"group": "Modules"
+},
+{
+"id": "moduleWeb",
+"label": "Go to Web",
+"group": "Modules"
+},
+{
+"id": "viewLoupe",
+"label": "Loupe view",
+"group": "View"
+},
+{
+"id": "viewBeforeAfterHoriz",
+"label": "Before/after side by side",
+"group": "View"
+},
+{
+"id": "viewBeforeAfterVert",
+"label": "Before/after top and bottom",
+"group": "View"
+},
+{
+"id": "viewBefore",
+"label": "Before only",
+"group": "View"
+},
+{
+"id": "toggleLoupe",
+"label": "Toggle loupe",
+"group": "View"
+},
+{
+"id": "zoom100",
+"label": "Zoom 1:1",
+"group": "View"
+},
+{
+"id": "zoomIn",
+"label": "Zoom in",
+"group": "View"
+},
+{
+"id": "zoomOut",
+"label": "Zoom out",
+"group": "View"
+},
+{
+"id": "resetAll",
+"label": "Reset all adjustments",
+"group": "Develop"
+},
+{
+"id": "resetCrop",
+"label": "Reset crop",
+"group": "Develop"
+},
+{
+"id": "resetTransforms",
+"label": "Reset transforms",
+"group": "Develop"
+},
+{
+"id": "resetMasking",
+"label": "Reset masking",
+"group": "Develop"
+},
+{
+"id": "virtualCopy",
+"label": "Create virtual copy",
+"group": "Photo"
+},
+{
+"id": "cgView3way",
+"label": "Color grading: 3-way",
+"group": "Color Grading"
+},
+{
+"id": "cgViewShadow",
+"label": "Color grading: Shadows",
+"group": "Color Grading"
+},
+{
+"id": "cgViewMidtone",
+"label": "Color grading: Midtones",
+"group": "Color Grading"
+},
+{
+"id": "cgViewHighlight",
+"label": "Color grading: Highlights",
+"group": "Color Grading"
+},
+{
+"id": "cgViewGlobal",
+"label": "Color grading: Global",
+"group": "Color Grading"
+},
+{
+"id": "revealColorGrading",
+"label": "Show Color Grading panel",
+"group": "Color Grading"
+},
+{
+"id": "toolLoupe",
+"label": "Loupe tool",
+"group": "Tools"
+},
+{
+"id": "toolCrop",
+"label": "Crop tool",
+"group": "Tools"
+},
+{
+"id": "toolCropToggle",
+"label": "Crop tool on/off",
+"group": "Tools"
+},
+{
+"id": "toolSpot",
+"label": "Spot removal tool",
+"group": "Tools"
+},
+{
+"id": "toolSpotToggle",
+"label": "Spot removal tool on/off",
+"group": "Tools"
+},
+{
+"id": "toolRedeye",
+"label": "Red eye tool",
+"group": "Tools"
+},
+{
+"id": "toolRedeyeToggle",
+"label": "Red eye tool on/off",
+"group": "Tools"
+},
+{
+"id": "toolMasking",
+"label": "Masking tool",
+"group": "Tools"
+},
+{
+"id": "toolMaskingToggle",
+"label": "Masking tool on/off",
+"group": "Tools"
+},
+{
+"id": "wbNext",
+"label": "White balance: next preset",
+"group": "White Balance"
+},
+{
+"id": "wbPrev",
+"label": "White balance: previous preset",
+"group": "White Balance"
+},
+{
+"id": "wbAsShot",
+"label": "White balance: As Shot",
+"group": "White Balance"
+},
+{
+"id": "wbAuto",
+"label": "White balance: Auto",
+"group": "White Balance"
+},
+{
+"id": "wbDaylight",
+"label": "White balance: Daylight",
+"group": "White Balance"
+},
+{
+"id": "wbCloudy",
+"label": "White balance: Cloudy",
+"group": "White Balance"
+},
+{
+"id": "wbShade",
+"label": "White balance: Shade",
+"group": "White Balance"
+},
+{
+"id": "wbTungsten",
+"label": "White balance: Tungsten",
+"group": "White Balance"
+},
+{
+"id": "wbFluorescent",
+"label": "White balance: Fluorescent",
+"group": "White Balance"
+},
+{
+"id": "wbFlash",
+"label": "White balance: Flash",
+"group": "White Balance"
+},
+{
+"id": "maskNewBrush",
+"label": "New mask: brush",
+"group": "Masks"
+},
+{
+"id": "maskAddBrush",
+"label": "Add to mask: brush",
+"group": "Masks"
+},
+{
+"id": "maskSubBrush",
+"label": "Subtract from mask: brush",
+"group": "Masks"
+},
+{
+"id": "maskNewLinear",
+"label": "New mask: linear",
+"group": "Masks"
+},
+{
+"id": "maskAddLinear",
+"label": "Add to mask: linear",
+"group": "Masks"
+},
+{
+"id": "maskSubLinear",
+"label": "Subtract from mask: linear",
+"group": "Masks"
+},
+{
+"id": "maskNewRadial",
+"label": "New mask: radial",
+"group": "Masks"
+},
+{
+"id": "maskAddRadial",
+"label": "Add to mask: radial",
+"group": "Masks"
+},
+{
+"id": "maskSubRadial",
+"label": "Subtract from mask: radial",
+"group": "Masks"
+},
+{
+"id": "maskNewSubject",
+"label": "New mask: subject",
+"group": "Masks"
+},
+{
+"id": "maskAddSubject",
+"label": "Add to mask: subject",
+"group": "Masks"
+},
+{
+"id": "maskSubSubject",
+"label": "Subtract from mask: subject",
+"group": "Masks"
+},
+{
+"id": "maskNewSky",
+"label": "New mask: sky",
+"group": "Masks"
+},
+{
+"id": "maskAddSky",
+"label": "Add to mask: sky",
+"group": "Masks"
+},
+{
+"id": "maskSubSky",
+"label": "Subtract from mask: sky",
+"group": "Masks"
+},
+{
+"id": "maskNewPeople",
+"label": "New mask: people",
+"group": "Masks"
+},
+{
+"id": "maskAddPeople",
+"label": "Add to mask: people",
+"group": "Masks"
+},
+{
+"id": "maskSubPeople",
+"label": "Subtract from mask: people",
+"group": "Masks"
+},
+{
+"id": "maskNewObjects",
+"label": "New mask: objects",
+"group": "Masks"
+},
+{
+"id": "maskAddObjects",
+"label": "Add to mask: objects",
+"group": "Masks"
+},
+{
+"id": "maskSubObjects",
+"label": "Subtract from mask: objects",
+"group": "Masks"
+},
+{
+"id": "maskNewBackground",
+"label": "New mask: background",
+"group": "Masks"
+},
+{
+"id": "maskAddBackground",
+"label": "Add to mask: background",
+"group": "Masks"
+},
+{
+"id": "maskSubBackground",
+"label": "Subtract from mask: background",
+"group": "Masks"
+},
+{
+"id": "maskNewColor",
+"label": "New mask: color",
+"group": "Masks"
+},
+{
+"id": "maskAddColor",
+"label": "Add to mask: color",
+"group": "Masks"
+},
+{
+"id": "maskSubColor",
+"label": "Subtract from mask: color",
+"group": "Masks"
+},
+{
+"id": "maskNewLuminance",
+"label": "New mask: luminance",
+"group": "Masks"
+},
+{
+"id": "maskAddLuminance",
+"label": "Add to mask: luminance",
+"group": "Masks"
+},
+{
+"id": "maskSubLuminance",
+"label": "Subtract from mask: luminance",
+"group": "Masks"
+},
+{
+"id": "maskInvert",
+"label": "Invert mask",
+"group": "Masks"
+},
+{
+"id": "maskOverlay",
+"label": "Mask overlay on/off",
+"group": "Masks"
+},
+{
+"id": "maskHide",
+"label": "Selected mask on/off",
+"group": "Masks"
+},
+{
+"id": "maskHideTool",
+"label": "Selected mask component on/off",
+"group": "Masks"
+},
+{
+"id": "masksEnable",
+"label": "All masks on/off",
+"group": "Masks"
+},
+{
+"id": "maskDelete",
+"label": "Delete mask",
+"group": "Masks"
+},
+{
+"id": "maskNext",
+"label": "Next mask",
+"group": "Masks"
+},
+{
+"id": "maskPrev",
+"label": "Previous mask",
+"group": "Masks"
+},
+{
+"id": "denoiseToggle",
+"label": "Denoise on/off",
+"group": "Detail"
+},
+{
+"id": "showClipping",
+"label": "Show clipping",
+"group": "Develop"
+},
+{
+"id": "autoTone",
+"label": "Auto tone",
+"group": "Develop"
+},
+{
+"id": "autoWhiteBalance",
+"label": "Auto white balance",
+"group": "Develop"
+}
+]
+}

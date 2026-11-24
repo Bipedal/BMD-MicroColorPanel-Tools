@@ -4,3 +4,7 @@ private_ids.json
 *_PRIVATE_*
 *_OFFLINE_*
 *.pdf
+target/
+dist/
+trace.log
+logs/bridge_home/

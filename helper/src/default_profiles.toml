@@ -1,0 +1,58 @@
+# Micro Color Panel helper: profiles.
+# Edit here or in the mapping editor (tray > Edit mappings). Format: PROFILES.md.
+#
+# A control does what the most specific place says: app/module/tool -> app/module -> app -> default.
+# Each control falls through on its own; "none" stops that. Layers (held buttons) come first.
+# Controls: button.<NAME>, knob.<NAME>, ring.LEFT/MIDDLE/RIGHT, ball.LEFT/MIDDLE/RIGHT.
+
+[settings]
+backlight = 60                  # 0..100
+resolve = "yield"               # release the panel while DaVinci Resolve runs ("share" = keep it)
+pointer_smoothing_ms = 40       # ball-as-mouse: spread the panel's ~40 ms movement bursts (0 = off)
+start_deg = 2                   # knobs, rings: a first movement this small (degrees) does nothing
+start_ball = 4                  # balls: the same, in steps
+sleep_after_min = 15            # on battery: let the panel switch itself off when neither it nor the PC is used
+press_ms = 600                  # after pressing a knob, small turns do nothing for this long
+
+# name = ["program.exe", ...]   # gives a program a name of its own; most don't need one
+[apps]
+
+# ---------------------------------------------------------------- every app
+[default.ball]
+RIGHT = { do = "mouse.move", speed = 0.75, accel = 2.0 }
+LEFT  = { do = "mouse.scroll" }
+
+[default.ring]
+RIGHT = { do = "mouse.scroll", axis = "v" }
+LEFT  = { do = "mouse.scroll", axis = "h" }
+
+# knobs: one turn = 4096 counts, `per` = counts per key press
+[default.knob]
+Y_LIFT      = { do = "mouse.scroll", mods = "ctrl", notch = true, label = "Zoom" }
+Y_GAMMA     = { do = "mouse.scroll", axis = "v" }
+Y_GAIN      = { do = "mouse.scroll", axis = "h" }
+CONTRAST    = { do = "key", cw = "ctrl+tab", ccw = "ctrl+shift+tab", per = 512, label = "Switch tabs" }
+PIVOT       = { do = "key", cw = "ctrl+y", ccw = "ctrl+z", per = 512, label = "Undo / redo" }
+MID_DETAIL  = { do = "key", cw = "right", ccw = "left", per = 128, label = "Left / right" }
+COLOR_BOOST = { do = "key", cw = "down", ccw = "up", per = 128, label = "Up / down" }
+SHADOWS     = { do = "key", cw = "pagedown", ccw = "pageup", per = 512, label = "Pages" }
+HIGHLIGHTS  = { do = "key", cw = "ctrl+right", ccw = "ctrl+left", per = 256, label = "Word by word" }
+SATURATION  = { do = "key", cw = "alt+right", ccw = "alt+left", per = 1024, label = "Back / forward" }
+HUE         = { do = "key", cw = "medianext", ccw = "mediaprev", per = 1024, label = "Tracks" }
+LUM_MIX     = { do = "key", cw = "volumeup", ccw = "volumedown", per = 128, label = "Volume" }
+
+[default.button]
+Y_LIFT   = { do = "key", keys = "ctrl+0", label = "Reset zoom" }
+HUE      = { do = "key", keys = "mediaplay", label = "Play / pause" }
+LUM_MIX  = { do = "key", keys = "mute", label = "Mute" }
+DELETE   = { do = "key", keys = "delete", label = "Delete" }
+GRAB_STILL = { do = "key", keys = "win+shift+s", label = "Screenshot" }
+PLAY_FWD = { do = "mouse.button", button = "left" }
+STOP     = { do = "mouse.button", button = "middle" }
+PLAY_REV = { do = "mouse.button", button = "right" }
+UNDO     = { do = "key", keys = "ctrl+z" }
+REDO     = { do = "key", keys = "ctrl+y" }
+COPY     = { do = "key", keys = "ctrl+c" }
+PASTE    = { do = "key", keys = "ctrl+v" }
+USER     = { do = "sheet" }
+SHIFT_UP = { do = "layer", name = "more", mode = "auto" }

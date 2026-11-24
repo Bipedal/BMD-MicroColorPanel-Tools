@@ -1,0 +1,42 @@
+name: helper
+
+on:
+  push:
+    branches: [main]
+    paths: ["helper/**", "integrations/**", "lightroom/**", "tests/test_lua_*", ".github/workflows/helper.yml"]
+  pull_request:
+    paths: ["helper/**", "integrations/**", "lightroom/**", "tests/test_lua_*", ".github/workflows/helper.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable --no-self-update && rustup default stable
+      - run: cargo test --locked
+        working-directory: helper
+      - run: cargo test --locked
+        working-directory: integrations
+      - run: cargo build --release --locked
+        working-directory: integrations
+      # the code other systems get, also checked on Windows
+      - if: runner.os == 'Windows'
+        run: cargo test --locked --features portable
+        working-directory: helper
+
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install lupa
+      - run: python tests/test_lua_json.py && python tests/test_lua_catalog.py && python tests/test_lua_core.py && python tests/test_lua_sockets.py

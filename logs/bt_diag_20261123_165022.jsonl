@@ -1,0 +1,42 @@
+{"t": "start", "paired": true, "connected": true, "ts": 1795452622.9124}
+{"t": "read", "round": 0, "name": "device name", "kind": "chip", "ok": false, "seconds": 4.82, "detail": "OSError: [WinError -2147023673] The operation was canceled by the user.", "ts": 1795452630.7367}
+{"t": "link", "rel": 7.84, "state": "disconnected", "ts": 1795452630.7497}
+{"t": "link", "rel": 8.08, "state": "connected", "ts": 1795452630.9955}
+{"t": "read", "round": 0, "name": "maker", "kind": "chip", "ok": false, "seconds": 30.37, "detail": "no answer within 12 s", "ts": 1795452661.1053}
+{"t": "link", "rel": 38.2, "state": "disconnected", "ts": 1795452661.1086}
+{"t": "link", "rel": 38.34, "state": "connected", "ts": 1795452661.2488}
+{"t": "read", "round": 0, "name": "PnP id", "kind": "chip", "ok": false, "seconds": 30.26, "detail": "no answer within 12 s", "ts": 1795452691.3706}
+{"t": "link", "rel": 68.47, "state": "disconnected", "ts": 1795452691.3795}
+{"t": "link", "rel": 68.6, "state": "connected", "ts": 1795452691.5149}
+{"t": "read", "round": 0, "name": "vendor firmware", "kind": "panel", "ok": false, "seconds": 30.26, "detail": "no answer within 12 s", "ts": 1795452721.629}
+{"t": "link", "rel": 98.72, "state": "disconnected", "ts": 1795452721.6336}
+{"t": "link", "rel": 99.08, "state": "connected", "ts": 1795452721.989}
+{"t": "read", "round": 0, "name": "vendor battery", "kind": "panel", "ok": false, "seconds": 30.48, "detail": "no answer within 12 s", "ts": 1795452752.1128}
+{"t": "link", "rel": 129.22, "state": "disconnected", "ts": 1795452752.1289}
+{"t": "read", "round": 0, "name": "HID firmware", "kind": "hid", "ok": false, "seconds": 0.13, "detail": "no HID entry over Bluetooth", "ts": 1795452752.2463}
+{"t": "link", "rel": 134.5, "state": "connected", "ts": 1795452757.4087}
+{"t": "read", "round": 1, "name": "device name", "kind": "chip", "ok": false, "seconds": 30.26, "detail": "no answer within 12 s", "ts": 1795452787.5144}
+{"t": "link", "rel": 164.62, "state": "disconnected", "ts": 1795452787.5281}
+{"t": "link", "rel": 164.86, "state": "connected", "ts": 1795452787.7755}
+{"t": "read", "round": 1, "name": "maker", "kind": "chip", "ok": false, "seconds": 30.36, "detail": "no answer within 12 s", "ts": 1795452817.8744}
+{"t": "link", "rel": 194.99, "state": "disconnected", "ts": 1795452817.9008}
+{"t": "link", "rel": 195.13, "state": "connected", "ts": 1795452818.0386}
+{"t": "read", "round": 1, "name": "PnP id", "kind": "chip", "ok": false, "seconds": 30.27, "detail": "no answer within 12 s", "ts": 1795452848.1482}
+{"t": "link", "rel": 225.29, "state": "disconnected", "ts": 1795452848.2016}
+{"t": "link", "rel": 225.64, "state": "connected", "ts": 1795452848.5498}
+{"t": "read", "round": 1, "name": "vendor firmware", "kind": "panel", "ok": false, "seconds": 30.52, "detail": "no answer within 12 s", "ts": 1795452878.6649}
+{"t": "link", "rel": 255.77, "state": "disconnected", "ts": 1795452878.6808}
+{"t": "link", "rel": 255.91, "state": "connected", "ts": 1795452878.8217}
+{"t": "read", "round": 1, "name": "vendor battery", "kind": "panel", "ok": false, "seconds": 30.26, "detail": "no answer within 12 s", "ts": 1795452908.9226}
+{"t": "link", "rel": 286.02, "state": "disconnected", "ts": 1795452908.9346}
+{"t": "read", "round": 1, "name": "HID firmware", "kind": "hid", "ok": false, "seconds": 0.13, "detail": "no HID entry over Bluetooth", "ts": 1795452909.0541}
+{"t": "link", "rel": 291.72, "state": "connected", "ts": 1795452914.6369}
+{"t": "read", "round": 2, "name": "device name", "kind": "chip", "ok": false, "seconds": 30.69, "detail": "no answer within 12 s", "ts": 1795452944.7493}
+{"t": "link", "rel": 321.86, "state": "disconnected", "ts": 1795452944.7696}
+{"t": "link", "rel": 322.1, "state": "connected", "ts": 1795452945.0122}
+{"t": "read", "round": 2, "name": "maker", "kind": "chip", "ok": false, "seconds": 30.37, "detail": "no answer within 12 s", "ts": 1795452975.1209}
+{"t": "link", "rel": 352.23, "state": "disconnected", "ts": 1795452975.1436}
+{"t": "link", "rel": 352.59, "state": "connected", "ts": 1795452975.4984}
+{"t": "read", "round": 2, "name": "PnP id", "kind": "chip", "ok": false, "seconds": 30.49, "detail": "no answer within 12 s", "ts": 1795453005.6096}
+{"t": "link", "rel": 382.73, "state": "disconnected", "ts": 1795453005.6375}
+{"t": "link", "rel": 382.86, "state": "connected", "ts": 1795453005.7722}

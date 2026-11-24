@@ -1,0 +1,16 @@
+[package]
+name = "micropanel-app"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+license = "CC0-1.0"
+build = "build.rs"
+description = "Use the DaVinci Resolve Micro Color Panel in other applications"
+
+[dependencies]
+micropanel = { path = "../../helper" }
+micropanel-lightroom = { path = "../lightroom" }
+
+[[bin]]
+name = "micropanel"
+path = "src/main.rs"

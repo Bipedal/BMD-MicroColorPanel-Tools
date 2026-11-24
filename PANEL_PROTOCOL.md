@@ -119,6 +119,10 @@ Report `04` + 6 bytes, sent as an output report (on the wire: interrupt OUT, 7 b
 - **Byte `1+4k` was 0 in every report** (540+ reports across several runs) [V]. The value is therefore decoded as **signed 24-bit little-endian at `2+4k`**. A signed 32-bit read at `1+4k` gives exactly 256× the same number, so the data cannot tell the two layouts apart; s24 is a choice [V for equivalence].
 - **Values are relative deltas**, always multiples of 16 (gcd 16 in all 9 slots) [V] raw_check. One step = 16 raw.
 - **Timing:** reports arrive every ~4–8 ms while something moves; ring values are 16–64 raw per report [V] `logs/axis_rings_20261116_174515.jsonl`.
+- **Ball reports come in bursts:** while a ball rolls, 0x05 reports arrive in groups (often X and Y
+  in separate reports ~5–8 ms apart) about every **40 ms**: median gap 40 ms, p90 48 ms, ~37 reports/s,
+  identical with panel.py and an independent Rust reader over USB [V] `logs/ball_rate_20261118_135105.jsonl`.
+  A host using a ball as a pointer should smooth across bursts.
 
 | Slot | Control | Sign | Status |
 |---|---|---|---|

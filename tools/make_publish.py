@@ -2,7 +2,10 @@
 
 Usage: python tools/make_publish.py [--out publish]
 
-* Copies only the published set: docs, panel.py, tests/, tools/, logs/ (minus excluded).
+* Copies only the published set: docs, panel.py, tests/, tools/, logs/, helper/, integrations/,
+  lightroom/, docs/ (minus excluded).
+* Not published (yet): the Premiere part (private/, premiere/), BRIDGE_PROTOCOL.md, the Lightroom link's test
+  sessions. The run fails if Premiere's name turns up in what is published.
 * Excluded: legacy files from another tool, the product manual (Blackmagic's copyright),
   raw BT captures (*_PRIVATE_*: pairing keys), offline simulation logs (*_OFFLINE_*),
   aborted runs (*_ABORTED_*) and empty logs,
@@ -26,8 +29,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INCLUDE_TOP = ["README.md", "LICENSE", "PANEL_PROTOCOL.md", "panel.py", "panel_tester.py",
                "requirements.txt",
                ".gitignore", ".gitattributes"]
-INCLUDE_DIRS = ["tests", "tools", "logs"]
-EXCLUDE = ["*_PRIVATE_*", "*_OFFLINE_*", "*_ABORTED_*", "private_ids.json", "__pycache__", "*.pyc", "*.pdf"]
+INCLUDE_DIRS = ["tests", "tools", "logs", "helper", "integrations", "lightroom", "docs", ".github"]
+EXCLUDE = ["*_PRIVATE_*", "*_OFFLINE_*", "*_ABORTED_*", "private_ids.json", "__pycache__", "*.pyc", "*.pdf",
+           "target", "trace.log", "bridge_*", "lr_*", "premiere*", "editor_mock.py", "STOP_CAPTURE", "dist"]
+# application parts that are not public yet
+NOT_PUBLIC = [b"premiere"]
 
 
 def forms(ids):
@@ -102,6 +108,12 @@ def main():
             for needle, _ in fm:
                 if needle in data:
                     hits.append((os.path.relpath(p, a.out), needle[:16]))
+    for top in ("helper", "integrations", "lightroom", "docs"):
+        for r, ds, fs in os.walk(os.path.join(a.out, top)):
+            for f in fs:
+                p = os.path.join(r, f)
+                low = open(p, "rb").read().lower()
+                hits += [(os.path.relpath(p, a.out), n) for n in NOT_PUBLIC if n in low]
     missing = [f for f in INCLUDE_TOP if not os.path.exists(os.path.join(ROOT, f))]
     print("copied %d files to %s" % (len(files), a.out))
     print("not present (skipped): %s" % (missing or "none"))
