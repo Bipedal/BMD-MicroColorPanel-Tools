@@ -119,7 +119,10 @@ LUM_MIX     = { do = "lr.param", id = "LensManualDistortionAmount", per_turn = 1
 [lightroom.develop.layer.more.ball]
 MIDDLE = { do = "lr.wheel", zone = "global", speed = 1.0 }
 
-# Hold SHIFT_DOWN: the main knobs at one fifth of the speed.
+# Hold SHIFT_DOWN: the main knobs at one fifth of the speed; everything else as usual.
+[layers.fine]
+inherit = true
+
 [lightroom.develop.layer.fine.knob]
 Y_LIFT      = { do = "lr.param", id = "Blacks2012",      per_turn = 20 }
 Y_GAMMA     = { do = "lr.param", id = "Exposure2012",    per_turn = 0.4 }

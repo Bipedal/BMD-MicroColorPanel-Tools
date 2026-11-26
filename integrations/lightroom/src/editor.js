@@ -12,10 +12,10 @@
     return G_MAP[it.group] || it.group || "Other";
   }
   // shortcuts Lightroom users know by name
-  var KEYS = { "ctrl+shift+c": "Copy settings", "ctrl+shift+v": "Paste settings", "backslash": "Before/after", "f": "Full-screen preview" };
+  var KEYS = { "ctrl+shift+c": "Copy settings", "ctrl+shift+v": "Paste settings", "ctrl+alt+v": "Paste settings from previous", "ctrl+alt+shift+left": "Copy after to before", "ctrl+alt+shift+right": "Copy before to after", "ctrl+alt+shift+up": "Swap before and after", "ctrl+n": "New snapshot", "backslash": "Before/after", "f": "Full-screen preview" };
   var SHORT = { "Spot removal tool": "Remove tool", "Reset all adjustments": "Reset all", "Crop move left/right / Crop move up/down": "Move crop",
     "Mask overlay on/off": "Mask overlay", "White balance: As Shot": "WB as shot", "Mask temperature / Mask tint": "Temp / Tint", "Temperature / Tint": "Temp / Tint",
-    "Before/after": "Before / after" };
+    "Before/after": "Before / after", "Paste settings from previous": "Paste previous" };
   var PER_SPECIAL = { Exposure2012: 2, Temperature: 2000, Tint: 50, Sharpness: 150, SplitToningBalance: 200, PerspectiveScale: 50,
     straightenAngle: 20, 'crop.size': 1, 'crop.x': 0.5, 'crop.y': 0.5, 'mask.size': 50, 'remove.size': 50, 'remove.feather': 50, local_Exposure: 2, local_Temperature: 100, local_Tint: 100 };
   var TOOLS = { masking: "Masking", crop: "Crop", dust: "Remove", redeye: "Red eye" };
@@ -155,11 +155,11 @@
         add(groupOf(c), (c.label || c.id).replace(/^White balance: /, "").replace(/^Color grading: /, "View: "), B, fix({ do: "lr.cmd", id: c.id }), function (b) { return b.do === "lr.cmd" && b.id === c.id; });
       });
       [["Next / previous photo", "nextPhoto", "previousPhoto", PHOTO], ["Rating up / down", "increaseRating", "decreaseRating", PHOTO], ["Zoom in / out", "zoomIn", "zoomOut", VIEWS],
-       ["Redo / undo", "redo", "undo", EDIT], ["Next / previous mask", "maskNext", "maskPrev", "Masking"], ["Next / previous preset", "wbNext", "wbPrev", "White balance"]].forEach(function (x) {
+       ["Redo / undo", "redo", "undo", EDIT], ["Next / previous mask", "maskNext", "maskPrev", "Masking"], ["Next / previous snapshot", "snapshotNext", "snapshotPrev", "Snapshots"], ["Next / previous preset", "wbNext", "wbPrev", "White balance"]].forEach(function (x) {
         add(x[3], x[0], KR, function (kind) { return { do: "lr.cmd", cw: x[1], ccw: x[2], per: api.perStep(kind) }; }, function (b) { return b.do === "lr.cmd" && b.cw === x[1]; });
       });
       add(VIEWS, "Two commands, one per direction", KR, function (kind) { return { do: "lr.cmd", cw: "nextPhoto", ccw: "previousPhoto", per: api.perStep(kind) }; }, function () { return false; });
-      [["Copy settings", "ctrl+shift+c", EDIT], ["Paste settings", "ctrl+shift+v", EDIT], ["Before/after", "backslash", VIEWS], ["Full-screen preview", "f", VIEWS]].forEach(function (x) {
+      [["Copy settings", "ctrl+shift+c", EDIT], ["Paste settings", "ctrl+shift+v", EDIT], ["Paste settings from previous", "ctrl+alt+v", EDIT], ["Before/after", "backslash", VIEWS], ["Copy after’s settings to before", "ctrl+alt+shift+left", VIEWS], ["Copy before’s settings to after", "ctrl+alt+shift+right", VIEWS], ["Swap before and after settings", "ctrl+alt+shift+up", VIEWS], ["New snapshot (asks for a name)", "ctrl+n", EDIT], ["Full-screen preview", "f", VIEWS]].forEach(function (x) {
         add(x[2], x[0], B, fix({ do: "key", keys: x[1] }), function (b) { return b.do === "key" && !b.hold && b.keys === x[1]; });
       });
     },

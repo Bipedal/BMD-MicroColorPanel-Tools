@@ -15,7 +15,7 @@ use std::sync::Mutex;
 use toml::{Table, Value};
 
 /// The plugin this was written with (Core.lua); an older one needs a restart of Lightroom.
-const PLUGIN: &str = "0.3.5";
+const PLUGIN: &str = "0.3.7";
 /// The oldest one that knows every message we send.
 const PLUGIN_OK: [u32; 3] = [0, 2, 0];
 /// Is version `v` ("0.3.3") at least `min`?
@@ -318,6 +318,7 @@ impl Integration for Lightroom {
             "White balance: As Shot" => Some("WB as shot"),
             "Mask temperature / Mask tint" | "Temperature / Tint" => Some("Temp / Tint"),
             "Before/after" => Some("Before / after"),
+            "Paste settings from previous" => Some("Paste previous"),
             _ => None,
         } { return Some(x.into()); }
         let lower = |s: &str| s.chars().next().map_or(false, |c| c.is_ascii_lowercase());
@@ -332,7 +333,7 @@ impl Integration for Lightroom {
     }
     fn shortcut(&self, k: &str) -> Option<String> {
         Some(match k {
-            "ctrl+shift+c" => "Copy settings", "ctrl+shift+v" => "Paste settings", "backslash" => "Before/after", "f" => "Full-screen preview",
+            "ctrl+shift+c" => "Copy settings", "ctrl+shift+v" => "Paste settings", "ctrl+alt+v" => "Paste settings from previous", "ctrl+alt+shift+left" => "Copy after to before", "ctrl+alt+shift+right" => "Copy before to after", "ctrl+alt+shift+up" => "Swap before and after", "ctrl+n" => "New snapshot", "backslash" => "Before/after", "f" => "Full-screen preview",
             _ => return None,
         }.into())
     }
@@ -508,5 +509,6 @@ mod tests {
         assert_eq!(lr.shorten("Mask overlay on/off").as_deref(), Some("Mask overlay"));
         assert_eq!(lr.shorten("Exposure"), None);
         assert_eq!(lr.shortcut("ctrl+shift+c").as_deref(), Some("Copy settings"));
+        assert_eq!(lr.shortcut("ctrl+alt+v").as_deref(), Some("Paste settings from previous"));
     }
 }

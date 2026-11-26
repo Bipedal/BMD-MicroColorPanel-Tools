@@ -131,7 +131,7 @@ feed(c, {"t": "hello", "v": 1, "helper": "0.1.0"})
 check("no greeting from the socket callback", len(out()) == 0)
 step(c)
 o = out()
-check("hello reply first", o[0] == {"t": "hello", "v": 1, "plugin": "0.3.5", "lr": "16.0"}, o[0])
+check("hello reply first", o[0] == {"t": "hello", "v": 1, "plugin": "0.3.7", "lr": "16.0"}, o[0])
 check("context after hello", o[1]["t"] == "context" and o[1]["module"] == "develop" and o[1]["photo"] is True, o[1])
 cat = [m for m in o if m["t"] == "catalog"]
 end = o[-1]

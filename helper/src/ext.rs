@@ -129,7 +129,7 @@ pub trait Integration: Send + Sync {
 static ALL: OnceLock<Vec<Arc<dyn Integration>>> = OnceLock::new();
 
 /// Prefixes of the core's own actions and light operands.
-pub const CORE_PREFIXES: [&str; 5] = ["mouse", "midi", "mcu", "layer", "sheet"];
+pub const CORE_PREFIXES: [&str; 6] = ["mouse", "midi", "mcu", "layer", "sheet", "restart"];
 
 /// The integrations that come with the helper.
 pub fn builtin() -> Vec<Arc<dyn Integration>> { vec![Arc::new(crate::osc::Osc::new())] }

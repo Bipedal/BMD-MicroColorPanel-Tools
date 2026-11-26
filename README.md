@@ -43,7 +43,7 @@ the source here ([how](.github/workflows/release.yml)); each release has a check
 
 ➡️ **[User guide](docs/GUIDE.md)**: setup, layouts, layers, lights, cheat sheet, troubleshooting ·
 **[Lightroom guide](lightroom/README.md)** ·
-**[Report a problem](https://github.com/Bipedal/BMD-MicroColorPanel-Tools/issues)**
+**[Changes](CHANGES.md)** · **[Report a problem](https://github.com/Bipedal/BMD-MicroColorPanel-Tools/issues)**
 
 Never hold **AUTO COLOR and STOP together** (it resets the panel and clears its Bluetooth pairing), and never replace the
 panel's Windows driver (Zadig, WinUSB).

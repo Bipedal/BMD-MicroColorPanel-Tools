@@ -14,6 +14,10 @@ start_ball = 4                  # balls: the same, in steps
 sleep_after_min = 15            # on battery: let the panel switch itself off when neither it nor the PC is used
 press_ms = 600                  # after pressing a knob, small turns do nothing for this long
 
+# Layers you make are clean: what they don't set does nothing. These keep the normal jobs.
+[layers]
+more = { inherit = true }
+
 # name = ["program.exe", ...]   # gives a program a name of its own; most don't need one
 [apps]
 

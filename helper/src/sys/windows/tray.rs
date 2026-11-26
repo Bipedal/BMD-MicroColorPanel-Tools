@@ -42,10 +42,11 @@ pub fn tray(shared: Arc<Mutex<Shared>>, logic: std::thread::JoinHandle<()>) {
     let folder = MenuItem::new("Open config folder", true, None);
     let reload = MenuItem::new("Reload profiles", true, None);
     let auto = CheckMenuItem::new("Start with Windows", true, super::autostart_enabled(), None);
+    let restart = MenuItem::new("Restart", true, None);
     let quit = MenuItem::new("Quit", true, None);
     let menu = Menu::new();
     let _ = menu.append_items(&[&status, &PredefinedMenuItem::separator(), &pause, &edit, &sheet_menu, &folder, &reload,
-        &PredefinedMenuItem::separator(), &auto, &quit]);
+        &PredefinedMenuItem::separator(), &auto, &restart, &quit]);
     let tray = match TrayIconBuilder::new().with_menu(Box::new(menu)).with_tooltip("Micro Color Panel").with_icon(icon()).build() {
         Ok(t) => Some(t),
         Err(e) => { log(&format!("tray icon failed: {e}; running without one")); None }
@@ -80,6 +81,8 @@ pub fn tray(shared: Arc<Mutex<Shared>>, logic: std::thread::JoinHandle<()>) {
                 let want = auto.is_checked();
                 if !super::set_autostart(want) { log("autostart change failed"); }
                 auto.set_checked(super::autostart_enabled());
+            } else if id == *restart.id() {
+                if crate::app::restart("tray menu").is_ok() { shared.lock().unwrap().quit = true; }
             } else if id == *quit.id() {
                 shared.lock().unwrap().quit = true;
             }

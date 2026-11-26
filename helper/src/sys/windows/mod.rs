@@ -167,6 +167,31 @@ pub fn process_running(exe: &str) -> bool {
     }
 }
 
+/// Wait until process `pid` has ended, at most `limit`.
+pub fn wait_for_exit(pid: u32, limit: std::time::Duration) {
+    use windows_sys::Win32::System::Threading::{WaitForSingleObject, PROCESS_SYNCHRONIZE};
+    unsafe {
+        let h = OpenProcess(PROCESS_SYNCHRONIZE, 0, pid);
+        if h.is_null() { return; } // gone already
+        WaitForSingleObject(h, limit.as_millis() as u32);
+        CloseHandle(h);
+    }
+}
+
+#[cfg(test)]
+#[test]
+fn waits_for_a_process_to_end() {
+    use std::time::{Duration, Instant};
+    let mut c = std::process::Command::new("ping").args(["-n", "3", "127.0.0.1"]).stdout(std::process::Stdio::null()).spawn().unwrap();
+    let t = Instant::now();
+    wait_for_exit(c.id(), Duration::from_secs(10));
+    assert!(t.elapsed() >= Duration::from_millis(1500) && t.elapsed() < Duration::from_secs(8), "{:?}", t.elapsed());
+    let _ = c.wait();
+    let t = Instant::now();
+    wait_for_exit(c.id(), Duration::from_secs(10));
+    assert!(t.elapsed() < Duration::from_secs(1), "gone already");
+}
+
 /// False if another helper is already running (named mutex, kept for the process lifetime).
 pub fn single_instance() -> bool {
     let name: Vec<u16> = "Local\\MicroPanelHelper\0".encode_utf16().collect();
@@ -207,6 +232,10 @@ pub fn foreground_title() -> String {
     unsafe {
         let hwnd: HWND = GetForegroundWindow();
         if hwnd.is_null() { return String::new(); }
+        // ours: GetWindowTextW would wait for the thread that owns it (the tray), which may be waiting for us
+        let mut pid = 0u32;
+        GetWindowThreadProcessId(hwnd, &mut pid);
+        if pid == std::process::id() { return String::new(); }
         let mut buf = [0u16; 512];
         let n = GetWindowTextW(hwnd, buf.as_mut_ptr(), buf.len() as i32);
         String::from_utf16_lossy(&buf[..n.max(0) as usize])

@@ -138,10 +138,50 @@ impl Out for RealOut {
     }
 }
 
+/// Keys that restart the helper in the place in front; written by the main loop, read by the panel's thread.
+static RESTART_KEYS: Mutex<Vec<String>> = Mutex::new(Vec::new());
+/// Keys from Settings that restart the helper when held together, and for how long; from the main loop.
+static RESTART_CHORD: Mutex<(Vec<String>, Duration)> = Mutex::new((Vec::new(), Duration::from_secs(2)));
+const RESTART_HOLD: Duration = Duration::from_secs(1);
+/// When the main loop last ran (ms since START); the panel's thread notices when it stops.
+static BEAT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+static START: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
+fn now_ms() -> u64 { START.get_or_init(Instant::now).elapsed().as_millis() as u64 }
+
+/// Start a new helper that takes over once this one has gone, and go. Ok = this process is about to end.
+pub fn restart(why: &str) -> Result<(), String> {
+    let exe = std::env::current_exe().map_err(|e| e.to_string())?;
+    log(&format!("restarting ({why})"));
+    std::process::Command::new(exe).args(["--after", &std::process::id().to_string()]).spawn().map_err(|e| { log(&format!("restart failed: {e}")); e.to_string() })?;
+    Ok(())
+}
+
 fn panel_thread(transport: String, backlight: u8, tx: Sender<Event>, rx: Receiver<PCmd>) {
     let mut p = Panel::new(Box::new(HidApiBackend::new()), &transport, backlight);
     let mut announced = false;
+    let mut held: Option<(String, Instant)> = None;
+    // keys pressed since we run (a key held through a restart doesn't count until it is pressed again)
+    let mut down: std::collections::HashSet<String> = Default::default();
+    let mut chord_since: Option<Instant> = None;
+    let mut stuck_since: Option<u64> = None;
     loop {
+        // the main loop stopped: say so once, and again when it goes on
+        let beat = BEAT.load(std::sync::atomic::Ordering::Relaxed);
+        let late = now_ms().saturating_sub(beat);
+        match stuck_since {
+            None if beat > 0 && late > 5000 => { log(&format!("the helper's main loop hasn't run for {:.0} s (hanging)", late as f64 / 1000.0)); stuck_since = Some(beat); }
+            Some(b) if beat != b => { log("the main loop runs again"); stuck_since = None; }
+            _ => {}
+        }
+        let (chord, hold) = RESTART_CHORD.lock().unwrap().clone();
+        let together = !chord.is_empty() && chord.iter().all(|k| down.contains(k));
+        if !together { chord_since = None; } else if chord_since.is_none() { chord_since = Some(Instant::now()); }
+        if held.as_ref().is_some_and(|h| h.1.elapsed() >= RESTART_HOLD) || chord_since.is_some_and(|t| t.elapsed() >= hold) {
+            held = None;
+            chord_since = None;
+            p.release(true);
+            if restart("panel keys").is_ok() { std::process::exit(0); }
+        }
         while let Ok(c) = rx.try_recv() {
             match c {
                 PCmd::Leds(m) => { if m != p.leds || !p.is_up() { p.set_leds(m); } }
@@ -161,6 +201,16 @@ fn panel_thread(transport: String, backlight: u8, tx: Sender<Event>, rx: Receive
             announced = true;
         }
         for e in p.poll(20) {
+            if let Event::Button { name, down, synthetic: false, .. } = &e {
+                if *down && RESTART_KEYS.lock().unwrap().contains(name) { held = Some((name.clone(), Instant::now())); }
+                else if !*down && held.as_ref().is_some_and(|h| &h.0 == name) { held = None; }
+            }
+            match &e {
+                Event::Button { name, down: d, synthetic: false, .. } => { if *d { down.insert(name.clone()); } else { down.remove(name); } }
+                Event::Button { name, down: false, .. } => { down.remove(name); }
+                Event::Link { up: false, .. } => down.clear(),
+                _ => {}
+            }
             if let Event::Link { up: true, .. } = &e {
                 announced = false;
                 let (ver, _) = p.info();
@@ -198,6 +248,7 @@ fn context_stack(pr: &Profiles, fg: &Option<(String, bool)>) -> Vec<String> {
 }
 
 pub fn run_logic(shared: Arc<Mutex<Shared>>, opts: Opts) {
+    BEAT.store(now_ms().max(1), std::sync::atomic::Ordering::Relaxed);
     let path = profile_path();
     shared.lock().unwrap().profile_path = path.display().to_string();
     let profiles = match load_profiles(&path) {
@@ -294,6 +345,11 @@ pub fn run_logic(shared: Arc<Mutex<Shared>>, opts: Opts) {
             }
             eng.stack = stack;
             eng.sheet_open = crate::sheet::get().open;
+            BEAT.store(now_ms().max(1), std::sync::atomic::Ordering::Relaxed);
+            let rk = eng.restart_keys();
+            let chord = (eng.profiles.settings.restart_keys.clone(), Duration::from_secs(eng.profiles.settings.restart_hold_s as u64));
+            if *RESTART_CHORD.lock().unwrap() != chord { *RESTART_CHORD.lock().unwrap() = chord; }
+            if *RESTART_KEYS.lock().unwrap() != rk { *RESTART_KEYS.lock().unwrap() = rk; }
             let m = if paused || yielded || dimmed || resting { 0 } else { eng.leds() };
             if leds_sent != Some(m) && !yielded {
                 let _ = ctx_tx.send(PCmd::Leds(m));
@@ -321,6 +377,9 @@ pub fn run_logic(shared: Arc<Mutex<Shared>>, opts: Opts) {
                 leds_sent = None;
                 log(if want { "nobody around and on battery: letting the panel rest" } else { "waking the panel" });
             }
+            // Never ask Windows about a window while holding `shared`: a window of our own (the tray's menu) is
+            // answered by a thread that may be waiting for `shared` itself, and both would wait for ever.
+            let editor_in_front = sys::foreground_title().starts_with("Micro Color Panel");
             let mut sh = shared.lock().unwrap();
             sh.dimmed = dimmed;
             sh.resting = resting;
@@ -331,7 +390,7 @@ pub fn run_logic(shared: Arc<Mutex<Shared>>, opts: Opts) {
             sh.layers = eng.layers.clone();
             sh.foreground = fg.map(|f| f.0).unwrap_or_default();
             // the editor's own browser tab is titled "Micro Color Panel"; don't follow it
-            if !sys::foreground_title().starts_with("Micro Color Panel") || sh.follow_context.is_empty() {
+            if !editor_in_front || sh.follow_context.is_empty() {
                 sh.follow_context = eng.stack.clone();
             }
             let quit_flag = crate::util::config_dir().join("QUIT");
@@ -588,6 +647,19 @@ fn route(method: &str, url: &str, full_url: &str, body: &str, shared: &Arc<Mutex
                 let out = crate::edit::set_led(&profiles_for_edit()?, &s("ctx"), &s("led"), rule.as_deref())?;
                 crate::presets::write_safe(&profile_path(), &out)?;
                 log(&format!("editor: {} LED {} -> {}", s("ctx"), s("led"), rule.unwrap_or_else(|| "cleared".into())));
+                Ok(())
+            });
+            match r {
+                Ok(()) => { shared.lock().unwrap().reload = true; (200, J, json!({"ok": true}).to_string()) }
+                Err(e) => (200, J, json!({"ok": false, "error": e}).to_string()),
+            }
+        }
+        ("PUT", "/api/layer") => {
+            let r = serde_json::from_str::<serde_json::Value>(body).map_err(|e| e.to_string()).and_then(|v| {
+                let (name, on) = (v["name"].as_str().unwrap_or(""), v["inherit"].as_bool().unwrap_or(false));
+                let out = crate::edit::set_layer_inherit(&profiles_for_edit()?, name, on)?;
+                crate::presets::write_safe(&profile_path(), &out)?;
+                log(&format!("editor: layer {name}: unset controls {}", if on { "keep their normal job" } else { "do nothing" }));
                 Ok(())
             });
             match r {

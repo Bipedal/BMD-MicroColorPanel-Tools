@@ -10,6 +10,7 @@
 //!   micropanel --sheet-png FILE [--ctx C] [--layers L] [--size WxH] [--list] [--light] [--notice TEXT] [--link usb|bt|none]   a picture of the cheat sheet
 //!   micropanel --check FILE        validate a profiles file and exit
 //!   micropanel --quit              ask the running helper to quit (graceful: LEDs off, panel dark)
+//!   micropanel --after PID         start once process PID has ended (a restart)
 
 use crate::app::{self, Opts, Shared, EDITOR_PORT};
 use crate::ext::Integration;
@@ -77,6 +78,7 @@ pub fn main(integrations: Vec<Arc<dyn Integration>>) {
         loop { std::thread::sleep(Duration::from_secs(3600)); }
     }
     init_log();
+    if let Some(pid) = val("--after").and_then(|p| p.parse().ok()) { sys::wait_for_exit(pid, Duration::from_secs(15)); }
     if !sys::single_instance() {
         log("another micropanel helper is already running; exiting");
         // started again by hand: show that it is there

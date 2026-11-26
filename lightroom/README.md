@@ -33,7 +33,7 @@ Lightroom is closed.
 |---|---|
 | Windows 10 or 11 | The helper's other systems don't have the keyboard and window parts yet. |
 | Lightroom **Classic** | The plugin asks for version 10 or newer. Tried with 16.0 only; newer functions (Denoise, Remove, Glow) are missing in older versions. Not the cloud-based "Lightroom", which can't load such plugins. |
-| English Lightroom | Only for the masking brush, mask edge and refine, Remove opacity and six buttons (Auto Mask, brush A/B, erase, luminance map, visualize spots). See below. |
+| English Lightroom | Only for the masking brush, mask edge and refine, Remove opacity and seven buttons (Auto Mask, brush A/B, erase, luminance map, visualize spots, use generative AI). See below. |
 
 ## The starting layout
 
@@ -42,7 +42,7 @@ Saturation, Temperature and Tint; press one to reset it. The balls are the shado
 the rings their luminance. Hold SHIFT UP for a second page of knobs, SHIFT DOWN for one fifth of the speed, USER
 for the mouse. Elsewhere: previous and next photo, flags, rating, undo and redo.
 
-Click anything in the editor to change it. There are 137 settings and 113 commands, under **Change to >
+Click anything in the editor to change it. There are 137 settings and 117 commands, under **Change to >
 Lightroom**; each tool (Crop, Remove, Masking …) can have a layout of its own.
 
 ## Good to know
@@ -50,8 +50,8 @@ Lightroom**; each tool (Crop, Remove, Masking …) can have a layout of its own.
 - Lightroom shows the value while you turn. Settings has a switch for that.
 - Actions only run while Lightroom is in front, and not while one of its dialog boxes is.
 - Holding Alt (a key can do that: *hold*) shows Lightroom's clipping and sharpening overlays as usual.
-- Copy and paste settings, before/after and full screen are sent as Lightroom's standard shortcuts, because
-  plugins can't do them.
+- Copy and paste settings, paste settings from previous, before/after and its copy and swap, a new snapshot and full
+  screen are sent as Lightroom's standard shortcuts, because plugins can't do them.
 - The brush, mask-refinement and Remove-opacity controls aren't open to plugins. The helper moves Lightroom's own
   sliders on screen, found by their English names; if it can't find one it says so and does nothing.
 - A turn of a knob is one step in the undo history.

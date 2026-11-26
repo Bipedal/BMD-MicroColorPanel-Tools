@@ -26,7 +26,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-INCLUDE_TOP = ["README.md", "LICENSE", "PANEL_PROTOCOL.md", "panel.py", "panel_tester.py",
+INCLUDE_TOP = ["README.md", "CHANGES.md", "LICENSE", "PANEL_PROTOCOL.md", "panel.py", "panel_tester.py",
                "requirements.txt",
                ".gitignore", ".gitattributes"]
 INCLUDE_DIRS = ["tests", "tools", "logs", "helper", "integrations", "lightroom", "docs", ".github"]

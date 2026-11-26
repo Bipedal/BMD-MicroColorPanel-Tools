@@ -298,12 +298,32 @@ pub fn set_app(text: &str, name: &str, exe: Option<&str>) -> Result<String, Stri
     Ok(out)
 }
 
+/// Whether unset controls keep their normal job in layer `name` (`[layers]`), keeping the rest of the file.
+pub fn set_layer_inherit(text: &str, name: &str, on: bool) -> Result<String, String> {
+    if name.is_empty() || !name.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_' || c == '-') { return Err(format!("bad layer name {name:?}")); }
+    let mut doc: DocumentMut = text.parse().map_err(|e: toml_edit::TomlError| e.to_string())?;
+    if on {
+        if !doc.contains_key("layers") { doc.insert("layers", Item::Table(Table::new())); }
+        let t = doc.get_mut("layers").and_then(|i| i.as_table_mut()).ok_or("[layers] is not a table")?;
+        let mut v = toml_edit::InlineTable::new();
+        v.insert("inherit", true.into());
+        t.insert(name, Item::Value(toml_edit::Value::InlineTable(v)));
+    } else if let Some(t) = doc.get_mut("layers").and_then(|i| i.as_table_mut()) {
+        t.remove(name);
+        if t.is_empty() { doc.remove("layers"); }
+    }
+    let out = doc.to_string();
+    Profiles::parse(&out).map_err(|e| format!("the result doesn't load: {e}"))?;
+    Ok(out)
+}
+
 /// Set one `[settings]` value, keeping the rest of the file (comments included).
 pub fn set_setting(text: &str, key: &str, value: &J) -> Result<String, String> {
     let v: toml_edit::Value = match (key, value) {
         ("start_deg", J::Number(n)) => n.as_f64().unwrap_or(0.0).into(),
-        ("backlight" | "pointer_smoothing_ms" | "backlight_off_after_s" | "start_ball" | "press_ms" | "sleep_after_min", J::Number(n)) =>
+        ("backlight" | "pointer_smoothing_ms" | "backlight_off_after_s" | "start_ball" | "press_ms" | "sleep_after_min" | "restart_hold_s", J::Number(n)) =>
             n.as_i64().ok_or(format!("{key} must be a whole number"))?.into(),
+        ("restart_keys", J::String(s)) => crate::profiles::restart_keys(s)?.join("+").into(),
         ("resolve" | "midi_out" | "midi_in", J::String(s)) => s.as_str().into(),
         (_, J::Bool(_) | J::Number(_) | J::String(_)) if crate::ext::all().iter().any(|i| {
             toml::Value::try_from(value).ok().and_then(|v| i.setting(key, &v)).map_or(false, |r| r.is_ok())
@@ -347,13 +367,15 @@ pub fn model(p: &Profiles) -> J {
     for (c, ctx) in &p.ctxs {
         for (l, _, src) in &ctx.leds { leds.push(json!({"ctx": c, "led": l, "rule": src})); }
     }
-    json!({"contexts": ctxs, "apps": apps_tree(p), "layer_openers": layer_openers(p), "layers": layers, "bindings": binds, "leds": leds,
+    let mut inherit: Vec<&String> = p.inherit.iter().collect();
+    inherit.sort();
+    json!({"contexts": ctxs, "apps": apps_tree(p), "layer_openers": layer_openers(p), "layers": layers, "layer_inherit": inherit, "bindings": binds, "leds": leds,
            "led_keys": LEDS.iter().map(|(n, b)| json!({"name": n, "bit": b, "color": if *n == "BYPASS" || *n == "DISABLE" { "red" } else { "green" }})).collect::<Vec<_>>(),
            "settings": {"backlight": p.settings.backlight, "resolve_yield": p.settings.resolve_yield,
                         "ext": p.settings.ext,
                         "pointer_smoothing_ms": p.settings.pointer_smoothing_ms,
                         "backlight_off_after_s": p.settings.backlight_off_after_s,
-                        "start_deg": p.settings.start_deg, "start_ball": p.settings.start_ball, "press_ms": p.settings.press_ms, "sleep_after_min": p.settings.sleep_after_min,
+                        "start_deg": p.settings.start_deg, "start_ball": p.settings.start_ball, "press_ms": p.settings.press_ms, "sleep_after_min": p.settings.sleep_after_min, "restart_keys": p.settings.restart_keys.join("+"), "restart_hold_s": p.settings.restart_hold_s,
                         "midi_out": p.settings.midi_out, "midi_in": p.settings.midi_in}, "warnings": p.warnings})
 }
 

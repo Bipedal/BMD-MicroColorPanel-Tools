@@ -9,5 +9,5 @@ return {
   LrExportMenuItems = {
     { title = 'Micro Color Panel status', file = 'MicroPanelStatus.lua' },
   },
-  VERSION = { major = 0, minor = 3, revision = 5 },
+  VERSION = { major = 0, minor = 3, revision = 7 },
 }

@@ -461,6 +461,12 @@ impl Engine {
 
     /// LED mask: active layers' buttons, then the context's LED rules (most specific wins; a
     /// rule can also switch off a layer key's LED).
+    /// Keys that restart the helper here, now (the panel's thread acts on them).
+    pub fn restart_keys(&self) -> Vec<String> {
+        Kind::Button.names().into_iter().filter(|n| matches!(self.profiles.lookup(Kind::Button, n, &self.stack, &self.layers).map(|f| &f.binding.action), Some(Action::Restart)))
+            .map(String::from).collect()
+    }
+
     pub fn leds(&self) -> u64 {
         let mut m = 0u64;
         for l in &self.layers {
@@ -809,5 +815,32 @@ UNDO = { do = \"key\", keys = \"shift+3, ctrl+z\" }
         for _ in 0..25 { e.handle(&Event::Ring { name: "RIGHT", delta: 1, raw: 0 }, &mut r); }
         let total: i32 = r.log.iter().map(|l| l.split(' ').nth(1).unwrap().parse::<i32>().unwrap()).sum();
         assert_eq!(total, 240, "25 steps = 2 notches of 1/24 turn");
+    }
+}
+
+#[cfg(test)]
+mod restart_tests {
+    use super::*;
+
+    #[test]
+    fn restart_keys_follow_place_and_layer() {
+        crate::ext::testing::init();
+        let p = Profiles::parse("[default.button]
+LOOP = { do = \"restart\" }
+SHIFT_UP = { do = \"layer\", name = \"more\" }
+[firefox.button]
+LOOP = { do = \"key\", keys = \"a\" }
+[default.layer.more.button]
+USER = { do = \"restart\" }
+").unwrap();
+        assert!(Profiles::parse("[default.knob]
+HUE = { do = \"restart\" }").is_err(), "a key only");
+        let mut e = Engine::new(p);
+        e.stack = vec!["default".into()];
+        assert_eq!(e.restart_keys(), ["LOOP"]);
+        e.stack = vec!["firefox".into(), "default".into()];
+        assert!(e.restart_keys().is_empty(), "firefox has its own LOOP");
+        e.layers = vec!["more".into()];
+        assert_eq!(e.restart_keys(), ["USER"]);
     }
 }

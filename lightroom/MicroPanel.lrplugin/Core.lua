@@ -10,7 +10,7 @@ local Catalog = require 'Catalog'
 local Core = {}
 Core.__index = Core
 
-Core.PLUGIN_VERSION = '0.3.5'
+Core.PLUGIN_VERSION = '0.3.7'
 
 Core.defaults = { show_values = false, denoise_default = 20, switch_to_develop = true, wheel_dir = 1, wheel_offset = 0 }
 
@@ -265,6 +265,10 @@ function Core:denoiseState()
   if not ok then error('getEnhancePanelState: ' .. tostring(st)) end
   if type(st) ~= 'table' or type(st.denoiseState) ~= 'boolean' then error('getEnhancePanelState: no denoiseState') end
   return st
+end
+
+function Core:say(text)
+  if self.sdk.bezel and self.settings.show_values then pcall(self.sdk.bezel, text) end
 end
 
 function Core:denoiseSay(text)

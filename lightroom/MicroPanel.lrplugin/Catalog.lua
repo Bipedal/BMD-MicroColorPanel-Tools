@@ -379,6 +379,77 @@ C('maskPrev', 'Previous mask', 'Masks', maskStep(-1))
 
 C('denoiseToggle', 'Denoise on/off', 'Detail', develop(function(_, core) if core then core:denoiseToggle() end end))
 
+-- Snapshots of the photo in front. Lightroom gives plugins these through the photo; older versions don't.
+local snapAt = {}   -- photo -> name of the snapshot applied last
+local function snapSay(core, text) if core and core.say then core:say(text) end end
+local function snapPhoto()
+  local LrApplication = import 'LrApplication'
+  local cat = LrApplication.activeCatalog()
+  local ph = cat:getTargetPhoto()
+  if not ph then error('no photo selected') end
+  return cat, ph
+end
+-- Changes to a photo may need the catalog's write access. LrTasks.pcall: these calls can wait for
+-- Lightroom, which plain pcall doesn't allow ("Yielding is not allowed within a C ... call").
+local function writing(cat, what, fn)
+  local LrTasks = import 'LrTasks'
+  local ok, e = LrTasks.pcall(fn)
+  if ok then return end
+  if tostring(e):find('withWriteAccessDo') or tostring(e):find('write access') then
+    cat:withWriteAccessDo(what, fn, { timeout = 3 })
+  else
+    error(e, 0)
+  end
+end
+local function snapList(ph)
+  if type(ph.getDevelopSnapshots) ~= 'function' then error('this Lightroom gives plugins no access to snapshots') end
+  local out = {}
+  for _, s in ipairs(ph:getDevelopSnapshots() or {}) do
+    if type(s) == 'table' then
+      local id, name = s.snapshotID or s.id or s.ID or s.uuid, s.name or s.title
+      if id == nil then
+        local keys = {}
+        for k in pairs(s) do keys[#keys + 1] = tostring(k) end
+        error('snapshot without an id; it has: ' .. table.concat(keys, ', '))
+      end
+      out[#out + 1] = { id = id, name = tostring(name or id) }
+    end
+  end
+  table.sort(out, function(a, b) return a.name:lower() < b.name:lower() end)  -- as Lightroom lists them
+  return out
+end
+local function snapStep(dir)
+  return function(core)
+    ensureDevelop()
+    local cat, ph = snapPhoto()
+    local list = snapList(ph)
+    if #list == 0 then snapSay(core, 'No snapshots'); return end
+    local key = tostring(ph.localIdentifier or ph)
+    local i = 0
+    for k, s in ipairs(list) do if s.name == snapAt[key] then i = k end end
+    if i == 0 and dir < 0 then i = #list + 1 end
+    i = (i - 1 + dir) % #list + 1
+    local s = list[i]
+    if type(ph.applyDevelopSnapshot) ~= 'function' then error('this Lightroom can list snapshots but not apply them') end
+    writing(cat, 'Apply snapshot', function() ph:applyDevelopSnapshot(s.id) end)
+    snapAt[key] = s.name
+    snapSay(core, 'Snapshot: ' .. s.name .. '  (' .. i .. '/' .. #list .. ')')
+  end
+end
+C('snapshotNext', 'Next snapshot', 'Snapshots', snapStep(1))
+C('snapshotPrev', 'Previous snapshot', 'Snapshots', snapStep(-1))
+C('snapshotNew', 'New snapshot, named with the time', 'Snapshots', function(core)
+  ensureDevelop()
+  local cat, ph = snapPhoto()
+  if type(ph.createDevelopSnapshot) ~= 'function' then error('this Lightroom gives plugins no way to make snapshots') end
+  local LrDate = import 'LrDate'
+  local name = LrDate.timeToUserFormat(LrDate.currentTime(), '%Y-%m-%d %H:%M:%S')
+  if type(name) ~= 'string' then name = 'Snapshot' end
+  writing(cat, 'New snapshot', function() ph:createDevelopSnapshot(name, false) end)
+  snapAt[tostring(ph.localIdentifier or ph)] = name
+  snapSay(core, 'Snapshot: ' .. name)
+end)
+
 -- Misc develop
 C('showClipping', 'Show clipping', 'Develop', develop(function(D) D.showClipping() end))
 C('autoTone', 'Auto tone', 'Develop', develop(function(D) D.setAutoTone() end))

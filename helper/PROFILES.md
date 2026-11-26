@@ -40,6 +40,13 @@ photoshop = ["photoshop.exe"]
 place first: `app/part/tool`, `app/part`, `app`, `default`. Each control is looked up on its own. `"none"`
 counts as found. A key's release goes to the binding that got its press, even if the place changed meanwhile.
 
+A control an open layer doesn't set does nothing, except a key that opens or closes layers, unless the layer inherits:
+
+```toml
+[layers]
+fine = { inherit = true }    # unset controls keep their normal job while "fine" is open
+```
+
 ## Actions
 
 | `do` | Controls | Fields |
@@ -52,6 +59,7 @@ counts as found. A key's release goes to the binding that got its press, even if
 | `mouse.button` | button | `button`: left, right, middle. `keys`: a combination held meanwhile (`"space"` to pan) |
 | `layer` | button | `name`, `mode`: `hold`, `toggle`, or `auto` (tap = stays open, hold = while held) |
 | `sheet` | button | the cheat sheet. `mode`: `toggle` (default), `hold` |
+| `restart` | button | held for a second: the helper quits and starts again; works even when the rest of it hangs |
 | `preset` | button | `scope`: `app` (default), `global`. `name`: `next` (default) or a preset |
 | `midi.cc` | knob, ring | `cc`, `channel` (1), `mode`: `relative` (two's complement, default), `offset`, `signbit`, `absolute`; `per_turn` (48 ticks, or 127 values) |
 | `midi.cc` | button | `cc`, `channel`, `on` (127), `off` (0), `toggle` |
@@ -99,6 +107,7 @@ backlight_off_after_s = 0     # dark after this long without a touch; 0 = never
 pointer_smoothing_ms = 40     # spreads the panel's bursts of ball movement; 0 = off
 start_deg = 2                 # knobs and rings: a first movement up to this (degrees) does nothing; 0 = off
 start_ball = 4                # balls: the same, in steps (not for the mouse pointer)
+restart_keys = "USER+LOOP"    # held together for restart_hold_s seconds (2): the helper starts again; the keys keep their jobs. "" = off
 sleep_after_min = 15          # on battery: the panel may switch itself off when neither it nor the PC was used this long; 0 = never
 press_ms = 600                # after pressing a knob, small turns do nothing for this long; 0 = off
 resolve = "yield"             # give the panel to DaVinci Resolve while it runs; or "share"

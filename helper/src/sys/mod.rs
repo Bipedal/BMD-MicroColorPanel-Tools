@@ -10,6 +10,7 @@
 //!   mouse_move, scroll, mouse_button, key     output
 //!   alt_down     is Alt held (by anyone)
 //!   idle_for     how long keyboard and mouse have been untouched
+//!   wait_for_exit  for a restart: until the old helper has gone
 //!   foreground, foreground_title, running_apps, process_running     which programs there are
 //!   single_instance, autostart_enabled, set_autostart, open_url, open_folder, attach_console, tray
 //!   keyrec      record a key combination system-wide

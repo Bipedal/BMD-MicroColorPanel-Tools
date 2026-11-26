@@ -37,13 +37,14 @@ pub const SLIDERS: [Slider; 7] = [
 
 pub struct Button { pub id: &'static str, pub label: &'static str, pub group: &'static str, place: At }
 const BRUSH: &[&str] = &["A", "B", "Erase", "Size"];
-pub const BUTTONS: [Button; 6] = [
+pub const BUTTONS: [Button; 7] = [
     Button { id: "maskAutoMask", label: "Auto Mask on/off", group: "Masks", place: at(&["Feather", "Flow", "Density", "Auto Mask"], "Auto Mask", 0) },
     Button { id: "maskBrushA", label: "Brush A", group: "Masks", place: at(BRUSH, "A", 0) },
     Button { id: "maskBrushB", label: "Brush B", group: "Masks", place: at(BRUSH, "B", 0) },
     Button { id: "maskErase", label: "Brush: erase", group: "Masks", place: at(BRUSH, "Erase", 0) },
     Button { id: "maskLuminanceMap", label: "Show luminance map on/off", group: "Masks", place: at(&["Show Luminance Map"], "Show Luminance Map", 0) },
     Button { id: "removeVisualize", label: "Visualize spots on/off", group: "Remove", place: at(&["Visualize Spots"], "Visualize Spots", 0) },
+    Button { id: "removeGenAI", label: "Use generative AI on/off", group: "Remove", place: at(&["Use generative AI"], "Use generative AI", 0) },
 ];
 
 #[derive(Debug, Clone, Copy, PartialEq)]

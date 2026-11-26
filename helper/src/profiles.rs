@@ -46,6 +46,8 @@ pub enum Action {
     Layer { name: String, mode: LayerMode },
     /// the cheat sheet window: shown or hidden at each press, or (hold) shown while held
     Sheet { hold: bool },
+    /// held for a second: the helper starts again (handled by the panel's thread, so that it works when the rest hangs)
+    Restart,
     /// switch presets (presets.rs): scope the app in front or everything; name "next" or a preset's name
     Preset { global: bool, name: String },
     /// an integration's action (ext.rs)
@@ -88,6 +90,11 @@ impl PartialEq for ExtAct { fn eq(&self, o: &Self) -> bool { self.id == o.id && 
 #[derive(Debug, Clone)]
 pub struct Binding { pub action: Action, pub raw: Value }
 
+impl Action {
+    /// Opens or closes a layer (also an integration's action that holds one open).
+    pub fn opens_layer(&self) -> bool { matches!(self, Action::Layer { .. }) || matches!(self, Action::Ext(x) if x.act.layer().is_some()) }
+}
+
 #[derive(Debug, Clone, Default)]
 pub struct Ctx {
     /// (layer or "" for base, kind, control name) -> binding
@@ -117,6 +124,9 @@ pub struct Settings {
     pub press_ms: u32,
     /// on battery, let the panel switch itself off when neither it nor the PC was used this long (0 = never)
     pub sleep_after_min: u32,
+    /// keys that restart the helper when held together this long; empty = off. They keep their own jobs.
+    pub restart_keys: Vec<String>,
+    pub restart_hold_s: u32,
     /// MIDI ports by name ("auto", "off" or part of the name)
     pub midi_out: String,
     pub midi_in: String,
@@ -124,7 +134,7 @@ pub struct Settings {
     pub ext: HashMap<String, Value>,
 }
 impl Default for Settings {
-    fn default() -> Self { Settings { backlight: 60, resolve_yield: true, pointer_smoothing_ms: 40, backlight_off_after_s: 0, start_deg: 0.0, start_ball: 0, press_ms: 0, sleep_after_min: 0, midi_out: "auto".into(), midi_in: "auto".into(), ext: HashMap::new() } }
+    fn default() -> Self { Settings { backlight: 60, resolve_yield: true, pointer_smoothing_ms: 40, backlight_off_after_s: 0, start_deg: 0.0, start_ball: 0, press_ms: 0, sleep_after_min: 0, restart_keys: vec![], restart_hold_s: 2, midi_out: "auto".into(), midi_in: "auto".into(), ext: HashMap::new() } }
 }
 
 #[derive(Debug, Clone, Default)]
@@ -133,8 +143,21 @@ pub struct Profiles {
     /// exe name (lower-case, with .exe) -> context name
     pub apps: HashMap<String, String>,
     pub settings: Settings,
+    /// layers in which an unset control keeps its normal job; in the others it does nothing
+    pub inherit: std::collections::HashSet<String>,
     /// things that were accepted but do nothing here
     pub warnings: Vec<String>,
+}
+
+/// "USER+LOOP": one or two keys of the panel. Never AUTO COLOR with STOP: held together they reset the panel itself.
+pub fn restart_keys(s: &str) -> Result<Vec<String>, String> {
+    let v: Vec<String> = s.split('+').map(|k| k.trim().to_uppercase().replace(' ', "_")).filter(|k| !k.is_empty()).collect();
+    if v.len() > 2 { return Err("one or two keys".into()); }
+    let known = Kind::Button.names();
+    if let Some(k) = v.iter().find(|k| !known.contains(&k.as_str())) { return Err(format!("{k} is not a key of the panel")); }
+    if v.len() == 2 && v[0] == v[1] { return Err("two different keys".into()); }
+    if v.contains(&"AUTO_COLOR".to_string()) && v.contains(&"STOP".to_string()) { return Err("never AUTO COLOR with STOP: held together they reset the panel and clear its Bluetooth pairing".into()); }
+    Ok(v)
 }
 
 pub struct Found<'a> { pub ctx: &'a str, pub layer: Option<&'a str>, pub binding: &'a Binding }
@@ -274,6 +297,7 @@ pub fn parse_action(kind: Kind, v: &Value, p: &str) -> Result<Action, String> {
                 x => return Err(format!("{p}: mode must be toggle or hold, not {x:?}")) };
             (&["mode"], Action::Sheet { hold })
         }
+        ("restart", Kind::Button) => (&[], Action::Restart),
         ("preset", Kind::Button) => {
             let global = match text(t, "scope", p)?.unwrap_or("app") { "app" => false, "global" => true,
                 x => return Err(format!("{p}: scope must be app or global, not {x:?}")) };
@@ -357,7 +381,7 @@ pub fn default_per(kind: Kind) -> f64 {
 }
 
 /// (do, controls, fields, help) for validation messages and the editor's reference list.
-pub const ACTIONS: [(&str, &str, &str, &str); 14] = [
+pub const ACTIONS: [(&str, &str, &str, &str); 15] = [
     ("none", "any", "", "does nothing and stops the fallthrough to less specific contexts"),
     ("key", "button, knob, ring", "keys, hold | cw, ccw, per", "button: taps the combination (\"ctrl+shift+c\"), or several in order (\"shift+3, ctrl+z\"); hold = true mirrors press/release. knob/ring: one tap of cw/ccw per `per` counts"),
     ("mouse.move", "ball", "speed, accel, lock", "moves the pointer; accel > 1 speeds up fast rolls; lock = axis-lock ratio (0 = off, 0.25 typical)"),
@@ -365,6 +389,7 @@ pub const ACTIONS: [(&str, &str, &str, &str); 14] = [
     ("mouse.button", "button", "button, keys", "left/right/middle; down on press, up on release; keys = a combination held meanwhile (\"space\" + left pans in many programs)"),
     ("layer", "button", "name, mode", "activates a layer while held (mode = hold), until pressed again (mode = toggle), or both (mode = auto: tap = stays on until the next tap, hold while using other controls = only while held)"),
     ("sheet", "button", "mode", "the cheat sheet window: mode toggle (default) shows or hides it at each press, hold shows it while the key is held"),
+    ("restart", "button", "", "held for a second: the helper quits and starts again. Works even when the rest of the helper hangs"),
     ("preset", "button", "scope, name", "switches presets: scope app (default, the app in front) or global; name next (default) or a preset's name"),
     ("midi.cc", "knob, ring, button", "cc, channel, mode, per_turn | cc, channel, on, off, toggle", "MIDI control change. knob/ring: mode relative (two's complement, default), offset, signbit or absolute (0..127, per_turn values per turn; default 48 ticks or 127). key: sends `on` (127) at press, `off` (0) at release, or alternates with toggle = true"),
     ("midi.note", "button", "note, channel, velocity", "MIDI note on while the key is held, note off at release"),
@@ -390,6 +415,18 @@ impl Profiles {
                         }
                     }
                 }
+                "layers" => {
+                    let t = v.as_table().ok_or("[layers] must be a table")?;
+                    for (name, o) in t {
+                        let o = o.as_table().ok_or(format!("layers.{name} must be a table, e.g. {{ inherit = true }}"))?;
+                        for (k, x) in o {
+                            match (k.as_str(), x) {
+                                ("inherit", Value::Boolean(on)) => { if *on { pr.inherit.insert(name.clone()); } }
+                                _ => return Err(format!("layers.{name}.{k}: only inherit = true or false")),
+                            }
+                        }
+                    }
+                }
                 "settings" => {
                     let t = v.as_table().ok_or("[settings] must be a table")?;
                     for (sk, sv) in t {
@@ -403,10 +440,12 @@ impl Profiles {
                             ("start_ball", Value::Integer(i)) if (0..=100).contains(i) => pr.settings.start_ball = *i as u32,
                             ("sleep_after_min", Value::Integer(i)) if (0..=1440).contains(i) => pr.settings.sleep_after_min = *i as u32,
                             ("press_ms", Value::Integer(i)) if (0..=5000).contains(i) => pr.settings.press_ms = *i as u32,
+                            ("restart_hold_s", Value::Integer(i)) if (1..=10).contains(i) => pr.settings.restart_hold_s = *i as u32,
+                            ("restart_keys", Value::String(x)) => pr.settings.restart_keys = restart_keys(x).map_err(|e| format!("settings.restart_keys: {e}"))?,
                             ("midi_out", Value::String(x)) => pr.settings.midi_out = x.clone(),
                             ("midi_in", Value::String(x)) => pr.settings.midi_in = x.clone(),
-                            ("backlight" | "resolve" | "pointer_smoothing_ms" | "backlight_off_after_s" | "start_deg" | "start_ball" | "press_ms" | "sleep_after_min" | "midi_out" | "midi_in", _) =>
-                                return Err(format!("settings.{sk}: bad value (backlight 0..100, resolve \"yield\"/\"share\", pointer_smoothing_ms 0..200, backlight_off_after_s 0..86400, start_deg 0..30, start_ball 0..100, press_ms 0..5000, sleep_after_min 0..1440, midi_out / midi_in \"auto\" / \"off\" / part of a port name)")),
+                            ("backlight" | "resolve" | "pointer_smoothing_ms" | "backlight_off_after_s" | "start_deg" | "start_ball" | "press_ms" | "sleep_after_min" | "restart_keys" | "restart_hold_s" | "midi_out" | "midi_in", _) =>
+                                return Err(format!("settings.{sk}: bad value (backlight 0..100, resolve \"yield\"/\"share\", pointer_smoothing_ms 0..200, backlight_off_after_s 0..86400, start_deg 0..30, start_ball 0..100, press_ms 0..5000, sleep_after_min 0..1440, restart_keys \"USER+LOOP\", restart_hold_s 1..10, midi_out / midi_in \"auto\" / \"off\" / part of a port name)")),
                             _ => {
                                 match crate::ext::all().iter().find_map(|i| i.setting(sk, sv)) {
                                     Some(Ok(())) => {}
@@ -498,18 +537,17 @@ impl Profiles {
     }
 
     /// Layers first (most recent first), then base; within each, most specific context first.
+    /// The open layers first, the latest first; then no layer. A layer that doesn't inherit stops there: an
+    /// unset control does nothing in it, except a key that opens or closes layers.
     pub fn lookup<'a>(&'a self, kind: Kind, name: &str, stack: &'a [String], layers: &'a [String]) -> Option<Found<'a>> {
-        let layer_iter = layers.iter().rev().map(|l| Some(l.as_str())).chain(std::iter::once(None));
-        for layer in layer_iter {
-            for c in stack {
-                if let Some(ctx) = self.ctxs.get(c) {
-                    if let Some(b) = ctx.bind.get(&(layer.unwrap_or("").to_string(), kind, name.to_string())) {
-                        return Some(Found { ctx: c, layer, binding: b });
-                    }
-                }
-            }
+        let at = |layer: Option<&'a str>| stack.iter().find_map(|c| self.ctxs.get(c)
+            .and_then(|ctx| ctx.bind.get(&(layer.unwrap_or("").to_string(), kind, name.to_string())))
+            .map(|b| Found { ctx: c, layer, binding: b }));
+        for l in layers.iter().rev() {
+            if let Some(f) = at(Some(l.as_str())) { return Some(f); }
+            if !self.inherit.contains(l) { return at(None).filter(|f| f.binding.action.opens_layer()); }
         }
-        None
+        at(None)
     }
 
     /// LED rules in force for this context stack: the most specific context's rule per LED wins.
@@ -567,6 +605,19 @@ mod tests {
     fn st(v: &[&str]) -> Vec<String> { v.iter().map(|s| s.to_string()).collect() }
 
     #[test]
+    fn restart_keys_are_checked() {
+        assert_eq!(restart_keys("user + loop").unwrap(), ["USER", "LOOP"]);
+        assert_eq!(restart_keys("").unwrap(), Vec::<String>::new());
+        assert!(restart_keys("AUTO_COLOR+STOP").unwrap_err().contains("never"));
+        assert!(restart_keys("STOP+auto color").is_err());
+        assert!(restart_keys("USER+USER").is_err() && restart_keys("A+B+C").is_err() && restart_keys("NOPE").is_err());
+        let p = Profiles::parse("[settings]\nrestart_keys = \"USER+LOOP\"\nrestart_hold_s = 3\n").unwrap();
+        assert_eq!((p.settings.restart_keys.len(), p.settings.restart_hold_s), (2, 3));
+        assert!(Profiles::parse("[settings]\nrestart_keys = \"AUTO_COLOR+STOP\"\n").is_err());
+        assert!(Profiles::parse("[settings]\nrestart_hold_s = 0\n").is_err());
+    }
+
+    #[test]
     fn default_profiles_parse() {
         init();
         let p = Profiles::parse(default_toml()).unwrap();
@@ -621,8 +672,27 @@ STOP = { do = \"key\", keys = \"a\", label = 3 }").is_err());
         let f = p.lookup(Kind::Ball, "MIDDLE", &stack, &layers).unwrap();
         assert_eq!(f.layer, Some("m"));
         assert!(matches!(f.binding.action, Action::MouseMove { speed, .. } if speed == 2.0));
-        // layer without its own binding falls back to base
-        assert_eq!(p.lookup(Kind::Button, "PLAY_FWD", &stack, &layers).unwrap().ctx, "default");
+        // a layer that doesn't set a control: it does nothing, unless the layer inherits
+        assert!(p.lookup(Kind::Button, "PLAY_FWD", &stack, &layers).is_none());
+        // the key that opens the layer still closes it
+        assert!(matches!(p.lookup(Kind::Button, "USER", &stack, &layers).unwrap().binding.action, Action::Layer { .. }));
+        let mut q = p.clone();
+        q.inherit.insert("m".into());
+        assert_eq!(q.lookup(Kind::Button, "PLAY_FWD", &stack, &layers).unwrap().ctx, "default");
+        assert!(Profiles::parse("[layers]
+m = { inherit = true }
+").unwrap().inherit.contains("m"));
+        assert!(Profiles::parse("[layers]
+m = { other = 1 }
+").is_err());
+        let t = crate::edit::set_layer_inherit("# mine
+[default.button]
+STOP = \"none\"
+", "m", true).unwrap();
+        assert!(t.contains("# mine") && Profiles::parse(&t).unwrap().inherit.contains("m"), "{t}");
+        let t = crate::edit::set_layer_inherit(&t, "m", false).unwrap();
+        assert!(!t.contains("[layers]") && t.contains("# mine"), "{t}");
+        assert!(crate::edit::set_layer_inherit("", "Bad Name", true).is_err());
         // explicit none blocks the default
         assert!(matches!(p.lookup(Kind::Button, "STOP", &stack, &[]).unwrap().binding.action, Action::None));
         // another app: default

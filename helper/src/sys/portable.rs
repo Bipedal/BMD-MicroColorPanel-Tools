@@ -38,6 +38,12 @@ pub fn process_running(exe: &str) -> bool {
         .any(|e| std::fs::read_to_string(e.path().join("comm")).is_ok_and(|c| c.trim().eq_ignore_ascii_case(name)))
 }
 
+/// Wait until process `pid` has ended, at most `limit`.
+pub fn wait_for_exit(pid: u32, limit: Duration) {
+    let end = std::time::Instant::now() + limit;
+    while std::path::Path::new(&format!("/proc/{pid}")).exists() && std::time::Instant::now() < end { std::thread::sleep(Duration::from_millis(100)); }
+}
+
 /// False if another helper is already running: a port taken for as long as we run.
 pub fn single_instance() -> bool {
     static LOCK: Mutex<Option<std::net::TcpListener>> = Mutex::new(None);

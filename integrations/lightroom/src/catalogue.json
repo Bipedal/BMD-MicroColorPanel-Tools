@@ -1173,6 +1173,21 @@
 "group": "Detail"
 },
 {
+"id": "snapshotNext",
+"label": "Next snapshot",
+"group": "Snapshots"
+},
+{
+"id": "snapshotPrev",
+"label": "Previous snapshot",
+"group": "Snapshots"
+},
+{
+"id": "snapshotNew",
+"label": "New snapshot, named with the time",
+"group": "Snapshots"
+},
+{
 "id": "showClipping",
 "label": "Show clipping",
 "group": "Develop"

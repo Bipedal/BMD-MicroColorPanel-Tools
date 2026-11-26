@@ -57,6 +57,9 @@ That's it: every change is saved at once and works immediately. **Undo** and **R
 - **Speed:** *Fine / Normal / Fast*, or type how much one full turn changes.
 - **Name:** give it your own, for example "Toggle flagged" instead of "Backquote".
 - **Copy, Cut, Paste** (Ctrl+C, X, V) work from one control to another, also between programs.
+- **Drag** a control onto another to move what it does; a knob takes its press along. If the other one is set, the two
+  swap. Hold **Ctrl** while dropping to copy instead. To put it into a layer or another place, rest on the layer's key
+  above the drawing, or on the place in the list at the left, until the view changes, then drop.
 - **Actions** at the top lists everything; click one and then a control, or drag it there.
 - **Find** (Ctrl+K) shows where something is assigned.
 
@@ -64,8 +67,10 @@ On the drawing, bright text is set right here; grey text comes from somewhere mo
 
 ## 3. A layout for each program
 
-At the left are **All apps** and the programs with a layout of their own. **Add app** lists the programs that are open;
-choose one.
+At the left are **All apps** and the programs with a layout of their own; the one you choose opens to its parts and
+tools (for Lightroom: Library, Develop with Crop, Remove, Red eye, Masking, and *More*). **Add app** lists the programs
+that are open; choose one. Above the drawing, the path (*All apps › Lightroom › Develop › Masking*) shows where a
+control falls back to when it isn't set here; click a part of it to go there.
 
 Then change controls as above. They apply while that program is in front. A control you don't set there keeps doing what
 it does in **All apps**.
@@ -88,7 +93,11 @@ A layer is a second set of assignments, for example a second page of knobs. At f
 2. Give the layer a name, and press the key on the panel that should open it.
 3. *Stays open:* **Tap to keep, or hold** (a tap keeps it open, a hold only while you hold it), **While held**, or
    **Until the next tap**.
-4. Click the layer's key next to **Normal** and assign controls. What you leave empty keeps its normal job.
+4. Click the layer's key next to **Normal** and assign controls.
+
+What you leave empty does **nothing** while the layer is open, so a layer only does what you gave it. Keys that open
+or close layers always work. Tick **Unset controls keep their normal job** next to the layer's name if it should
+only change some controls and leave the rest as they are. **Rename** and **Delete layer** are there too.
 
 ## 5. Lights
 
@@ -144,6 +153,7 @@ action.
 | **After pressing a knob, ignore small turns** | so that pressing to reset doesn't also turn |
 | **Pointer smoothing** | higher is smoother, lower is quicker |
 | **When DaVinci Resolve runs** | give it the panel (normal), or keep using it |
+| **Restart the helper: hold … + … for …** | one or two keys that, held together, restart the helper, even when it hangs. They keep their own jobs. Off at first. |
 
 ## 11. Update or remove
 
@@ -169,6 +179,7 @@ says the Lightroom plugin is out of date: **Settings > Replace the plugin**, the
 | A shortcut does something else than expected | Shortcuts depend on the program's own settings and keyboard language. |
 | **Lightroom: not connected** | [Lightroom guide](../lightroom/README.md#if-it-doesnt-connect) |
 | The editor says it can't reach the helper | The helper isn't running. Start `micropanel.exe`. |
+| The tray icon or editor stops reacting, or the panel does nothing | Tray icon > **Restart**. If the icon doesn't react either: hold the keys you chose under **Settings > Restart the helper**. Please report it with the log. |
 
 Still stuck? [Report it](https://github.com/Bipedal/BMD-MicroColorPanel-Tools/issues) with your Windows version, USB or
 Bluetooth, and what you did. The log `%APPDATA%\MicroPanel\helper.log` helps; it contains the names of the programs you

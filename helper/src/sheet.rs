@@ -143,6 +143,7 @@ pub fn describe(b: &J, kind: Kind, app: &str) -> String {
         "midi.note" => format!("MIDI note {}{}", i("note").unwrap_or(0), ch()),
         "midi.xy" => format!("MIDI CC {}", [i("x"), i("y")].iter().flatten().map(|v| v.to_string()).collect::<Vec<_>>().join(" / ")),
         "sheet" => "Cheat sheet".into(),
+        "restart" => "Restart helper".into(),
         "preset" => {
             let what = if t("scope") == "global" { "global preset" } else { "preset" };
             match t("name") { "" | "next" => format!("Next {what}"), n => format!("{} {n}", cap(what)) }
@@ -277,7 +278,12 @@ mod tests {
         let v = build(&p, &st, &["more".into()]);
         assert_eq!(v.layer, "SHIFT UP");
         assert_eq!((v.items["knob.HUE"].label.as_str(), v.items["knob.HUE"].bright), ("Dehaze", true));
-        // the press still resets the base setting: shown as such, and dimmer
+        // the layer doesn't set the press: nothing there
+        assert!(!v.items.contains_key("button.HUE"));
+        let mut q = p.clone();
+        q.inherit.insert("more".into());
+        // unless it inherits: the press still resets the base setting, shown as such and dimmer
+        let v = build(&q, &st, &["more".into()]);
         assert_eq!((v.items["button.HUE"].label.as_str(), v.items["button.HUE"].bright, v.items["button.HUE"].plain_reset), ("Reset exposure", false, false));
         assert_eq!(build(&p, &crate::edit::stack_for("photo/develop/masking"), &[]).title, "Photo, Masking");
         assert_eq!(build(&p, &crate::edit::stack_for("firefox"), &[]).title, "Firefox");
