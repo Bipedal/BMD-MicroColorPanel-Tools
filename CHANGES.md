@@ -1,6 +1,6 @@
 # Changes
 
-## Since v0.1.0 (not released yet)
+## v0.2.0
 
 **Layers work differently.** In a layer, a control the layer doesn't set now does nothing, so a layer only does what you
 gave it. Keys that open or close layers always work. To keep the old behaviour for a layer, tick **Unset controls keep
